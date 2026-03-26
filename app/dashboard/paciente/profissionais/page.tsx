@@ -1,6 +1,6 @@
 'use client'
 
-import { stateUse } from 'react'
+import { useState } from 'react'
 import { Star, Clock, DollarSign, Award, X, Calendar, MessageSquare, CheckCircle } from 'lucide-react'
 
 const PROFESSIONALS = [
@@ -16,7 +16,7 @@ const PROFESSIONALS = [
     available: true,
     bio: 'Especialista em luto animal com 8 anos de experiência. Atendo tutores que passaram pela perda de seus companheiros pets, oferecendo suporte emocional humanizado.',
     sessionDuration: 50,
-    avatar: '👩️🏵',
+    avatar: '👩‍⚕️',
   },
   {
     id: 'p2',
@@ -28,9 +28,9 @@ const PROFESSIONALS = [
     reviews: 63,
     price: 160,
     available: true,
-    bio: 'Psicñlogo com foco em terapia cognitivo-comportamental aplicada ao luto. Ajudo tutores a elaborar a perda de seus pets de forma saudável e ressignificada.',
+    bio: 'Psicólogo com foco em terapia cognitivo-comportamental aplicada ao luto. Ajudo tutores a elaborar a perda de seus pets de forma saudável e ressignificada.',
     sessionDuration: 50,
-    avatar: '👡️🏵',
+    avatar: '👨‍⚕️',
   },
   {
     id: 'p3',
@@ -42,9 +42,9 @@ const PROFESSIONALS = [
     reviews: 45,
     price: 200,
     available: false,
-    bio: 'Especialista em luto complicado e dinâmicas familiares após a perda de um pet. Ofeço atendimento individual e em grupo.',
+    bio: 'Especialista em luto complicado e dinâmicas familiares após a perda de um pet. Ofereço atendimento individual e em grupo.',
     sessionDuration: 60,
-    avatar: '👩️🏵',
+    avatar: '👩‍⚕️',
   },
   {
     id: 'p4',
@@ -58,7 +58,7 @@ const PROFESSIONALS = [
     available: true,
     bio: 'Trabalho com abordagem integrativa para processar o trauma e o luto pela perda de animais de estimação. Sessões objetivas e acolhedoras.',
     sessionDuration: 45,
-    avatar: '👡o��🏵',
+    avatar: '👨‍⚕️',
   },
 ]
 
@@ -69,7 +69,7 @@ function getNextDays(n: number) {
     const d = new Date(today)
     d.setDate(today.getDate() + i)
     // Skip Sundays
-    if (d.getDay() === 0) continue	 continue
+    if (d.getDay() === 0) continue
     days.push(d)
   }
   return days.slice(0, n)
@@ -240,7 +240,7 @@ export default function ProfissionaisPage() {
                 className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors"
               >
                 <X className="w-5 h-5" />
-  #           </button>
+              </button>
             </div>
 
             {success ? (
@@ -287,7 +287,7 @@ export default function ProfissionaisPage() {
                     <h4 className="font-medium text-gray-800 text-sm">Escolha uma data</h4>
                   </div>
                   <div className="flex gap-2 overflow-x-auto pb-1">
-                                {days.map((day, i) => (
+                    {days.map((day, i) => (
                       <button
                         key={i}
                         onClick={() => setSelectedDate(day)}
@@ -361,7 +361,7 @@ export default function ProfissionaisPage() {
                       </div>
                       <div className="flex items-center gap-2 text-sm text-indigo-800">
                         <Calendar className="w-4 h-4 flex-shrink-0" />
-                        <span>
+  2                     <span>
                           {selectedDate.toLocaleDateString('pt-BR', {
                             weekday: 'long',
                             day: '2-digit',
