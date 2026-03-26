@@ -68,7 +68,7 @@ export function HeroSection() {
             {/* Main card */}
             <div className="glass rounded-3xl p-10 text-center text-white max-w-[340px] w-full">
               <div className="text-8xl mb-5 animate-float">🐾</div>
-              <h3 className="font-serif text-2xl font-bold mb-3">Sua dor hé real</h3>
+              <h3 className="font-serif text-2xl font-bold mb-3">Sua dor é real</h3>
               <p className="text-white/80 text-sm mb-6">
                 Perder um pet é perder um membro da família. Nossos psicólogos entendem e estão aqui para você.
               </p>
@@ -82,7 +82,7 @@ export function HeroSection() {
 
             {/* Mini cards */}
             <div className="absolute -top-5 -left-10 bg-white rounded-2xl p-3.5 flex items-center gap-3 shadow-xl max-w-[200px] animate-[float2_5s_ease-in-out_infinite]">
-              <span className="text-3xl">��️</span>
+              <span className="text-3xl">🗓️</span>
               <div>
                 <div className="text-xs font-bold text-gray-800 leading-tight">Consulta hoje</div>
                 <div className="text-[11px] text-gray-500">Disponível em 2h</div>
