@@ -34,7 +34,7 @@ export function GamificationCard({ points, levelInfo, progress, nextLevel, badge
       <div className="mb-2">
         <div className="flex justify-between text-xs text-gray-400 mb-1.5">
           <span>{points} pts</span>
-          <span>PrÃ≥ü[À {nextLevel} pts</span>
+          <span>Pr√≥ximo: {nextLevel} pts</span>
         </div>
         <div className="h-2.5 rounded-full bg-petblue-50 overflow-hidden">
           <div
