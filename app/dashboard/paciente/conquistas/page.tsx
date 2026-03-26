@@ -43,6 +43,8 @@ export default async function PatientAchievementsPage() {
           <h1 className="font-serif text-2xl font-bold text-gray-800">Minhas Conquistas</h1>
           <p className="text-gray-500 text-sm mt-1">{unlocked.length} de {BADGES.length} conquistas desbloqueadas</p>
         </div>
+
+        {/* Level card */}
         <div className="bg-gradient-to-br from-petblue-400 to-petblue-600 rounded-2xl p-6 text-white">
           <div className="flex items-center gap-4 mb-5">
             <span className="text-5xl">{levelInfo.emoji}</span>
@@ -56,9 +58,14 @@ export default async function PatientAchievementsPage() {
             <span>Próximo nível: {nextLevel} pts</span>
           </div>
           <div className="h-3 rounded-full bg-white/20 overflow-hidden">
-            <div className="h-full rounded-full bg-white transition-all" style={{ width: `${progress}%` }} />
+            <div
+              className="h-full rounded-full bg-white transition-all"
+              style={{ width: `${progress}%` }}
+            />
           </div>
         </div>
+
+        {/* Level roadmap */}
         <div className="bg-white rounded-2xl p-6 border border-petblue-100 shadow-sm">
           <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
             <Star className="w-4 h-4 text-yellow-500" />
@@ -81,6 +88,8 @@ export default async function PatientAchievementsPage() {
             })}
           </div>
         </div>
+
+        {/* Badges */}
         <div>
           <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
             <Trophy className="w-4 h-4 text-yellow-500" />
@@ -88,12 +97,21 @@ export default async function PatientAchievementsPage() {
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {BADGES.map(badge => (
-              <div key={badge.id} className={`bg-white rounded-2xl p-5 border text-center transition-all ${badge.unlocked ? 'border-petblue-100 shadow-sm hover:shadow-md' : 'border-gray-100 opacity-50 grayscale'}`}>
+              <div
+                key={badge.id}
+                className={`bg-white rounded-2xl p-5 border text-center transition-all ${
+                  badge.unlocked
+                    ? 'border-petblue-100 shadow-sm hover:shadow-md'
+                    : 'border-gray-100 opacity-50 grayscale'
+                }`}
+              >
                 <div className="text-4xl mb-2">{badge.emoji}</div>
                 <div className="font-bold text-sm text-gray-800">{badge.name}</div>
                 <div className="text-xs text-gray-500 mt-1 leading-tight">{badge.description}</div>
                 {badge.unlocked ? (
-                  <div className="mt-2 text-xs text-petgreen-500 font-semibold">✅ {new Date(badge.date!).toLocaleDateString('pt-BR')}</div>
+                  <div className="mt-2 text-xs text-petgreen-500 font-semibold">
+                    ✅ {new Date(badge.date!).toLocaleDateString('pt-BR')}
+                  </div>
                 ) : (
                   <div className="mt-2 flex items-center justify-center gap-1 text-xs text-gray-400">
                     <Lock className="w-3 h-3" />
