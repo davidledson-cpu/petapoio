@@ -1,29 +1,16 @@
-import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
+const SESSION_COOKIE = 'petapoio_session'
+
 export async function middleware(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({ request })
-
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() { return request.cookies.getAll() },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
-          supabaseResponse = NextResponse.next({ request })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          )
-        },
-      },
-    }
-  )
-
-  const { data: { user } } = await supabase.auth.getUser()
-
   const { pathname } = request.nextUrl
+
+  // Read custom session cookie (demo auth — no Supabase dependency)
+  const sessionCookie = request.cookies.get(SESSION_COOKIE)?.value
+  let user: { role?: string } | null = null
+  if (sessionCookie) {
+    try { user = JSON.parse(sessionCookie) } catch {}
+  }
 
   const protectedPaths = ['/dashboard']
   const isProtected = protectedPaths.some(p => pathname.startsWith(p))
@@ -35,17 +22,17 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-  if (user && (pathname.startsWith('/auth/login') || pathname === '/auth/cadastro')) {
+  if (user && (pathname === '/auth/login' || pathname === '/auth/cadastro')) {
     const url = request.nextUrl.clone()
-    url.pathname = '/dashboard/paciente'
+    url.pathname = user.role === 'professional' ? '/dashboard/profissional' : '/dashboard/paciente'
     return NextResponse.redirect(url)
   }
 
-  return supabaseResponse
+  return NextResponse.next()
 }
 
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?zsvg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 }
