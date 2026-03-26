@@ -17,7 +17,7 @@ export function HowItWorks() {
             Começar é simples
           </h2>
           <p className="text-gray-500 text-lg max-w-xl mx-auto">
-            Da criação da conta á sua primeira sessão em menos de 10 minutos.
+            Da criação da conta à sua primeira sessão em menos de 10 minutos.
           </p>
         </div>
 
