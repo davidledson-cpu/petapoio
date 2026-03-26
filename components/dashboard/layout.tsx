@@ -22,7 +22,7 @@ const patientNav = [
 ]
 
 const professionalNav = [
-  { label: 'Inϭ cio', href: '/dashboard/profissional', icon: LayoutDashboard },
+  { label: 'Início', href: '/dashboard/profissional', icon: LayoutDashboard },
   { label: 'Agenda', href: '/dashboard/profissional/agenda', icon: Calendar },
   { label: 'Pacientes', href: '/dashboard/profissional/pacientes', icon: Users },
   { label: 'Financeiro', href: '/dashboard/profissional/financeiro', icon: DollarSign },
@@ -80,7 +80,7 @@ export function DashboardLayout({ children, userRole, userName, userAvatar }: Da
               className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
                 isActive
                   ? 'bg-petblue-50 text-petblue-600'
-                  : 'text-gray-600 hover:brpetblue-50 hover:text-petblue-600'
+                  : 'text-gray-600 hover:bg-petblue-50 hover:text-petblue-600'
               }`}
             >
               <item.icon className={`w-4 h-4 ${isActive ? 'text-petblue-500' : ''}`} />
@@ -106,7 +106,7 @@ export function DashboardLayout({ children, userRole, userName, userAvatar }: Da
   return (
     <div className="min-h-screen flex bg-gray-50">
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flew w-64 flex-col bg-white border-r border-petblue-100 fixed h-full z-30">
+      <aside className="hidden md:flex w-64 flex-col bg-white border-r border-petblue-100 fixed h-full z-30">
         <SidebarContent />
       </aside>
 
