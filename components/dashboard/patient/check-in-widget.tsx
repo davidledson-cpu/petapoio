@@ -1,13 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
 import { Heart } from 'lucide-react'
-
-interface Props {
-  userId: string
-  lastCheckIn: string | null
-}
 
 const moods = [
   { score: 1, emoji: '😔', label: 'Muito mal' },
@@ -17,10 +11,14 @@ const moods = [
   { score: 10, emoji: '😊', label: 'Ótimo' },
 ]
 
+interface Props {
+  userId: string
+  lastCheckIn?: string | null
+}
+
 export function CheckInWidget({ userId, lastCheckIn }: Props) {
   const [selected, setSelected] = useState<number | null>(null)
   const [done, setDone] = useState(false)
-  const supabase = createClient()
 
   const today = new Date().toDateString()
   const lastDate = lastCheckIn ? new Date(lastCheckIn).toDateString() : null
@@ -28,12 +26,8 @@ export function CheckInWidget({ userId, lastCheckIn }: Props) {
 
   const handleCheckIn = async (score: number) => {
     setSelected(score)
-    await supabase.from('check_ins').insert({ patient_id: userId, mood_score: score })
-    await supabase.from('users').update({
-      last_check_in: new Date().toISOString(),
-      gamification_points: supabase.rpc('increment_points', { user_id: userId, points: 5 }),
-    }).eq('id', userId)
     setDone(true)
+    // In demo mode: just record locally. With Supabase, this would save to DB.
   }
 
   return (
