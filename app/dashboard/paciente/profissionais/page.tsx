@@ -1,166 +1,411 @@
-import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
-import Link from 'next/link'
-import { Star, Clock, MapPin, Search } from 'lucide-react'
-import { DashboardLayout } from '@/components/dashboard/layout'
+'use client'
+
+import { stateUse } from 'react'
+import { Star, Clock, DollarSign, Award, X, Calendar, MessageSquare, CheckCircle } from 'lucide-react'
 
 const PROFESSIONALS = [
   {
     id: 'p1',
     name: 'Dra. Camila Torres',
+    email: 'camila.torres@petapoio.com.br',
     specialty: 'Luto animal e saúde emocional',
     crp: 'CRP 06/12345',
     rating: 4.9,
     reviews: 87,
     price: 180,
-    location: 'São Paulo, SP (online)',
-    avatar: '👩‍⚕️',
     available: true,
-    tags: ['Luto', 'Ansiedade', 'TCC'],
-    bio: 'Especialista em luto por perda de animais de estimação. Mais de 10 anos de experiência em apoio emocional para tutores.',
+    bio: 'Especialista em luto animal com 8 anos de experiência. Atendo tutores que passaram pela perda de seus companheiros pets, oferecendo suporte emocional humanizado.',
+    sessionDuration: 50,
+    avatar: '👩️🏵',
   },
   {
     id: 'p2',
-    name: 'Dr. Ricardo Souza',
-    specialty: 'Psicologia clínica',
-    crp: 'CRP 06/54321',
+    name: 'Dr. Rafael Mendes',
+    email: 'rafael.mendes@petapoio.com.br',
+    specialty: 'Psicologia do luto e terapia cognitiva',
+    crp: 'CRP 08/67890',
     rating: 4.8,
-    reviews: 62,
+    reviews: 63,
     price: 160,
-    location: 'Rio de Janeiro, RJ (online)',
-    avatar: '👨‍⚕️',
     available: true,
-    tags: ['Luto', 'Trauma', 'Mindfulness'],
-    bio: 'Psicólogo clínico com foco em perdas e transições de vida, incluindo perda de animais de estimação.',
+    bio: 'Psicñlogo com foco em terapia cognitivo-comportamental aplicada ao luto. Ajudo tutores a elaborar a perda de seus pets de forma saudável e ressignificada.',
+    sessionDuration: 50,
+    avatar: '👡️🏵',
   },
   {
     id: 'p3',
     name: 'Dra. Fernanda Lima',
-    specialty: 'Terapia Cognitivo-Comportamental',
-    crp: 'CRP 05/98765',
+    email: 'fernanda.lima@petapoio.com.br',
+    specialty: 'Luto complicado e suporte familiar',
+    crp: 'CRP 04/54321',
     rating: 4.7,
-    reviews: 43,
-    price: 150,
-    location: 'Curitiba, PR (online)',
-    avatar: '👩‍⚕️',
+    reviews: 45,
+    price: 200,
     available: false,
-    tags: ['TCC', 'Luto', 'Depressão'],
-    bio: 'Terapeuta com especialização em TCC e vasta experiência em processos de luto, inclusive luto por pets.',
+    bio: 'Especialista em luto complicado e dinâmicas familiares após a perda de um pet. Ofeço atendimento individual e em grupo.',
+    sessionDuration: 60,
+    avatar: '👩️🏵',
   },
   {
     id: 'p4',
-    name: 'Dr. Paulo Nunes',
-    specialty: 'Psicologia humanista',
-    crp: 'CRP 11/11111',
+    name: 'Dr. Marcos Oliveira',
+    email: 'marcos.oliveira@petapoio.com.br',
+    specialty: 'Trauma, luto e psicoterapia breve',
+    crp: 'CRP 07/98765',
     rating: 4.6,
-    reviews: 31,
-    price: 140,
-    location: 'Belo Horizonte, MG (online)',
-    avatar: '👨‍⚕️',
+    reviews: 34,
+    price: 150,
     available: true,
-    tags: ['Humanismo', 'Luto', 'Autoconhecimento'],
-    bio: 'Acredita no potencial humano de superar perdas. Abordagem humanista e empática para quem perdeu um pet.',
+    bio: 'Trabalho com abordagem integrativa para processar o trauma e o luto pela perda de animais de estimação. Sessões objetivas e acolhedoras.',
+    sessionDuration: 45,
+    avatar: '👡o��🏵',
   },
 ]
 
-export default async function FindProfessionalsPage() {
-  const cookieStore = cookies()
-  const sessionCookie = cookieStore.get('petapoio_session')?.value
-  let user: any = null
-  if (sessionCookie) { try { user = JSON.parse(sessionCookie) } catch {} }
-  if (!user) redirect('/auth/login')
+function getNextDays(n: number) {
+  const days = []
+  const today = new Date()
+  for (let i = 1; i <= n; i++) {
+    const d = new Date(today)
+    d.setDate(today.getDate() + i)
+    // Skip Sundays
+    if (d.getDay() === 0) continue	 continue
+    days.push(d)
+  }
+  return days.slice(0, n)
+}
+
+const TIME_SLOTS = ['09:00', '10:00', '11:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00']
+
+type Professional = typeof PROFESSIONALS[0]
+
+export default function ProfissionaisPage() {
+  const [selectedProfessional, setSelectedProfessional] = useState<Professional | null>(null)
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+  const [selectedTime, setSelectedTime] = useState<string | null>(null)
+  const [notes, setNotes] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const [error, setError] = useState('')
+
+  const days = getNextDays(10)
+
+  function openModal(professional: Professional) {
+    setSelectedProfessional(professional)
+    setSelectedDate(null)
+    setSelectedTime(null)
+    setNotes('')
+    setSuccess(false)
+    setError('')
+  }
+
+  function closeModal() {
+    setSelectedProfessional(null)
+    setSelectedDate(null)
+    setSelectedTime(null)
+    setNotes('')
+    setSuccess(false)
+    setError('')
+    setLoading(false)
+  }
+
+  async function handleSubmit() {
+    if (!selectedProfessional || !selectedDate || !selectedTime) return
+
+    setLoading(true)
+    setError('')
+
+    try {
+      // Get patient info from cookie/session
+      const patientName = 'Tutor(a) PetApoio'
+      const patientEmail = 'paciente@petapoio.com.br'
+
+      const dateStr = selectedDate.toISOString().split('T')[0]
+
+      const res = await fetch('/api/book-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          professionalId: selectedProfessional.id,
+          professionalName: selectedProfessional.name,
+          professionalEmail: selectedProfessional.email,
+          patientName,
+          patientEmail,
+          date: dateStr,
+          time: selectedTime,
+          notes,
+        }),
+      })
+
+      if (!res.ok) throw new Error('Erro ao enviar solicitação')
+
+      setSuccess(true)
+    } catch {
+      setError('Não foi possível enviar a solicitação. Tente novamente.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  function formatDay(d: Date) {
+    return d.toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: '2-digit' })
+  }
 
   return (
-    <DashboardLayout userRole="patient" userName={user.name || 'Tutor'} userAvatar={user.avatar}>
-      <div className="space-y-8">
-        <div>
-          <h1 className="font-serif text-2xl font-bold text-gray-800">Encontrar Profissional</h1>
-          <p className="text-gray-500 text-sm mt-1">Psicólogos especializados em luto animal, prontos para apoiar você</p>
-        </div>
+    <div className="p-6 max-w-4xl mx-auto">
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-gray-900">Encontre um Profissional</h1>
+        <p className="text-gray-500 mt-1">
+          Psicólogos especializados em luto pet prontos para te apoiar
+        </p>
+      </div>
 
-        {/* Search bar (visual only in demo) */}
-        <div className="relative">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Buscar por nome, especialidade ou cidade..."
-            className="w-full pl-11 pr-4 py-3 rounded-xl border-2 border-gray-200 text-sm focus:outline-none focus:border-petblue-400 transition-colors bg-white"
-          />
-        </div>
-
-        {/* Filter tags */}
-        <div className="flex flex-wrap gap-2">
-          {['Todos', 'Luto animal', 'TCC', 'Ansiedade', 'Trauma', 'Online', 'Disponível agora'].map(tag => (
-            <button key={tag} className="px-4 py-1.5 rounded-full border border-gray-200 text-xs font-semibold text-gray-600 hover:border-petblue-400 hover:text-petblue-600 hover:bg-petblue-50 transition-colors first:bg-petblue-400 first:text-white first:border-petblue-400">
-              {tag}
-            </button>
-          ))}
-        </div>
-
-        {/* Professional cards */}
-        <div className="grid md:grid-cols-2 gap-6">
-          {PROFESSIONALS.map(pro => (
-            <div key={pro.id} className="bg-white rounded-2xl p-6 border border-petblue-100 shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex items-start gap-4 mb-4">
-                <div className="w-14 h-14 rounded-xl bg-petblue-50 flex items-center justify-center text-3xl flex-shrink-0">
+      <div className="grid gap-4">
+        {PROFESSIONALS.map((pro) => (
+          <div
+            key={pro.id}
+            className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex items-start gap-4">
+                <div className="w-14 h-14 rounded-full bg-indigo-50 flex items-center justify-center text-2xl flex-shrink-0">
                   {pro.avatar}
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-2">
-                    <div>
-                      <h3 className="font-bold text-gray-800 text-sm">{pro.name}</h3>
-                      <p className="text-xs text-gray-500">{pro.specialty}</p>
-                      <p className="text-xs text-gray-400">{pro.crp}</p>
-                    </div>
-                    {pro.available ? (
-                      <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-green-100 text-green-600 flex-shrink-0">Disponível</span>
-                    ) : (
-                      <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 flex-shrink-0">Agenda cheia</span>
+                <div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h2 className="font-semibold text-gray-900 text-lg">{pro.name}</h2>
+                    <span className="text-xs bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-full font-medium">
+                      {pro.crp}
+                    </span>
+                    {!pro.available && (
+                      <span className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full">
+                        Indisponível
+                      </span>
                     )}
+                  </div>
+                  <p className="text-sm text-indigo-600 font-medium mt-0.5">{pro.specialty}</p>
+                  <p className="text-sm text-gray-500 mt-2 leading-relaxed">{pro.bio}</p>
+                  <div className="flex items-center gap-4 mt-3 flex-wrap">
+                    <span className="flex items-center gap-1 text-sm text-yellow-600">
+                      <Star className="w-4 h-4 fill-yellow-400 stroke-yellow-400" />
+                      <strong>{pro.rating}</strong>
+                      <span className="text-gray-400">({pro.reviews} avaliações)</span>
+                    </span>
+                    <span className="flex items-center gap-1 text-sm text-gray-500">
+                      <Clock className="w-4 h-4" />
+                      {pro.sessionDuration} min
+                    </span>
+                    <span className="flex items-center gap-1 text-sm text-green-600 font-medium">
+                      <DollarSign className="w-4 h-4" />
+                      R$ {pro.price}/sessão
+                    </span>
                   </div>
                 </div>
               </div>
-
-              <p className="text-xs text-gray-600 leading-relaxed mb-4">{pro.bio}</p>
-
-              <div className="flex flex-wrap gap-1.5 mb-4">
-                {pro.tags.map(tag => (
-                  <span key={tag} className="text-xs px-2.5 py-1 rounded-full bg-petblue-50 text-petblue-600 font-medium">{tag}</span>
-                ))}
-              </div>
-
-              <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
-                <div className="flex items-center gap-1">
-                  <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
-                  <span className="font-bold text-gray-700">{pro.rating}</span>
-                  <span>({pro.reviews} avaliações)</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <MapPin className="w-3.5 h-3.5" />
-                  {pro.location}
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div>
-                  <span className="text-lg font-bold text-gray-800">R$ {pro.price}</span>
-                  <span className="text-xs text-gray-400">/sessão</span>
-                </div>
+              <div className="flex-shrink-0">
                 <button
+                  onClick={() => pro.available && openModal(pro)}
                   disabled={!pro.available}
-                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors ${
+                  className={`px-5 py-2.5 rounded-lg text-sm font-medium transition-all ${
                     pro.available
-                      ? 'bg-petblue-400 text-white hover:bg-petblue-500'
+                      ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm hover:shadow'
                       : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                   }`}
                 >
-                  {pro.available ? 'Agendar sessão' : 'Sem horários'}
+                  {pro.available ? 'Agendar sessão' : 'Indisponível'}
                 </button>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
-    </DashboardLayout>
+
+      {/* Booking Modal */}
+      {selectedProfessional && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-5 border-b border-gray-100">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-xl">
+                  {selectedProfessional.avatar}
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">{selectedProfessional.name}</h3>
+                  <p className="text-xs text-indigo-600">{selectedProfessional.specialty}</p>
+                </div>
+              </div>
+              <button
+                onClick={closeModal}
+                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X className="w-5 h-5" />
+  #           </button>
+            </div>
+
+            {success ? (
+              /* Success State */
+              <div className="p-8 text-center">
+                <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CheckCircle className="w-8 h-8 text-green-500" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Solicitação Enviada!</h3>
+                <p className="text-gray-500 text-sm leading-relaxed mb-6">
+                  Sua solicitação foi enviada para <strong>{selectedProfessional.name}</strong>.
+                  Você receberá uma confirmação por e-mail em breve.
+                </p>
+                <div className="bg-indigo-50 rounded-lg p-4 text-left mb-6">
+                  <div className="flex items-center gap-2 text-sm text-indigo-700 mb-1">
+                    <Calendar className="w-4 h-4" />
+                    <span>
+                      {selectedDate?.toLocaleDateString('pt-BR', {
+                        weekday: 'long',
+                        day: '2-digit',
+                        month: 'long',
+                      })}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-indigo-700">
+                    <Clock className="w-4 h-4" />
+                    <span>{selectedTime}h</span>
+                  </div>
+                </div>
+                <button
+                  onClick={closeModal}
+                  className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-medium transition-colors"
+                >
+                  Fechar
+                </button>
+              </div>
+            ) : (
+              /* Booking Form */
+              <div className="p-5">
+                {/* Step 1: Choose Date */}
+                <div className="mb-5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Calendar className="w-4 h-4 text-indigo-600" />
+                    <h4 className="font-medium text-gray-800 text-sm">Escolha uma data</h4>
+                  </div>
+                  <div className="flex gap-2 overflow-x-auto pb-1">
+                                {days.map((day, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setSelectedDate(day)}
+                        className={`flex-shrink-0 px-3 py-2.5 rounded-lg text-xs font-medium border transition-all ${
+                          selectedDate?.toDateString() === day.toDateString()
+                            ? 'bg-indigo-600 text-white border-indigo-600'
+                            : 'bg-white text-gray-700 border-gray-200 hover:border-indigo-300'
+                        }`}
+                      >
+                        {formatDay(day)}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Step 2: Choose Time */}
+                {selectedDate && (
+                  <div className="mb-5">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Clock className="w-4 h-4 text-indigo-600" />
+                      <h4 className="font-medium text-gray-800 text-sm">Escolha um horário</h4>
+                    </div>
+                    <div className="grid grid-cols-3 gap-2">
+                      {TIME_SLOTS.map((slot) => (
+                        <button
+                          key={slot}
+                          onClick={() => setSelectedTime(slot)}
+                          className={`py-2.5 rounded-lg text-sm font-medium border transition-all ${
+                            selectedTime === slot
+                              ? 'bg-indigo-600 text-white border-indigo-600'
+                              : 'bg-white text-gray-700 border-gray-200 hover:border-indigo-300'
+                          }`}
+                        >
+                          {slot}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Step 3: Optional Notes */}
+                {selectedDate && selectedTime && (
+                  <div className="mb-5">
+                    <div className="flex items-center gap-2 mb-3">
+                      <MessageSquare className="w-4 h-4 text-indigo-600" />
+                      <h4 className="font-medium text-gray-800 text-sm">
+                        Mensagem para o profissional{' '}
+                        <span className="text-gray-400 font-normal">(opcional)</span>
+                      </h4>
+                    </div>
+                    <textarea
+                      value={notes}
+                      onChange={(e) => setNotes(e.target.value)}
+                      placeholder="Ex: Perdi meu cachorro há 2 semanas e estou precisando de apoio..."
+                      rows={3}
+                      className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-transparent resize-none"
+                    />
+                  </div>
+                )}
+
+                {/* Summary */}
+                {selectedDate && selectedTime && (
+                  <div className="bg-indigo-50 rounded-xl p-4 mb-5">
+                    <p className="text-xs text-indigo-600 font-semibold uppercase tracking-wide mb-2">
+                      Resumo da solicitação
+                    </p>
+                    <div className="space-y-1.5">
+                      <div className="flex items-center gap-2 text-sm text-indigo-800">
+                        <Award className="w-4 h-4 flex-shrink-0" />
+                        <span>{selectedProfessional.name}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-indigo-800">
+                        <Calendar className="w-4 h-4 flex-shrink-0" />
+                        <span>
+                          {selectedDate.toLocaleDateString('pt-BR', {
+                            weekday: 'long',
+                            day: '2-digit',
+                            month: 'long',
+                          })}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-indigo-800">
+                        <Clock className="w-4 h-4 flex-shrink-0" />
+                        <span>{selectedTime}h · {selectedProfessional.sessionDuration} min</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {error && (
+                  <div className="mb-4 p-3 bg-red-50 text-red-700 rounded-lg text-sm">{error}</div>
+                )}
+
+                {/* Action Buttons */}
+                <div className="flex gap-3">
+                  <button
+                    onClick={closeModal}
+                    className="flex-1 py-3 border border-gray-200 text-gray-600 rounded-xl font-medium hover:bg-gray-50 transition-colors text-sm"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    onClick={handleSubmit}
+                    disabled={!selectedDate || !selectedTime || loading}
+                    className={`flex-1 py-3 rounded-xl font-medium text-sm transition-all ${
+                      selectedDate && selectedTime && !loading
+                        ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm'
+                        : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    }`}
+                  >
+                    {loading ? 'Enviando...' : 'Enviar solicitação'}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
   )
 }
