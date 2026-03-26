@@ -29,7 +29,7 @@ export function HeroSection() {
 
             <p className="text-lg text-white/85 leading-relaxed max-w-[480px]">
               Conectamos tutores enlutados a psicólogos especializados em luto animal.
-              Sessões online, no conforto da sua casa, quando vocà mais precisar.
+              Sessões online, no conforto da sua casa, quando você mais precisar.
             </p>
 
             <div className="flex flex-wrap gap-4">
