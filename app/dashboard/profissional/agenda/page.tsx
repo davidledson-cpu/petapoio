@@ -24,6 +24,7 @@ export default async function ProfessionalAgendaPage() {
   const today = new Date()
   const startOfWeek = new Date(today)
   startOfWeek.setDate(today.getDate() - today.getDay())
+
   const weekDates = Array.from({ length: 7 }, (_, i) => {
     const d = new Date(startOfWeek)
     d.setDate(startOfWeek.getDate() + i)
@@ -43,16 +44,25 @@ export default async function ProfessionalAgendaPage() {
             Adicionar horário
           </button>
         </div>
+
+        {/* Week navigation */}
         <div className="bg-white rounded-2xl p-4 border border-petblue-100 shadow-sm">
           <div className="flex items-center justify-between mb-4">
-            <button className="p-2 rounded-lg hover:bg-gray-100 transition-colors"><ChevronLeft className="w-5 h-5 text-gray-600" /></button>
+            <button className="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+              <ChevronLeft className="w-5 h-5 text-gray-600" />
+            </button>
             <h2 className="font-bold text-gray-800">
               {startOfWeek.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long' })} – {weekDates[6].toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
             </h2>
-            <button className="p-2 rounded-lg hover:bg-gray-100 transition-colors"><ChevronRight className="w-5 h-5 text-gray-600" /></button>
+            <button className="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+              <ChevronRight className="w-5 h-5 text-gray-600" />
+            </button>
           </div>
+
+          {/* Weekly calendar grid */}
           <div className="overflow-x-auto">
             <div className="min-w-[640px]">
+              {/* Header */}
               <div className="grid grid-cols-8 mb-2">
                 <div className="text-xs text-gray-400 p-2" />
                 {weekDates.map((d, i) => (
@@ -62,6 +72,8 @@ export default async function ProfessionalAgendaPage() {
                   </div>
                 ))}
               </div>
+
+              {/* Time slots */}
               {HOURS.map(hour => (
                 <div key={hour} className="grid grid-cols-8 border-t border-gray-50">
                   <div className="text-xs text-gray-400 p-2 flex items-center">{hour}</div>
@@ -83,6 +95,8 @@ export default async function ProfessionalAgendaPage() {
             </div>
           </div>
         </div>
+
+        {/* Availability settings */}
         <div className="bg-white rounded-2xl p-6 border border-petblue-100 shadow-sm">
           <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
             <Clock className="w-4 h-4 text-petblue-400" />
@@ -101,7 +115,9 @@ export default async function ProfessionalAgendaPage() {
               </div>
             ))}
           </div>
-          <button className="mt-4 px-5 py-2.5 rounded-xl bg-petblue-400 text-white font-bold text-sm hover:bg-petblue-500 transition-colors">Salvar disponibilidade</button>
+          <button className="mt-4 px-5 py-2.5 rounded-xl bg-petblue-400 text-white font-bold text-sm hover:bg-petblue-500 transition-colors">
+            Salvar disponibilidade
+          </button>
         </div>
       </div>
     </DashboardLayout>
