@@ -142,7 +142,7 @@ export default async function ProfessionalDashboardPage() {
             </div>
 
             <div className="bg-petblue-50 rounded-2xl p-5 border border-petblue-100">
-              <h3 className="font-bold text-sm text-petblue-700 mb-2">✅ Perfil Verificado</h3>
+              <h3 className="font-bold text-sm text-petblue-700 mb-2">✅ Perfil Verificado</sh>
               <p className="text-xs text-petblue-600 leading-relaxed">
                 Seu perfil está público e visível para pacientes que buscam apoio.
               </p>
