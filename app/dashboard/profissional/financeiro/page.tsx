@@ -1,127 +1,136 @@
-import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
-import { DollarSign, TrendingUp, Calendar, ArrowUpRight, ArrowDownLeft } from 'lucide-react'
+'use client'
+
+import { getSession } from '@/lib/auth/session'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { DashboardLayout } from '@/components/dashboard/layout'
+import { DollarSign, TrendingUp, Calendar, Download, Filter, Clock } from 'lucide-react'
 
-const TRANSACTIONS = [
-  { id: 't1', patient: 'Ana Carolina Silva', date: '2026-03-24', amount: 144, type: 'credit', sessions: 1 },
-  { id: 't2', patient: 'Bruno Martins', date: '2026-03-22', amount: 144, type: 'credit', sessions: 1 },
-  { id: 't3', patient: 'Carla Ferreira', date: '2026-03-20', amount: 144, type: 'credit', sessions: 1 },
-  { id: 't4', patient: 'Elaine Santos', date: '2026-03-18', amount: 144, type: 'credit', sessions: 1 },
-  { id: 't5', patient: 'Diego Alves', date: '2026-03-15', amount: 144, type: 'credit', sessions: 1 },
-  { id: 't6', description: 'Saque para conta bancária', date: '2026-03-10', amount: 500, type: 'debit' },
-  { id: 't7', patient: 'Ana Carolina Silva', date: '2026-03-08', amount: 144, type: 'credit', sessions: 1 },
-  { id: 't8', patient: 'Carla Ferreira', date: '2026-03-05', amount: 144, type: 'credit', sessions: 1 },
-]
-
-const MONTHLY = [
-  { month: 'Out', value: 1200 },
-  { month: 'Nov', value: 1800 },
-  { month: 'Dez', value: 1440 },
-  { month: 'Jan', value: 2160 },
-  { month: 'Fev', value: 1800 },
-  { month: 'Mar', value: 2304 },
-]
-
-const maxVal = Math.max(...MONTHLY.map(m => m.value))
-
-function formatBRL(value: number) {
-  return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+interface Session {
+  id: string
+  email: string
+  name: string
+  role: string
 }
 
-export default async function ProfessionalFinancialPage() {
-  const cookieStore = cookies()
-  const sessionCookie = cookieStore.get('petapoio_session')?.value
-  let user: any = null
-  if (sessionCookie) { try { user = JSON.parse(sessionCookie) } catch {} }
-  if (!user) redirect('/auth/login')
+interface Transaction {
+  id: string
+  patient_name: string
+  date: string
+  amount: number
+  status: 'completed' | 'pending' | 'cancelled'
+  type: string
+}
 
-  const monthTotal = TRANSACTIONS.filter(t => t.type === 'credit' && t.date.startsWith('2026-03')).reduce((s, t) => s + t.amount, 0)
-  const balance = TRANSACTIONS.reduce((s, t) => t.type === 'credit' ? s + t.amount : s - t.amount, 0)
+export default function FinanceiroPage() {
+  const router = useRouter()
+  const [session, setSession] = useState<Session | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [selectedPeriod, setSelectedPeriod] = useState('month')
+  const [filterStatus, setFilterStatus] = useState('all')
+
+  const transactions: Transaction[] = [
+    { id: '1', patient_name: 'Ana Carolina Silva', date: '2026-03-27', amount: 150, status: 'completed', type: 'Sess\u00e3o Individual' },
+    { id: '2', patient_name: 'Pedro Santos', date: '2026-03-26', amount: 150, status: 'completed', type: 'Sess\u00e3o Individual' },
+    { id: '3', patient_name: 'Maria Souza', date: '2026-03-25', amount: 200, status: 'completed', type: 'Sess\u00e3o Casal' },
+    { id: '4', patient_name: 'Carlos Lima', date: '2026-03-24', amount: 150, status: 'pending', type: 'Sess\u00e3o Individual' },
+    { id: '5', patient_name: 'Julia Costa', date: '2026-03-23', amount: 150, status: 'completed', type: 'Sess\u00e3o Individual' },
+    { id: '6', patient_name: 'Roberto Alves', date: '2026-03-22', amount: 150, status: 'cancelled', type: 'Sess\u00e3o Individual' },
+    { id: '7', patient_name: 'Fernanda Reis', date: '2026-03-21', amount: 200, status: 'completed', type: 'Sess\u00e3o Casal' },
+    { id: '8', patient_name: 'Lucas Mendes', date: '2026-03-20', amount: 150, status: 'completed', type: 'Sess\u00e3o Individual' },
+  ]
+
+  useEffect(() => {
+    const checkSession = () => {
+      const currentSession = getSession()
+      if (!currentSession) {
+        router.push('/auth/login')
+        return
+      }
+      setSession(currentSession)
+      setLoading(false)
+    }
+    checkSession()
+  }, [router])
+
+  if (loading) {
+    return (
+      <DashboardLayout userRole="professional" userName="Carregando...">
+        <div className="flex items-center justify-center h-screen">
+          <div className="text-gray-500">Carregando...</div>
+        </div>
+      </DashboardLayout>
+    )
+  }
+
+  const totalRevenue = transactions.filter(t => t.status === 'completed').reduce((sum, t) => sum + t.amount, 0)
+  const pendingRevenue = transactions.filter(t => t.status === 'pending').reduce((sum, t) => sum + t.amount, 0)
+  const completedCount = transactions.filter(t => t.status === 'completed').length
+  const filteredTransactions = filterStatus === 'all' ? transactions : transactions.filter(t => t.status === filterStatus)
+
+  const statusColors: Record<string, string> = { completed: 'bg-green-100 text-green-700', pending: 'bg-yellow-100 text-yellow-700', cancelled: 'bg-red-100 text-red-700' }
+  const statusLabels: Record<string, string> = { completed: 'Conclu\u00eddo', pending: 'Pendente', cancelled: 'Cancelado' }
 
   return (
-    <DashboardLayout userRole="professional" userName={user.name || 'Profissional'} userAvatar={user.avatar}>
+    <DashboardLayout userRole="professional" userName={session?.name || ''}>
       <div className="space-y-8">
-        <div>
-          <h1 className="font-serif text-2xl font-bold text-gray-800">Financeiro</h1>
-          <p className="text-gray-500 text-sm mt-1">Acompanhe sua receita e extrato de sessões</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-serif font-bold text-gray-900 flex items-center gap-3 mb-2"><DollarSign className="w-8 h-8 text-petgreen-500" />Financeiro</h1>
+            <p className="text-gray-600">Acompanhe seus ganhos e transa\u00e7\u00f5es</p>
+          </div>
+          <div className="flex gap-2">
+            {['week','month','year'].map(period => (<button key={period} onClick={() => setSelectedPeriod(period)} className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${selectedPeriod === period ? 'bg-petblue-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>{period === 'week' ? 'Semana' : period === 'month' ? 'M\u00eas' : 'Ano'}</button>))}
+          </div>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[
-            { label: 'Saldo disponível', value: formatBRL(balance), icon: DollarSign, color: 'text-petgreen-500', bg: 'bg-petgreen-50' },
-            { label: 'Receita em março', value: formatBRL(monthTotal), icon: TrendingUp, color: 'text-petblue-500', bg: 'bg-petblue-50' },
-            { label: 'Sessões no mês', value: '16', icon: Calendar, color: 'text-purple-500', bg: 'bg-purple-50' },
-            { label: 'Ticket médio', value: 'R$ 144', icon: ArrowUpRight, color: 'text-orange-500', bg: 'bg-orange-50' },
-          ].map(stat => (
-            <div key={stat.label} className="bg-white rounded-2xl p-5 border border-petblue-100 shadow-sm">
-              <div className={`w-9 h-9 rounded-xl ${stat.bg} flex items-center justify-center mb-3`}>
-                <stat.icon className={`w-5 h-5 ${stat.color}`} />
-              </div>
-              <div className="font-serif text-xl font-bold text-gray-800">{stat.value}</div>
-              <div className="text-xs text-gray-400 mt-1">{stat.label}</div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-gradient-to-br from-petgreen-50 to-petgreen-100 rounded-2xl p-6 border border-petgreen-200">
+            <div className="flex items-center justify-between mb-4"><h3 className="text-gray-700 font-medium">Receita Total</h3><DollarSign className="w-5 h-5 text-petgreen-600" /></div>
+            <p className="text-3xl font-serif font-bold text-gray-900">R$ {totalRevenue.toLocaleString('pt-BR')}</p>
+            <p className="text-sm text-petgreen-600 mt-2 flex items-center gap-1"><TrendingUp className="w-4 h-4" /> +12% vs m\u00eas anterior</p>
+          </div>
+          <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-2xl p-6 border border-yellow-200">
+            <div className="flex items-center justify-between mb-4"><h3 className="text-gray-700 font-medium">Pendente</h3><Clock className="w-5 h-5 text-yellow-600" /></div>
+            <p className="text-3xl font-serif font-bold text-gray-900">R$ {pendingRevenue.toLocaleString('pt-BR')}</p>
+            <p className="text-sm text-yellow-600 mt-2">Aguardando confirma\u00e7\u00e3o</p>
+          </div>
+          <div className="bg-gradient-to-br from-petblue-50 to-petblue-100 rounded-2xl p-6 border border-petblue-200">
+            <div className="flex items-center justify-between mb-4"><h3 className="text-gray-700 font-medium">Sess\u00f5es Realizadas</h3><Calendar className="w-5 h-5 text-petblue-600" /></div>
+            <p className="text-3xl font-serif font-bold text-gray-900">{completedCount}</p>
+            <p className="text-sm text-petblue-600 mt-2">Este m\u00eas</p>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="font-serif text-xl font-bold text-gray-900">Transa\u00e7\u00f5es</h2>
+            <div className="flex gap-2">
+              <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)} className="px-3 py-2 border border-gray-200 rounded-lg text-sm">
+                <option value="all">Todos</option><option value="completed">Conclu\u00eddos</option><option value="pending">Pendentes</option><option value="cancelled">Cancelados</option>
+              </select>
+              <button className="px-4 py-2 bg-gray-100 rounded-lg text-sm font-semibold text-gray-600 hover:bg-gray-200 flex items-center gap-2"><Download className="w-4 h-4" /> Exportar</button>
             </div>
-          ))}
-        </div>
-
-        {/* Revenue chart */}
-        <div className="bg-white rounded-2xl p-6 border border-petblue-100 shadow-sm">
-          <h3 className="font-bold text-gray-800 mb-6">Receita mensal (últimos 6 meses)</h3>
-          <div className="flex items-end justify-between gap-3 h-40">
-            {MONTHLY.map(m => (
-              <div key={m.month} className="flex-1 flex flex-col items-center gap-2">
-                <div className="text-xs font-semibold text-gray-600">{formatBRL(m.value).replace('R$\u00a0', 'R$ ')}</div>
-                <div
-                  className="w-full rounded-t-lg bg-petblue-400 transition-all"
-                  style={{ height: `${(m.value / maxVal) * 100}px` }}
-                />
-                <div className="text-xs text-gray-400">{m.month}</div>
-              </div>
-            ))}
           </div>
-        </div>
-
-        {/* Transactions */}
-        <div className="bg-white rounded-2xl border border-petblue-100 shadow-sm overflow-hidden">
-          <div className="p-5 border-b border-petblue-50 flex items-center justify-between">
-            <h3 className="font-bold text-gray-800">Extrato</h3>
-            <button className="text-xs text-petblue-500 font-semibold hover:underline">Exportar CSV</button>
-          </div>
-          <div className="divide-y divide-gray-50">
-            {TRANSACTIONS.map(t => (
-              <div key={t.id} className="p-4 flex items-center gap-4">
-                <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ${t.type === 'credit' ? 'bg-petgreen-50' : 'bg-red-50'}`}>
-                  {t.type === 'credit'
-                    ? <ArrowUpRight className="w-4 h-4 text-petgreen-500" />
-                    : <ArrowDownLeft className="w-4 h-4 text-red-400" />
-                  }
-                </div>
-                <div className="flex-1">
-                  <div className="text-sm font-semibold text-gray-800">
-                    {t.type === 'credit' ? `Sessão — ${(t as any).patient}` : (t as any).description}
-                  </div>
-                  <div className="text-xs text-gray-400 mt-0.5">
-                    {new Date(t.date).toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: 'short' })}
-                  </div>
-                </div>
-                <div className={`font-bold text-sm ${t.type === 'credit' ? 'text-petgreen-600' : 'text-red-500'}`}>
-                  {t.type === 'credit' ? '+' : '-'}{formatBRL(t.amount)}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Withdrawal */}
-        <div className="bg-petblue-50 rounded-2xl p-6 border border-petblue-100">
-          <h3 className="font-bold text-petblue-700 mb-1">Solicitar saque</h3>
-          <p className="text-xs text-petblue-600 mb-4">Transferência em até 1 dia útil para sua conta cadastrada</p>
-          <div className="flex gap-3">
-            <input type="number" placeholder="Valor (R$)" className="flex-1 px-3 py-2.5 rounded-xl border border-petblue-200 bg-white text-sm focus:outline-none focus:border-petblue-400" />
-            <button className="px-5 py-2.5 rounded-xl bg-petblue-400 text-white font-bold text-sm hover:bg-petblue-500 transition-colors">
-              Solicitar
-            </button>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead><tr className="border-b border-gray-200">
+                <th className="text-left px-4 py-3 text-gray-600 font-semibold">Paciente</th>
+                <th className="text-left px-4 py-3 text-gray-600 font-semibold">Tipo</th>
+                <th className="text-left px-4 py-3 text-gray-600 font-semibold">Data</th>
+                <th className="text-right px-4 py-3 text-gray-600 font-semibold">Valor</th>
+                <th className="text-center px-4 py-3 text-gray-600 font-semibold">Status</th>
+              </tr></thead>
+              <tbody>
+                {filteredTransactions.map(t => (<tr key={t.id} className="border-b border-gray-100 hover:bg-gray-50">
+                  <td className="px-4 py-3 font-semibold text-gray-900">{t.patient_name}</td>
+                  <td className="px-4 py-3 text-gray-600">{t.type}</td>
+                  <td className="px-4 py-3 text-gray-600">{new Date(t.date).toLocaleDateString('pt-BR')}</td>
+                  <td className="px-4 py-3 text-right font-semibold text-gray-900">R$ {t.amount.toLocaleString('pt-BR')}</td>
+                  <td className="px-4 py-3 text-center"><span className={`px-2.5 py-1 rounded-full text-xs font-bold ${statusColors[t.status]}`}>{statusLabels[t.status]}</span></td>
+                </tr>))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
