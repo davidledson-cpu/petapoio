@@ -1,271 +1,192 @@
-import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
+'use client'
+
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Heart, Calendar, Trophy, Star, Flame, ArrowRight, CheckCircle, Clock, Sparkles, ArrowLeft } from 'lucide-react'
-import { getLevelInfo, getNextLevelPoints, BADGES, formatDateTime } from '@/lib/utils'
+import { Calendar, Star, TrendingUp, Clock, CheckCircle, Plus } from 'lucide-react'
+import { DashboardLayout } from '@/components/dashboard/layout'
+import { getSession } from '@/lib/auth/session'
 
-export default async function PatientDashboard() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-
-  if (!user) {
-    redirect('/auth/login?redirect=/dashboard/paciente')
-  }
-
-  // Fetch user profile
-  const { data: profile } = await supabase
-    .from('users')
-    .select('*')
-    .eq('id', user.id)
-    .single()
-
-  if (!profile) {
-    redirect('/auth/login')
-  }
-
-  // Fetch upcoming appointments
-  const { data: appointments } = await supabase
-    .from('appointments')
-    .select('*, professional:professional_id(full_name)')
-    .eq('patient_id', user.id)
-    .gte('scheduled_at', new Date().toISOString())
-    .order('scheduled_at', { ascending: true })
-    .limit(5)
-
-  // Fetch completed appointments count
-  const { count: completedCount } = await supabase
-    .from('appointments')
-    .select('*', { count: 'exact', head: true })
-    .eq('patient_id', user.id)
-    .eq('status', 'completed')
-
-  // Fetch badges
-  const { data: badges } = await supabase
-    .from('patient_badges')
-    .select('*')
-    .eq('user_id', user.id)
-
-  const level = getLevelInfo(profile.points || 0)
-  const nextLevelPoints = getNextLevelPoints(profile.points || 0)
-  const progressPercent = nextLevelPoints > 0
-    ? Math.min(((profile.points || 0) - level.minPoints) / (nextLevelPoints - level.minPoints) * 100, 100)
-    : 100
-
-  const earnedBadgeIds = badges?.map(b => b.badge_id) || []
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-petblue-50 via-white to-petgreen-50">
-      {/* Top bar */}
-      <div className="bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-3">
-              <Link href="/" className="text-gray-400 hover:text-gray-600 transition-colors">
-                <ArrowLeft className="w-5 h-5" />
-              </Link>
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-petblue-100 rounded-lg flex items-center justify-center">
-                  <Heart className="w-4 h-4 text-petblue-600 fill-petblue-600" />
-                </div>
-                <span className="font-bold text-gray-900">PetApoio</span>
-              </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <Link
-                href="/dashboard/paciente/perfil"
-                className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900"
-              >
-                <div className="w-8 h-8 bg-petblue-100 rounded-full flex items-center justify-center text-petblue-600 font-semibold text-sm">
-                  {profile.full_name?.charAt(0) || 'P'}
-                </div>
-                <span className="hidden sm:block">{profile.full_name?.split(' ')[0]}</span>
-              </Link>
-              <form action="/auth/signout" method="post">
-                <button className="text-sm text-gray-400 hover:text-red-500 transition-colors">
-                  Sair
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Welcome Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Olá, {profile.full_name?.split(' ')[0] || 'Paciente'} {level.emoji}
-          </h1>
-          <p className="text-gray-500 mt-1">Aqui está um resumo da sua jornada de cuidado</p>
-        </div>
-
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
-            <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center mb-3">
-              <Calendar className="w-5 h-5 text-blue-600" />
-            </div>
-            <p className="text-2xl font-bold text-gray-900">{completedCount || 0}</p>
-            <p className="text-sm text-gray-500">Sessões feitas</p>
-          </div>
-
-          <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
-            <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center mb-3">
-              <Star className="w-5 h-5 text-purple-600" />
-            </div>
-            <p className="text-2xl font-bold text-gray-900">{profile.points || 0}</p>
-            <p className="text-sm text-gray-500">Pontos</p>
-          </div>
-
-          <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
-            <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center mb-3">
-              <Sparkles className="w-5 h-5 text-green-600" />
-            </div>
-            <p className="text-2xl font-bold text-gray-900">{level.emoji} {level.name}</p>
-            <p className="text-sm text-gray-500">Nível atual</p>
-          </div>
-
-          <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
-            <div className="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center mb-3">
-              <Flame className="w-5 h-5 text-orange-600" />
-            </div>
-            <p className="text-2xl font-bold text-gray-900">{profile.streak_days || 0}</p>
-            <p className="text-sm text-gray-500">Dias seguidos</p>
-          </div>
-        </div>
-
-        <div className="grid lg:grid-cols-3 gap-6">
-          {/* Left Column - Appointments */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Upcoming Appointments */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100">
-              <div className="flex items-center justify-between p-6 pb-4">
-                <h2 className="text-lg font-bold text-gray-900">Próximas Consultas</h2>
-                <Link href="/dashboard/paciente/agendamentos" className="text-sm text-petblue-600 hover:text-petblue-700 font-medium flex items-center gap-1">
-                  Ver todas <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-              </div>
-
-              {appointments && appointments.length > 0 ? (
-                <div className="px-6 pb-6 space-y-3">
-                  {appointments.map((apt: any) => (
-                    <div
-                      key={apt.id}
-                      className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-petblue-50 transition-colors"
-                    >
-                      <div className="w-12 h-12 bg-petblue-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <Calendar className="w-6 h-6 text-petblue-600" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-gray-900 truncate">
-                          {apt.professional?.full_name || 'Profissional'}
-                        </p>
-                        <p className="text-sm text-gray-500">
-                          {formatDateTime(apt.scheduled_at)}
-                        </p>
-                      </div>
-                      <div className="flex-shrink-0">
-                        {apt.status === 'confirmed' ? (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
-                            <CheckCircle className="w-3 h-3" /> Confirmada
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-amber-100 text-amber-700 rounded-full text-xs font-medium">
-                            <Clock className="w-3 h-3" /> Pendente
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="px-6 pb-6">
-                  <div className="text-center py-8 bg-gray-50 rounded-xl">
-                    <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                    <p className="text-gray-500 mb-4">Nenhuma consulta agendada</p>
-                    <Link
-                      href="/profissionais"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 bg-petblue-500 text-white rounded-xl text-sm font-semibold hover:bg-petblue-600 transition-colors"
-                    >
-                      <Heart className="w-4 h-4" />
-                      Encontrar um Psicólogo
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Right Column - Gamification */}
-          <div className="space-y-6">
-            {/* Level Progress */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-              <h2 className="text-lg font-bold text-gray-900 mb-4">Seu Progresso</h2>
-
-              <div className="text-center mb-4">
-                <div className="text-4xl mb-2">{level.emoji}</div>
-                <p className="text-lg font-bold text-gray-900">{level.name}</p>
-                <p className="text-sm text-gray-500">Nível {level.level}</p>
-              </div>
-
-              <div className="bg-gray-100 rounded-full h-3 mb-2 overflow-hidden">
-                <div
-                  className="bg-gradient-to-r from-petblue-400 to-petblue-600 h-full rounded-full transition-all duration-500"
-                  style={{ width: `${progressPercent}%` }}
-                />
-              </div>
-              <p className="text-xs text-gray-500 text-center">{profile.points || 0} / {nextLevelPoints || '∞'} pontos
-              </p>
-            </div>
-
-            {/* Badges */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-bold text-gray-900">Conquistas</h2>
-                <Link href="/dashboard/paciente/conquistas" className="text-sm text-petblue-600 hover:text-petblue-700 font-medium">
-                  Ver todas
-                </Link>
-              </div>
-
-              <div className="grid grid-cols-4 gap-3">
-                {Object.entries(BADGES).map(([id, badge]) => {
-                  const earned = earnedBadgeIds.includes(id)
-                  return (
-                    <div
-                      key={id}
-                      className={`relative group cursor-help`}
-                      title={`${badge.name}: ${badge.description}`}
-                    >
-                      <div className={`w-full aspect-square rounded-xl flex items-center justify-center text-2xl ${
-                        earned
-                          ? 'bg-petblue-100 shadow-sm'
-                          : 'bg-gray-100 opacity-40 grayscale'
-                      }`}>
-                        {badge.emoji}
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-
-            {/* Quick Actions */}
-            <div className="bg-gradient-to-br from-petblue-500 to-petblue-600 rounded-2xl p-6 text-white">
-              <h3 className="font-bold text-lg mb-2">Precisa de apoio?</h3>
-              <p className="text-petblue-100 text-sm mb-4">
-                Encontre um psicólogo especializado em luto animal.
-              </p>
-              <Link
-                href="/profissionais"
-                className="inline-flex items-center gap-2 px-4 py-2.5 bg-white text-petblue-600 rounded-xl text-sm font-semibold hover:bg-petblue-50 transition-colors"
-              >
-                <Heart className="w-4 h-4" />
-                Buscar Profissional
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
+// Mock level info
+function getLevelInfo(points: number) {
+  const levels = [
+    { name: 'Semente', emoji: '🌱', minPoints: 0, maxPoints: 100 },
+    { name: 'Broto', emoji: '🌿', minPoints: 100, maxPoints: 250 },
+    { name: 'Floração', emoji: '🌸', minPoints: 250, maxPoints: 500 },
+    { name: 'Fruto', emoji: '🌻', minPoints: 500, maxPoints: 1000 },
+    { name: 'Árvore', emoji: '🌳', minPoints: 1000, maxPoints: Infinity },
+  ]
+  return levels.find(l => points >= l.minPoints && points < l.maxPoints) || levels[0]
 }
 
+function getNextLevelPoints(points: number) {
+  const levels = [100, 250, 500, 1000, 2000]
+  return levels.find(l => l > points) || 2000
+}
+
+export default function PatientDashboardPage() {
+  const router = useRouter()
+  const session = getSession()
+
+  useEffect(() => {
+    if (!session) {
+      router.push('/auth/login')
+    }
+  }, [session, router])
+
+  if (!session) return null
+
+  const completedCount = 3
+  const points = 145
+  const levelInfo = getLevelInfo(points)
+  const nextLevel = getNextLevelPoints(points)
+  const progress = Math.min((points / nextLevel) * 100, 100)
+  const streakDays = 7
+
+  const upcomingAppointments = [
+    {
+      id: '1',
+      professional: { full_name: 'Dr. Marcos Oliveira', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Marcos' },
+      scheduled_at: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(),
+      duration_min: 50,
+      status: 'confirmed',
+      video_room_url: 'https://meet.google.com/abc-defg-hij',
+    },
+    {
+      id: '2',
+      professional: { full_name: 'Dra. Sofia Costa', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sofia' },
+      scheduled_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+      duration_min: 50,
+      status: 'pending',
+      video_room_url: null,
+    },
+  ]
+
+  const formatDateTime = (isoString: string) => {
+    const date = new Date(isoString)
+    return date.toLocaleDateString('pt-BR', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+  }
+
+  return (
+    <DashboardLayout userRole="patient" userName={session.name}>
+      <div className="space-y-8">
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="font-serif text-2xl font-bold text-gray-800">
+              Olá, {session.name.split(' ')[0]} {levelInfo.emoji}
+            </h1>
+            <p className="text-gray-500 text-sm mt-1">
+              {completedCount === 0
+                ? 'Bem-vindo à sua jornada de cura. Agende sua primeira sessão.'
+                : `${completedCount} sessão${completedCount !== 1 ? 'ões' : ''} realizada${completedCount !== 1 ? 's' : ''}. Continue sua jornada.`
+              }
+            </p>
+          </div>
+          <Link
+            href="/profissionais"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-petblue-400 text-white text-sm font-bold hover:bg-petblue-500 transition-colors shadow-sm"
+          >
+            <Plus className="w-4 h-4" />
+            Nova Sessão
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            { label: 'Sessões realizadas', value: completedCount || 0, icon: CheckCircle, color: 'text-petgreen-500' },
+            { label: 'Pontos ganhos', value: points, icon: Star, color: 'text-yellow-500' },
+            { label: 'Nível atual', value: levelInfo.name, icon: TrendingUp, color: 'text-petblue-500' },
+            { label: 'Sequência', value: `${streakDays} dias`, icon: Clock, color: 'text-orange-500' },
+          ].map(stat => (
+            <div key={stat.label} className="bg-white rounded-2xl p-5 border border-petblue-100 shadow-sm">
+              <stat.icon className={`w-5 h-5 ${stat.color} mb-3`} />
+              <div className="font-serif text-2xl font-bold text-gray-800">{stat.value}</div>
+              <div className="text-xs text-gray-400 mt-1">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="md:col-span-2 bg-white rounded-2xl p-6 border border-petblue-100 shadow-sm">
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="font-bold text-gray-800 flex items-center gap-2">
+                <Calendar className="w-5 h-5 text-petblue-400" />
+                Próximas Sessões
+              </h2>
+              <Link href="/dashboard/paciente/agendamentos" className="text-xs text-petblue-500 hover:underline font-semibold">
+                Ver todas
+              </Link>
+            </div>
+
+            {upcomingAppointments.length > 0 ? (
+              <div className="space-y-3">
+                {upcomingAppointments.map((apt: any) => (
+                  <div key={apt.id} className="flex items-center gap-4 p-4 rounded-xl bg-petblue-50 border border-petblue-100">
+                    <div className="w-12 h-12 rounded-xl bg-petblue-100 flex items-center justify-center text-2xl flex-shrink-0">
+                      👩‍⚕️
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-semibold text-sm text-gray-800 truncate">{apt.professional?.full_name}</div>
+                      <div className="text-xs text-gray-500">{formatDateTime(apt.scheduled_at)} • {apt.duration_min}min</div>
+                    </div>
+                    <div className="text-right flex-shrink-0">
+                      <div className={`text-xs font-bold px-2.5 py-1 rounded-full ${apt.status === 'confirmed' ? 'bg-green-100 text-green-600' : 'bg-yellow-100 text-yellow-600'}`}>
+                        {apt.status === 'confirmed' ? 'Confirmada' : 'Pendente'}
+                      </div>
+                      {apt.video_room_url && (
+                        <a href={apt.video_room_url} target="_blank" rel="noopener noreferrer"
+                          className="block mt-1.5 text-xs text-petblue-500 hover:underline font-semibold">
+                          Entrar na sala →
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-10">
+                <div className="text-5xl mb-3">🗓️</div>
+                <p className="text-gray-500 text-sm mb-4">Nenhuma sessão agendada</p>
+                <Link href="/profissionais" className="text-sm text-petblue-500 font-bold hover:underline">
+                  Encontrar um psicólogo →
+                </Link>
+              </div>
+            )}
+          </div>
+
+          <div className="space-y-4">
+            <div className="bg-white rounded-2xl p-6 border border-petblue-100 shadow-sm">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold text-gray-800">Gamificação</h3>
+                <Link href="/dashboard/paciente/conquistas" className="text-xs text-petblue-500 hover:underline">
+                  Ver mais
+                </Link>
+              </div>
+              <div className="mb-4">
+                <div className="text-sm text-gray-600 mb-2">{points} / {nextLevel} pontos</div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="bg-petblue-400 h-2 rounded-full" style={{ width: `${progress}%` }} />
+                </div>
+              </div>
+              <div className="text-xs text-gray-500">Próximo nível: {getNextLevelPoints(points)} pontos</div>
+            </div>
+
+            <div className="bg-gradient-to-br from-petgreen-50 to-petblue-50 rounded-2xl p-6 border border-petgreen-100 shadow-sm">
+              <div className="text-center">
+                <div className="text-4xl mb-3">😊</div>
+                <h3 className="font-semibold text-gray-800 mb-2">Como está se sentindo?</h3>
+                <p className="text-xs text-gray-500 mb-4">Registre seu humor diário</p>
+                <Link
+                  href="/dashboard/paciente/diario"
+                  className="inline-block px-4 py-2 rounded-lg bg-petgreen-400 text-white text-xs font-bold hover:bg-petgreen-500 transition-colors"
+                >
+                  Registrar Mood
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </DashboardLayout>
+  )
+}
