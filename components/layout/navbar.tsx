@@ -39,7 +39,7 @@ const accessLinks = [
   },
 ]
 
-export default function Navbar() {
+export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [accessOpen, setAccessOpen] = useState(false)
