@@ -67,9 +67,9 @@ export default function ProfissionalDashboard() {
 
   const quickActions = [
     { label: 'Configurar Disponibilidade', icon: Calendar, href: '/dashboard/profissional/agenda' },
-    { label: 'Relat\u00f3rio Financeiro', icon: FileText, href: '/dashboard/profissional/financeiro' },
+    { label: 'Relatório Financeiro', icon: FileText, href: '/dashboard/profissional/financeiro' },
     { label: 'Editar Perfil', icon: Edit, href: '/dashboard/profissional/configuracoes' },
-    { label: 'Ver Avalia\u00e7\u00f5es', icon: MessageSquare, href: '#' },
+    { label: 'Ver Avaliações', icon: MessageSquare, href: '#' },
   ]
 
   return (
@@ -87,13 +87,13 @@ export default function ProfissionalDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-gradient-to-br from-petblue-50 to-petblue-100 rounded-2xl p-6 border border-petblue-200">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-gray-700 font-medium">Sess\u00f5es Realizadas</h3>
+              <h3 className="text-gray-700 font-medium">Sessões Realizadas</h3>
               <div className="bg-petblue-500 rounded-lg p-3">
                 <Calendar className="w-5 h-5 text-white" />
               </div>
             </div>
             <p className="text-3xl font-serif font-bold text-gray-900">48</p>
-            <p className="text-sm text-gray-600 mt-2">Este m\u00eas</p>
+            <p className="text-sm text-gray-600 mt-2">Este mês</p>
           </div>
 
           <div className="bg-gradient-to-br from-petgreen-50 to-petgreen-100 rounded-2xl p-6 border border-petgreen-200">
@@ -104,18 +104,18 @@ export default function ProfissionalDashboard() {
               </div>
             </div>
             <p className="text-3xl font-serif font-bold text-gray-900">R$ 7.200</p>
-            <p className="text-sm text-gray-600 mt-2">Este m\u00eas</p>
+            <p className="text-sm text-gray-600 mt-2">Este mês</p>
           </div>
 
           <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-2xl p-6 border border-yellow-200">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-gray-700 font-medium">Avalia\u00e7\u00e3o</h3>
+              <h3 className="text-gray-700 font-medium">Avaliação</h3>
               <div className="bg-yellow-500 rounded-lg p-3">
                 <Star className="w-5 h-5 text-white" />
               </div>
             </div>
             <p className="text-3xl font-serif font-bold text-gray-900">5.0</p>
-            <p className="text-sm text-gray-600 mt-2">Baseado em 48 avalia\u00e7\u00f5es</p>
+            <p className="text-sm text-gray-600 mt-2">Baseado em 48 avaliações</p>
           </div>
 
           <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-6 border border-purple-200">
@@ -135,7 +135,7 @@ export default function ProfissionalDashboard() {
           <div className="lg:col-span-2">
             <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
               <h2 className="text-2xl font-serif font-bold text-gray-900 mb-6">
-                Pr\u00f3ximos Atendimentos
+                Próximos Atendimentos
               </h2>
               <div className="space-y-4">
                 {upcomingConsultations.map((consultation) => (
@@ -172,7 +172,7 @@ export default function ProfissionalDashboard() {
                 </div>
                 <div className="pt-4 border-t border-gray-200">
                   <p className="text-sm text-gray-600 mb-4">
-                    Seu perfil est\u00e1 completo e verificado
+                    Seu perfil está completo e verificado
                   </p>
                   <button className="w-full px-4 py-2 bg-petblue-500 text-white rounded-lg font-medium hover:bg-petblue-600 transition-colors">
                     Editar Perfil
@@ -185,7 +185,7 @@ export default function ProfissionalDashboard() {
 
         {/* Quick Actions */}
         <div>
-          <h2 className="text-2xl font-serif font-bold text-gray-900 mb-6">A\u00e7\u00f5es R\u00e1pidas</h2>
+          <h2 className="text-2xl font-serif font-bold text-gray-900 mb-6">Ações Rápidas</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {quickActions.map((action, idx) => {
               const IconComponent = action.icon
