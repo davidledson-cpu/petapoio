@@ -129,7 +129,7 @@ export default function AnalyticsPage() {
                     <div className="flex-1 bg-gray-100 rounded-full h-2 overflow-hidden">
                       <div
                         className="bg-yellow-400 h-full rounded-full transition-all"
-                        style={{ width: `${percentage}%` }}}
+                        style={{ width: `${percentage}%` }}
                       ></div>
                     </div>
                     <p className="text-sm font-semibold text-gray-700 w-16 text-right">
