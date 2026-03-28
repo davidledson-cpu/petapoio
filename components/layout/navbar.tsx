@@ -74,7 +74,7 @@ export function Navbar() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-white/95 backdrop-blur-md shadow-sm' : 'bg-transparent'
+        scrolled ? 'bg-white backdrop-blur-md shadow-md' : 'bg-transparent'
       }`}
     >
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -96,7 +96,7 @@ export function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={`text-sm font-medium transition-colors hover:text-petblue-500 ${
-                  scrolled ? 'text-gray-600' : 'text-white/90'
+                  scrolled ? 'text-gray-900' : 'text-white/90'
                 }`}
               >
                 {link.label}
@@ -112,7 +112,7 @@ export function Navbar() {
                 onClick={() => setAccessOpen(!accessOpen)}
                 className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   scrolled
-                    ? 'text-gray-700 hover:bg-gray-100'
+                    ? 'text-gray-900 hover:bg-gray-100'
                     : 'text-white/90 hover:bg-white/10'
                 }`}
               >
