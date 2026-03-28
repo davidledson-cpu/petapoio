@@ -17,13 +17,15 @@ export async function POST(request: NextRequest) {
         user: demoUser,
         redirectTo: getDashboardRoute(demoUser.role),
       })
+
       response.cookies.set(SESSION_COOKIE, JSON.stringify(demoUser), {
-        httpOnly: true,
+        httpOnly: false,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
         maxAge: 60 * 60 * 24 * 7, // 7 days
         path: '/',
       })
+
       return response
     }
 
@@ -33,13 +35,16 @@ export async function POST(request: NextRequest) {
       try {
         const { createClient } = await import('@/lib/supabase/server')
         const supabase = createClient()
+
         const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+
         if (!error && data.user) {
           const { data: profile } = await supabase
             .from('users')
             .select('full_name, role, avatar_url')
             .eq('id', data.user.id)
             .single()
+
           const user = {
             id: data.user.id,
             email: data.user.email!,
@@ -48,18 +53,21 @@ export async function POST(request: NextRequest) {
             avatar: profile?.avatar_url,
             createdAt: data.user.created_at,
           }
+
           const response = NextResponse.json({
             success: true,
             user,
             redirectTo: getDashboardRoute(user.role as any),
           })
+
           response.cookies.set(SESSION_COOKIE, JSON.stringify(user), {
-            httpOnly: true,
+            httpOnly: false,
             secure: true,
             sameSite: 'lax',
             maxAge: 60 * 60 * 24 * 7,
             path: '/',
           })
+
           return response
         }
       } catch {}
