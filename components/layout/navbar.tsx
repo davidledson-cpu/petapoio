@@ -2,14 +2,14 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Heart, Menu, X, ChevronDown, Shield, User, Stethoscope, LogIn } from 'lucide-react'
+import { Heart, Menu, X, ChevronDown, Shield, User, Stethoscope, LogIn, UserPlus } from 'lucide-react'
 import { createBrowserClient } from '@supabase/ssr'
 
 const navLinks = [
   { label: 'Como Funciona', href: '#como-funciona' },
-  { label: 'Profissionais', href: '/profissionais' },
+  { label: 'Peça ajuda a um profissional', href: '/profissionais' },
   { label: 'Loja', href: '/loja' },
-  { label: 'Para Psicólogos', href: '#para-psicologos' },
+  { label: 'Para Psicólogos', href: '/para-psicologos' },
 ]
 
 const accessLinks = [
@@ -74,9 +74,7 @@ export function Navbar() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-sm'
-          : 'bg-transparent'
+        scrolled ? 'bg-white/95 backdrop-blur-md shadow-sm' : 'bg-transparent'
       }`}
     >
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -124,10 +122,11 @@ export function Navbar() {
               </button>
 
               {accessOpen && (
-                <div className="absolute right-0 top-full mt-2 w-72 bg-white rounded-xl shadow-xl border border-gray-100 py-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-100 py-2 animate-in fade-in slide-in-from-top-2 duration-200">
                   <div className="px-4 py-2 border-b border-gray-100">
                     <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">Acessar como</p>
                   </div>
+
                   {accessLinks.map((item) => (
                     <Link
                       key={item.href}
@@ -144,6 +143,24 @@ export function Navbar() {
                       </div>
                     </Link>
                   ))}
+
+                  {/* Cadastro profissional CTA inside dropdown */}
+                  <div className="border-t border-gray-100 mt-1 pt-2 px-4 pb-2">
+                    <Link
+                      href="/para-psicologos"
+                      onClick={() => setAccessOpen(false)}
+                      className="flex items-center gap-3 p-3 rounded-lg bg-petgreen-50 border border-petgreen-200 hover:bg-petgreen-100 transition-colors"
+                    >
+                      <div className="w-10 h-10 rounded-lg bg-petgreen-100 flex items-center justify-center">
+                        <UserPlus className="w-5 h-5 text-petgreen-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-petgreen-700">Cadastre-se como Psicólogo</p>
+                        <p className="text-xs text-petgreen-600">Comece a atender tutores enlutados</p>
+                      </div>
+                    </Link>
+                  </div>
+
                   <div className="border-t border-gray-100 mt-1 pt-1 px-4 py-2">
                     <Link
                       href="/auth/login"
@@ -212,6 +229,21 @@ export function Navbar() {
                   </div>
                 </Link>
               ))}
+
+              {/* Mobile: Cadastro profissional CTA */}
+              <Link
+                href="/para-psicologos"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-3 mx-4 mt-3 p-3 rounded-lg bg-petgreen-50 border border-petgreen-200"
+              >
+                <div className="w-9 h-9 rounded-lg bg-petgreen-100 flex items-center justify-center">
+                  <UserPlus className="w-4 h-4 text-petgreen-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-petgreen-700">Cadastre-se como Psicólogo</p>
+                  <p className="text-xs text-petgreen-600">Comece a atender</p>
+                </div>
+              </Link>
             </div>
 
             {/* CTA */}
@@ -229,4 +261,3 @@ export function Navbar() {
     </header>
   )
 }
-
