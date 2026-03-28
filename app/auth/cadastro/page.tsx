@@ -13,21 +13,21 @@ import { Eye, EyeOff, Loader2, ChevronRight, ChevronLeft, Check, MapPin, User, B
 const step1Schema = z.object({
   userType: z.enum(['patient', 'professional']),
   fullName: z.string().min(3, 'Nome deve ter ao menos 3 caracteres'),
-  email: z.string().email('E-mail inv\u00e1lido'),
+  email: z.string().email('E-mail inválido'),
   phone: z.string().optional(),
   cpf: z.string().optional(),
   birthDate: z.string().optional(),
   password: z.string().min(8, 'Senha deve ter ao menos 8 caracteres'),
   confirmPassword: z.string(),
 }).refine(d => d.password === d.confirmPassword, {
-  message: 'As senhas n\u00e3o coincidem',
+  message: 'As senhas não coincidem',
   path: ['confirmPassword'],
 })
 
 const addressSchema = z.object({
-  cep: z.string().min(8, 'CEP inv\u00e1lido'),
+  cep: z.string().min(8, 'CEP inválido'),
   logradouro: z.string().min(1, 'Informe o logradouro'),
-  numero: z.string().min(1, 'Informe o n\u00famero'),
+  numero: z.string().min(1, 'Informe o número'),
   complemento: z.string().optional(),
   bairro: z.string().min(1, 'Informe o bairro'),
   cidade: z.string().min(1, 'Informe a cidade'),
@@ -37,19 +37,19 @@ const addressSchema = z.object({
 const professionalSchema = z.object({
   crp: z.string().min(1, 'Informe o registro profissional'),
   professionalType: z.string().min(1, 'Selecione o tipo'),
-  education: z.string().min(1, 'Informe a forma\u00e7\u00e3o'),
+  education: z.string().min(1, 'Informe a formação'),
   specialization: z.string().optional(),
   approaches: z.array(z.string()).optional(),
   specialties: z.array(z.string()).optional(),
   yearsExperience: z.coerce.number().min(0, 'Informe os anos'),
-  bio: z.string().min(50, 'M\u00ednimo 50 caracteres').max(1000, 'M\u00e1ximo 1000 caracteres'),
+  bio: z.string().min(50, 'Mínimo 50 caracteres').max(1000, 'Máximo 1000 caracteres'),
   languages: z.array(z.string()).optional(),
 })
 
 const availabilitySchema = z.object({
   modality: z.array(z.string()).min(1, 'Selecione ao menos uma modalidade'),
-  sessionDuration: z.string().min(1, 'Selecione a dura\u00e7\u00e3o'),
-  sessionPrice: z.coerce.number().min(50, 'Valor m\u00ednimo R$ 50,00'),
+  sessionDuration: z.string().min(1, 'Selecione a duração'),
+  sessionPrice: z.coerce.number().min(50, 'Valor mínimo R$ 50,00'),
   freeFirstSession: z.boolean().optional(),
   socialPrice: z.boolean().optional(),
   socialPriceValue: z.coerce.number().optional(),
@@ -61,15 +61,15 @@ const bankingSchema = z.object({
   cpfCnpj: z.string().min(11, 'Informe o CPF ou CNPJ'),
   bank: z.string().min(1, 'Selecione o banco'),
   bankAccountType: z.string().min(1, 'Selecione o tipo de conta'),
-  agency: z.string().min(1, 'Informe a ag\u00eancia'),
+  agency: z.string().min(1, 'Informe a agência'),
   account: z.string().min(1, 'Informe a conta'),
   accountHolder: z.string().min(1, 'Informe o titular'),
   pixKeyType: z.string().min(1, 'Selecione o tipo de chave'),
   pixKey: z.string().min(1, 'Informe a chave PIX'),
   pixPreferred: z.boolean().optional(),
   termsAccepted: z.literal(true, { errorMap: () => ({ message: 'Aceite os termos para continuar' }) }),
-  privacyAccepted: z.literal(true, { errorMap: () => ({ message: 'Aceite a pol\u00edtica de privacidade' }) }),
-  ethicsAccepted: z.literal(true, { errorMap: () => ({ message: 'Aceite o c\u00f3digo de \u00e9tica' }) }),
+  privacyAccepted: z.literal(true, { errorMap: () => ({ message: 'Aceite a política de privacidade' }) }),
+  ethicsAccepted: z.literal(true, { errorMap: () => ({ message: 'Aceite o código de ética' }) }),
 })
 
 const petStep2Schema = z.object({
@@ -92,7 +92,7 @@ type PetStep2Data = z.infer<typeof petStep2Schema>
 const STATES = ['AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO']
 
 const PROFESSIONAL_TYPES = [
-  'Psic\u00f3logo(a)',
+  'Psicólogo(a)',
   'Psiquiatra',
   'Terapeuta Ocupacional',
   'Assistente Social',
@@ -101,10 +101,10 @@ const PROFESSIONAL_TYPES = [
 
 const APPROACHES = [
   'TCC (Terapia Cognitivo-Comportamental)',
-  'Psican\u00e1lise',
+  'Psicanálise',
   'Humanista',
   'Gestalt',
-  'Sist\u00eamica',
+  'Sistêmica',
   'EMDR',
   'Mindfulness',
   'Outra',
@@ -113,40 +113,40 @@ const APPROACHES = [
 const SPECIALTIES = [
   'Luto por perda de animal',
   'Luto por desaparecimento',
-  'Luto por separa\u00e7\u00e3o for\u00e7ada',
-  'Ansiedade p\u00f3s-perda',
-  'Depress\u00e3o',
-  'Apoio a fam\u00edlias',
-  'Apoio a crian\u00e7as',
+  'Luto por separação forçada',
+  'Ansiedade pós-perda',
+  'Depressão',
+  'Apoio a famílias',
+  'Apoio a crianças',
   'Trauma',
 ]
 
-const LANGUAGES = ['Portugu\u00eas', 'Ingl\u00eas', 'Espanhol', 'Libras']
+const LANGUAGES = ['Português', 'Inglês', 'Espanhol', 'Libras']
 
 const BANKS = [
-  'Banco do Brasil (001)', 'Bradesco (237)', 'Ita\u00fa Unibanco (341)', 'Santander (033)',
-  'Caixa Econ\u00f4mica (104)', 'Nubank (260)', 'Inter (077)', 'C6 Bank (336)',
+  'Banco do Brasil (001)', 'Bradesco (237)', 'Itaú Unibanco (341)', 'Santander (033)',
+  'Caixa Econômica (104)', 'Nubank (260)', 'Inter (077)', 'C6 Bank (336)',
   'PagSeguro/PagBank (290)', 'Mercado Pago (323)', 'Sicoob (756)', 'Safra (422)',
   'Original (212)', 'Neon (655)', 'Outro',
 ]
 
 const petSpecies = [
-  { value: 'dog', label: '\uD83D\uDC15 C\u00e3o' },
-  { value: 'cat', label: '\uD83D\uDC08 Gato' },
-  { value: 'bird', label: '\uD83D\uDC26 P\u00e1ssaro' },
-  { value: 'other', label: '\uD83D\uDC3E Outro' },
+  { value: 'dog', label: '🐕 Cão' },
+  { value: 'cat', label: '🐈 Gato' },
+  { value: 'bird', label: '🐦 Pássaro' },
+  { value: 'other', label: '🐾 Outro' },
 ]
 
 const lossTypes = [
-  { value: 'death', label: '\uD83D\uDC94 Falecimento' },
-  { value: 'disappearance', label: '\uD83D\uDD0D Desaparecimento' },
-  { value: 'separation', label: '\uD83D\uDC9E Separa\u00e7\u00e3o familiar' },
-  { value: 'other', label: '\uD83C\uDF27\uFE0F Outro motivo' },
+  { value: 'death', label: '💔 Falecimento' },
+  { value: 'disappearance', label: '🔍 Desaparecimento' },
+  { value: 'separation', label: '💞 Separação familiar' },
+  { value: 'other', label: '🌧️ Outro motivo' },
 ]
 
 const lossTimes = [
-  { value: 'recent', label: 'Recentemente (menos de 1 m\u00eas)' },
-  { value: '1-3months', label: '1 a 3 meses atr\u00e1s' },
+  { value: 'recent', label: 'Recentemente (menos de 1 mês)' },
+  { value: '1-3months', label: '1 a 3 meses atrás' },
   { value: '3-12months', label: '3 meses a 1 ano' },
   { value: 'over1year', label: 'Mais de 1 ano' },
 ]
@@ -217,7 +217,7 @@ export default function CadastroPage() {
   // Form hooks
   const form1 = useForm<Step1Data>({ resolver: zodResolver(step1Schema), defaultValues: { userType: 'patient' } })
   const formAddress = useForm<AddressData>({ resolver: zodResolver(addressSchema) })
-  const formProfessional = useForm<ProfessionalData>({ resolver: zodResolver(professionalSchema), defaultValues: { approaches: [], specialties: [], languages: ['Portugu\u00eas'], yearsExperience: 1 } })
+  const formProfessional = useForm<ProfessionalData>({ resolver: zodResolver(professionalSchema), defaultValues: { approaches: [], specialties: [], languages: ['Português'], yearsExperience: 1 } })
   const formAvailability = useForm<AvailabilityData>({ resolver: zodResolver(availabilitySchema), defaultValues: { modality: [], sessionDuration: '50', sessionPrice: 150, freeFirstSession: false, socialPrice: false, acceptsInsurance: false } })
   const formBanking = useForm<BankingData>({ resolver: zodResolver(bankingSchema), defaultValues: { pixPreferred: true, termsAccepted: false, privacyAccepted: false, ethicsAccepted: false } })
   const formPet = useForm<PetStep2Data>({ resolver: zodResolver(petStep2Schema), defaultValues: { moodScore: 5 } })
@@ -317,7 +317,7 @@ export default function CadastroPage() {
   }
 
   // Professional steps config
-  const proStepLabels = ['Dados', 'Endere\u00e7o', 'Profissional', 'Valores', 'Financeiro']
+  const proStepLabels = ['Dados', 'Endereço', 'Profissional', 'Valores', 'Financeiro']
   const proTotalSteps = 5
 
   const inputClass = "w-full px-4 py-3 rounded-xl border-2 border-gray-200 text-sm focus:outline-none focus:border-petblue-400 transition-colors"
@@ -329,21 +329,21 @@ export default function CadastroPage() {
       {/* Left panel */}
       <div className="hidden lg:flex lg:w-1/2 gradient-hero flex-col justify-between p-12">
         <Link href="/" className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center text-xl">{'\uD83D\uDC3E'}</div>
+          <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center text-xl">{'🐾'}</div>
           <span className="font-serif font-bold text-xl text-white">PetApoio</span>
         </Link>
         <div className="text-white">
-          <div className="text-6xl mb-6">{'\uD83D\uDC99'}</div>
+          <div className="text-6xl mb-6">{'💙'}</div>
           <h2 className="font-serif text-3xl font-bold mb-4">
-            {isProfessional ? 'Fa\u00e7a parte da nossa rede de cuidado' : 'Sua jornada come\u00e7a aqui'}
+            {isProfessional ? 'Faça parte da nossa rede de cuidado' : 'Sua jornada começa aqui'}
           </h2>
           <p className="text-white/80 text-base leading-relaxed max-w-sm">
             {isProfessional
-              ? 'Cadastre-se como profissional e ajude tutores a atravessar o momento mais dif\u00edcil com seus animais de estima\u00e7\u00e3o.'
-              : 'Em menos de 5 minutos, voc\u00ea estar\u00e1 conectado a um psic\u00f3logo especializado em luto animal.'}
+              ? 'Cadastre-se como profissional e ajude tutores a atravessar o momento mais difícil com seus animais de estimação.'
+              : 'Em menos de 5 minutos, você estará conectado a um psicólogo especializado em luto animal.'}
           </p>
         </div>
-        <p className="text-white/40 text-sm">{'\u00A9'} 2026 PetApoio</p>
+        <p className="text-white/40 text-sm">{'©'} 2026 PetApoio</p>
       </div>
 
       {/* Right panel */}
@@ -355,18 +355,18 @@ export default function CadastroPage() {
             <>
               <h1 className="font-serif text-3xl font-bold text-gray-800 mb-2">Criar conta gratuita</h1>
               <p className="text-gray-500 text-sm mb-6">
-                J\u00e1 tem conta?{' '}
+                Já tem conta?{' '}
                 <Link href="/auth/login" className="text-petblue-500 font-semibold hover:underline">Entrar</Link>
               </p>
 
               <form onSubmit={form1.handleSubmit(onStep1)} className="space-y-4">
                 {/* User type */}
                 <div>
-                  <label className={labelClass}>Voc\u00ea \u00e9:</label>
+                  <label className={labelClass}>Você é:</label>
                   <div className="grid grid-cols-2 gap-3">
                     {[
-                      { value: 'patient', label: '\uD83D\uDC3E Tutor(a) de Pet', desc: 'Busco apoio emocional' },
-                      { value: 'professional', label: '\uD83E\uDE7A Profissional de Sa\u00fade', desc: 'Quero atender pacientes' },
+                      { value: 'patient', label: '🐾 Tutor(a) de Pet', desc: 'Busco apoio emocional' },
+                      { value: 'professional', label: '🩺 Profissional de Saúde', desc: 'Quero atender pacientes' },
                     ].map(opt => (
                       <label key={opt.value} className={`cursor-pointer p-4 rounded-xl border-2 transition-all ${
                         form1.watch('userType') === opt.value ? 'border-petblue-400 bg-petblue-50' : 'border-gray-200 hover:border-petblue-200'
@@ -421,7 +421,7 @@ export default function CadastroPage() {
                 <div>
                   <label className={labelClass}>Senha</label>
                   <div className="relative">
-                    <input {...form1.register('password')} type={showPassword ? 'text' : 'password'} placeholder="M\u00ednimo 8 caracteres" className={`${inputClass} pr-12`} />
+                    <input {...form1.register('password')} type={showPassword ? 'text' : 'password'} placeholder="Mínimo 8 caracteres" className={`${inputClass} pr-12`} />
                     <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -440,13 +440,13 @@ export default function CadastroPage() {
 
                 <button type="submit" disabled={form1.formState.isSubmitting} className="w-full py-3.5 rounded-xl bg-petblue-400 text-white font-bold text-sm hover:bg-petblue-500 transition-colors flex items-center justify-center gap-2 disabled:opacity-60">
                   {form1.formState.isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
-                  Pr\u00f3xima etapa
+                  Próxima etapa
                   <ChevronRight className="w-4 h-4" />
                 </button>
 
                 <p className="text-xs text-gray-400 text-center">
-                  Ao criar conta, voc\u00ea concorda com nossa{' '}
-                  <Link href="/privacidade" className="text-petblue-500 hover:underline">Pol\u00edtica de Privacidade</Link>
+                  Ao criar conta, você concorda com nossa{' '}
+                  <Link href="/privacidade" className="text-petblue-500 hover:underline">Política de Privacidade</Link>
                   {' '}e{' '}
                   <Link href="/termos" className="text-petblue-500 hover:underline">Termos de Uso</Link>.
                 </p>
@@ -459,9 +459,9 @@ export default function CadastroPage() {
             <>
               <StepIndicator currentStep={2} totalSteps={proTotalSteps} labels={proStepLabels} />
               <h1 className="font-serif text-2xl font-bold text-gray-800 mb-1 flex items-center gap-2">
-                <MapPin className="w-6 h-6 text-petblue-400" /> Endere\u00e7o
+                <MapPin className="w-6 h-6 text-petblue-400" /> Endereço
               </h1>
-              <p className="text-gray-500 text-sm mb-6">Informe seu endere\u00e7o profissional.</p>
+              <p className="text-gray-500 text-sm mb-6">Informe seu endereço profissional.</p>
 
               <form onSubmit={formAddress.handleSubmit(onAddress)} className="space-y-4">
                 <div>
@@ -482,8 +482,8 @@ export default function CadastroPage() {
 
                 <div className="grid grid-cols-3 gap-3">
                   <div>
-                    <label className={labelClass}>N\u00famero</label>
-                    <input {...formAddress.register('numero')} placeholder="N\u00ba" className={inputClass} />
+                    <label className={labelClass}>Número</label>
+                    <input {...formAddress.register('numero')} placeholder="Nº" className={inputClass} />
                     {formAddress.formState.errors.numero && <p className={errorClass}>{formAddress.formState.errors.numero.message}</p>}
                   </div>
                   <div className="col-span-2">
@@ -521,7 +521,7 @@ export default function CadastroPage() {
                     <ChevronLeft className="w-4 h-4" /> Voltar
                   </button>
                   <button type="submit" className="flex-1 py-3 rounded-xl bg-petblue-400 text-white font-bold text-sm hover:bg-petblue-500 flex items-center justify-center gap-2">
-                    Pr\u00f3xima etapa <ChevronRight className="w-4 h-4" />
+                    Próxima etapa <ChevronRight className="w-4 h-4" />
                   </button>
                 </div>
               </form>
@@ -555,24 +555,24 @@ export default function CadastroPage() {
                 </div>
 
                 <div>
-                  <label className={labelClass}>Forma\u00e7\u00e3o acad\u00eamica</label>
-                  <input {...formProfessional.register('education')} placeholder="Institui\u00e7\u00e3o, curso e ano de conclus\u00e3o" className={inputClass} />
+                  <label className={labelClass}>Formação acadêmica</label>
+                  <input {...formProfessional.register('education')} placeholder="Instituição, curso e ano de conclusão" className={inputClass} />
                   {formProfessional.formState.errors.education && <p className={errorClass}>{formProfessional.formState.errors.education.message}</p>}
                 </div>
 
                 <div>
-                  <label className={labelClass}>Especializa\u00e7\u00f5es / P\u00f3s-gradua\u00e7\u00e3o (opcional)</label>
+                  <label className={labelClass}>Especializações / Pós-graduação (opcional)</label>
                   <input {...formProfessional.register('specialization')} placeholder="Cursos, mestrado, doutorado..." className={inputClass} />
                 </div>
 
                 <div>
-                  <label className={labelClass}>Anos de experi\u00eancia cl\u00ednica</label>
+                  <label className={labelClass}>Anos de experiência clínica</label>
                   <input {...formProfessional.register('yearsExperience')} type="number" min="0" className={inputClass} />
                   {formProfessional.formState.errors.yearsExperience && <p className={errorClass}>{formProfessional.formState.errors.yearsExperience.message}</p>}
                 </div>
 
                 <div>
-                  <label className={labelClass}>Abordagem terap\u00eautica</label>
+                  <label className={labelClass}>Abordagem terapêutica</label>
                   <CheckboxGroup
                     options={APPROACHES}
                     selected={formProfessional.watch('approaches') || []}
@@ -600,7 +600,7 @@ export default function CadastroPage() {
 
                 <div>
                   <label className={labelClass}>Biografia profissional</label>
-                  <textarea {...formProfessional.register('bio')} rows={4} placeholder="Conte um pouco sobre sua experi\u00eancia e como voc\u00ea pode ajudar tutores enlutados..." className={inputClass} />
+                  <textarea {...formProfessional.register('bio')} rows={4} placeholder="Conte um pouco sobre sua experiência e como você pode ajudar tutores enlutados..." className={inputClass} />
                   <div className="flex justify-between mt-1">
                     {formProfessional.formState.errors.bio && <p className={errorClass}>{formProfessional.formState.errors.bio.message}</p>}
                     <span className="text-xs text-gray-400 ml-auto">{(formProfessional.watch('bio') || '').length}/1000</span>
@@ -612,7 +612,7 @@ export default function CadastroPage() {
                     <ChevronLeft className="w-4 h-4" /> Voltar
                   </button>
                   <button type="submit" className="flex-1 py-3 rounded-xl bg-petblue-400 text-white font-bold text-sm hover:bg-petblue-500 flex items-center justify-center gap-2">
-                    Pr\u00f3xima etapa <ChevronRight className="w-4 h-4" />
+                    Próxima etapa <ChevronRight className="w-4 h-4" />
                   </button>
                 </div>
               </form>
@@ -626,13 +626,13 @@ export default function CadastroPage() {
               <h1 className="font-serif text-2xl font-bold text-gray-800 mb-1 flex items-center gap-2">
                 <Clock className="w-6 h-6 text-petblue-400" /> Disponibilidade e Valores
               </h1>
-              <p className="text-gray-500 text-sm mb-6">Configure como e quando voc\u00ea atende.</p>
+              <p className="text-gray-500 text-sm mb-6">Configure como e quando você atende.</p>
 
               <form onSubmit={formAvailability.handleSubmit(onAvailability)} className="space-y-4">
                 <div>
                   <label className={labelClass}>Modalidade de atendimento</label>
                   <CheckboxGroup
-                    options={['Online (v\u00eddeo)', 'Online (\u00e1udio)', 'Presencial', 'H\u00edbrido']}
+                    options={['Online (vídeo)', 'Online (áudio)', 'Presencial', 'Híbrido']}
                     selected={formAvailability.watch('modality') || []}
                     onChange={(v) => formAvailability.setValue('modality', v)}
                   />
@@ -641,17 +641,17 @@ export default function CadastroPage() {
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className={labelClass}>Dura\u00e7\u00e3o da sess\u00e3o</label>
+                    <label className={labelClass}>Duração da sessão</label>
                     <select {...formAvailability.register('sessionDuration')} className={inputClass}>
                       <option value="30">30 minutos</option>
                       <option value="45">45 minutos</option>
-                      <option value="50">50 minutos (padr\u00e3o)</option>
+                      <option value="50">50 minutos (padrão)</option>
                       <option value="60">60 minutos</option>
                       <option value="90">90 minutos</option>
                     </select>
                   </div>
                   <div>
-                    <label className={labelClass}>Valor da sess\u00e3o (R$)</label>
+                    <label className={labelClass}>Valor da sessão (R$)</label>
                     <input {...formAvailability.register('sessionPrice')} type="number" min="50" step="10" className={inputClass} />
                     {formAvailability.formState.errors.sessionPrice && <p className={errorClass}>{formAvailability.formState.errors.sessionPrice.message}</p>}
                   </div>
@@ -661,7 +661,7 @@ export default function CadastroPage() {
                   <label className="flex items-center gap-3 cursor-pointer">
                     <input type="checkbox" {...formAvailability.register('freeFirstSession')} className="w-4 h-4 accent-petblue-400" />
                     <div>
-                      <span className="text-sm font-semibold text-gray-700">Oferecer primeira sess\u00e3o gratuita</span>
+                      <span className="text-sm font-semibold text-gray-700">Oferecer primeira sessão gratuita</span>
                       <p className="text-xs text-gray-400">Recomendado para atrair novos pacientes</p>
                     </div>
                   </label>
@@ -669,7 +669,7 @@ export default function CadastroPage() {
                   <label className="flex items-center gap-3 cursor-pointer">
                     <input type="checkbox" {...formAvailability.register('socialPrice')} className="w-4 h-4 accent-petblue-400" />
                     <div>
-                      <span className="text-sm font-semibold text-gray-700">Oferecer pre\u00e7o social</span>
+                      <span className="text-sm font-semibold text-gray-700">Oferecer preço social</span>
                       <p className="text-xs text-gray-400">Valor reduzido para quem precisa</p>
                     </div>
                   </label>
@@ -677,15 +677,15 @@ export default function CadastroPage() {
                   {formAvailability.watch('socialPrice') && (
                     <div className="ml-7">
                       <label className={labelClass}>Valor social (R$)</label>
-                      <input {...formAvailability.register('socialPriceValue')} type="number" min="30" step="10" placeholder="M\u00edn. R$ 30,00" className={inputClass} />
+                      <input {...formAvailability.register('socialPriceValue')} type="number" min="30" step="10" placeholder="Mín. R$ 30,00" className={inputClass} />
                     </div>
                   )}
 
                   <label className="flex items-center gap-3 cursor-pointer">
                     <input type="checkbox" {...formAvailability.register('acceptsInsurance')} className="w-4 h-4 accent-petblue-400" />
                     <div>
-                      <span className="text-sm font-semibold text-gray-700">Aceita plano de sa\u00fade</span>
-                      <p className="text-xs text-gray-400">Informe os conv\u00eanios no seu perfil</p>
+                      <span className="text-sm font-semibold text-gray-700">Aceita plano de saúde</span>
+                      <p className="text-xs text-gray-400">Informe os convênios no seu perfil</p>
                     </div>
                   </label>
                 </div>
@@ -695,7 +695,7 @@ export default function CadastroPage() {
                     <ChevronLeft className="w-4 h-4" /> Voltar
                   </button>
                   <button type="submit" className="flex-1 py-3 rounded-xl bg-petblue-400 text-white font-bold text-sm hover:bg-petblue-500 flex items-center justify-center gap-2">
-                    Pr\u00f3xima etapa <ChevronRight className="w-4 h-4" />
+                    Próxima etapa <ChevronRight className="w-4 h-4" />
                   </button>
                 </div>
               </form>
@@ -707,11 +707,11 @@ export default function CadastroPage() {
             <>
               <StepIndicator currentStep={5} totalSteps={proTotalSteps} labels={proStepLabels} />
               <h1 className="font-serif text-2xl font-bold text-gray-800 mb-1 flex items-center gap-2">
-                <CreditCard className="w-6 h-6 text-petblue-400" /> Dados Banc\u00e1rios e PIX
+                <CreditCard className="w-6 h-6 text-petblue-400" /> Dados Bancários e PIX
               </h1>
               <p className="text-gray-500 text-sm mb-2">Dados para recebimento dos pagamentos.</p>
               <p className="text-xs text-petblue-500 bg-petblue-50 p-2 rounded-lg mb-6 flex items-center gap-1">
-                {'\uD83D\uDD12'} Seus dados financeiros s\u00e3o criptografados e protegidos pela LGPD.
+                {'🔒'} Seus dados financeiros são criptografados e protegidos pela LGPD.
               </p>
 
               <form onSubmit={formBanking.handleSubmit(onBanking)} className="space-y-4">
@@ -720,8 +720,8 @@ export default function CadastroPage() {
                     <label className={labelClass}>Tipo de conta</label>
                     <select {...formBanking.register('accountType')} className={inputClass}>
                       <option value="">Selecione...</option>
-                      <option value="pf">Pessoa F\u00edsica (CPF)</option>
-                      <option value="pj">Pessoa Jur\u00eddica (CNPJ)</option>
+                      <option value="pf">Pessoa Física (CPF)</option>
+                      <option value="pj">Pessoa Jurídica (CNPJ)</option>
                     </select>
                     {formBanking.formState.errors.accountType && <p className={errorClass}>{formBanking.formState.errors.accountType.message}</p>}
                   </div>
@@ -742,11 +742,11 @@ export default function CadastroPage() {
                 </div>
 
                 <div>
-                  <label className={labelClass}>Tipo de conta banc\u00e1ria</label>
+                  <label className={labelClass}>Tipo de conta bancária</label>
                   <select {...formBanking.register('bankAccountType')} className={inputClass}>
                     <option value="">Selecione...</option>
                     <option value="corrente">Conta Corrente</option>
-                    <option value="poupanca">Conta Poupan\u00e7a</option>
+                    <option value="poupanca">Conta Poupança</option>
                     <option value="pagamento">Conta Pagamento</option>
                   </select>
                   {formBanking.formState.errors.bankAccountType && <p className={errorClass}>{formBanking.formState.errors.bankAccountType.message}</p>}
@@ -754,7 +754,7 @@ export default function CadastroPage() {
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className={labelClass}>Ag\u00eancia</label>
+                    <label className={labelClass}>Agência</label>
                     <input {...formBanking.register('agency')} placeholder="XXXX ou XXXX-X" className={inputClass} />
                     {formBanking.formState.errors.agency && <p className={errorClass}>{formBanking.formState.errors.agency.message}</p>}
                   </div>
@@ -772,7 +772,7 @@ export default function CadastroPage() {
                 </div>
 
                 <div className="border-t pt-4 mt-4">
-                  <h3 className="font-semibold text-gray-800 text-sm mb-3 flex items-center gap-1">PIX {'\u2014'} Recebimento r\u00e1pido</h3>
+                  <h3 className="font-semibold text-gray-800 text-sm mb-3 flex items-center gap-1">PIX {'—'} Recebimento rápido</h3>
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <label className={labelClass}>Tipo de chave PIX</label>
@@ -781,7 +781,7 @@ export default function CadastroPage() {
                         <option value="cpf">CPF/CNPJ</option>
                         <option value="email">E-mail</option>
                         <option value="phone">Telefone</option>
-                        <option value="random">Chave aleat\u00f3ria</option>
+                        <option value="random">Chave aleatória</option>
                       </select>
                       {formBanking.formState.errors.pixKeyType && <p className={errorClass}>{formBanking.formState.errors.pixKeyType.message}</p>}
                     </div>
@@ -794,7 +794,7 @@ export default function CadastroPage() {
 
                   <label className="flex items-center gap-3 cursor-pointer mt-3">
                     <input type="checkbox" {...formBanking.register('pixPreferred')} className="w-4 h-4 accent-petblue-400" />
-                    <span className="text-sm text-gray-700">Preferir PIX para recebimentos (mais r\u00e1pido)</span>
+                    <span className="text-sm text-gray-700">Preferir PIX para recebimentos (mais rápido)</span>
                   </label>
                 </div>
 
@@ -810,13 +810,13 @@ export default function CadastroPage() {
 
                   <label className="flex items-start gap-3 cursor-pointer">
                     <input type="checkbox" {...formBanking.register('privacyAccepted')} className="w-4 h-4 accent-petblue-400 mt-0.5" />
-                    <span className="text-xs text-gray-600">Li e aceito a <Link href="/privacidade" className="text-petblue-500 underline">Pol\u00edtica de Privacidade</Link> (LGPD).</span>
+                    <span className="text-xs text-gray-600">Li e aceito a <Link href="/privacidade" className="text-petblue-500 underline">Política de Privacidade</Link> (LGPD).</span>
                   </label>
                   {formBanking.formState.errors.privacyAccepted && <p className={errorClass}>{formBanking.formState.errors.privacyAccepted.message}</p>}
 
                   <label className="flex items-start gap-3 cursor-pointer">
                     <input type="checkbox" {...formBanking.register('ethicsAccepted')} className="w-4 h-4 accent-petblue-400 mt-0.5" />
-                    <span className="text-xs text-gray-600">Li e aceito o <Link href="/etica" className="text-petblue-500 underline">C\u00f3digo de \u00c9tica</Link> da PetApoio.</span>
+                    <span className="text-xs text-gray-600">Li e aceito o <Link href="/etica" className="text-petblue-500 underline">Código de Ética</Link> da PetApoio.</span>
                   </label>
                   {formBanking.formState.errors.ethicsAccepted && <p className={errorClass}>{formBanking.formState.errors.ethicsAccepted.message}</p>}
                 </div>
@@ -842,15 +842,15 @@ export default function CadastroPage() {
               <div className="mb-8">
                 <div className="flex justify-between text-xs text-gray-400 mb-2">
                   <span>Passo 2 de 2</span>
-                  <span>Sobre voc\u00ea e seu pet</span>
+                  <span>Sobre você e seu pet</span>
                 </div>
                 <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                   <div className="h-full bg-petblue-400 rounded-full transition-all duration-500" style={{ width: '66%' }} />
                 </div>
               </div>
 
-              <h1 className="font-serif text-3xl font-bold text-gray-800 mb-2">Conte seu momento {'\uD83C\uDF3F'}</h1>
-              <p className="text-gray-500 text-sm mb-8">Suas respostas nos ajudam a encontrar o profissional ideal para voc\u00ea.</p>
+              <h1 className="font-serif text-3xl font-bold text-gray-800 mb-2">Conte seu momento {'🌿'}</h1>
+              <p className="text-gray-500 text-sm mb-8">Suas respostas nos ajudam a encontrar o profissional ideal para você.</p>
 
               <form onSubmit={formPet.handleSubmit(onPetStep2)} className="space-y-5">
                 <div>
@@ -860,7 +860,7 @@ export default function CadastroPage() {
                 </div>
 
                 <div>
-                  <label className={labelClass}>Esp\u00e9cie</label>
+                  <label className={labelClass}>Espécie</label>
                   <div className="grid grid-cols-4 gap-2">
                     {petSpecies.map(s => (
                       <label key={s.value} className={`cursor-pointer text-center p-3 rounded-xl border-2 transition-all text-xs font-semibold ${
@@ -897,12 +897,12 @@ export default function CadastroPage() {
 
                 <div>
                   <label className={labelClass}>
-                    Como voc\u00ea est\u00e1 se sentindo agora? <span className="text-petblue-500">({formPet.watch('moodScore')}/10)</span>
+                    Como você está se sentindo agora? <span className="text-petblue-500">({formPet.watch('moodScore')}/10)</span>
                   </label>
                   <input {...formPet.register('moodScore')} type="range" min="1" max="10" className="w-full accent-petblue-400" />
                   <div className="flex justify-between text-xs text-gray-400 mt-1">
-                    <span>{'\uD83D\uDE14'} Muito mal</span>
-                    <span>{'\uD83D\uDE0C'} Bem</span>
+                    <span>{'😔'} Muito mal</span>
+                    <span>{'😌'} Bem</span>
                   </div>
                 </div>
 
@@ -924,13 +924,13 @@ export default function CadastroPage() {
           {/* SUCCESS SCREEN */}
           {step === 6 && (
             <div className="text-center py-8">
-              <div className="text-7xl mb-6 animate-bounce">{'\uD83C\uDF31'}</div>
+              <div className="text-7xl mb-6 animate-bounce">{'🌱'}</div>
               <h1 className="font-serif text-3xl font-bold text-gray-800 mb-3">Cadastro realizado!</h1>
               {step1Data?.userType === 'professional' ? (
                 <>
-                  <p className="text-gray-500 mb-2">Bem-vindo(a) \u00e0 rede PetApoio!</p>
-                  <p className="text-gray-400 text-sm mb-4">Seus dados ser\u00e3o verificados em at\u00e9 48 horas.</p>
-                  <p className="text-gray-400 text-sm mb-8">Voc\u00ea receber\u00e1 um e-mail quando seu perfil estiver ativo.</p>
+                  <p className="text-gray-500 mb-2">Bem-vindo(a) à rede PetApoio!</p>
+                  <p className="text-gray-400 text-sm mb-4">Seus dados serão verificados em até 48 horas.</p>
+                  <p className="text-gray-400 text-sm mb-8">Você receberá um e-mail quando seu perfil estiver ativo.</p>
                   <Link href="/auth/login" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-petblue-400 text-white font-bold hover:bg-petblue-500 transition-colors">
                     Fazer Login
                   </Link>
@@ -938,7 +938,7 @@ export default function CadastroPage() {
               ) : (
                 <>
                   <p className="text-gray-500 mb-2">Verifique seu e-mail para confirmar sua conta.</p>
-                  <p className="text-gray-400 text-sm mb-8">Depois da confirma\u00e7\u00e3o, voc\u00ea poder\u00e1 encontrar seu profissional.</p>
+                  <p className="text-gray-400 text-sm mb-8">Depois da confirmação, você poderá encontrar seu profissional.</p>
                   <Link href="/profissionais" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-petblue-400 text-white font-bold hover:bg-petblue-500 transition-colors">
                     Conhecer Profissionais
                   </Link>
