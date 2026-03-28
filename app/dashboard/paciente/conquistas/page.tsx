@@ -1,126 +1,178 @@
-import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
-import { Trophy, Star, Lock } from 'lucide-react'
-import { getLevelInfo, getNextLevelPoints } from '@/lib/utils'
+'use client'
+
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { Trophy, TrendingUp, Zap, Lock } from 'lucide-react'
 import { DashboardLayout } from '@/components/dashboard/layout'
+import { getSession } from '@/lib/auth/session'
+
+function getLevelInfo(points: number) {
+  const levels = [
+    { name: 'Semente', emoji: '🌱', minPoints: 0, maxPoints: 100 },
+    { name: 'Broto', emoji: '🌿', minPoints: 100, maxPoints: 250 },
+    { name: 'Floração', emoji: '🌸', minPoints: 250, maxPoints: 500 },
+    { name: 'Fruto', emoji: '🌻', minPoints: 500, maxPoints: 1000 },
+    { name: 'Árvore', emoji: '🌳', minPoints: 1000, maxPoints: Infinity },
+  ]
+  return levels.find(l => points >= l.minPoints && points < l.maxPoints) || levels[0]
+}
 
 const BADGES = [
-  { id: 'b1', name: 'Primeiro Passo', emoji: '🌱', description: 'Completou sua primeira sessão', unlocked: true, date: '2026-01-15' },
-  { id: 'b2', name: 'Coragem', emoji: '💜', description: 'Realizou 3 sessões seguidas', unlocked: true, date: '2026-02-01' },
-  { id: 'b3', name: 'Check-in Diário', emoji: '📅', description: 'Fez check-in por 7 dias consecutivos', unlocked: false, date: null },
-  { id: 'b4', name: 'Guerreiro', emoji: '⚔️', description: 'Completou 5 sessões', unlocked: false, date: null },
-  { id: 'b5', name: 'Dedicação', emoji: '🎯', description: 'Completou 10 sessões', unlocked: false, date: null },
-  { id: 'b6', name: 'Superação', emoji: '🦋', description: 'Completou 20 sessões', unlocked: false, date: null },
-  { id: 'b7', name: 'Comunidade', emoji: '🤝', description: 'Participou de grupo de apoio', unlocked: false, date: null },
-  { id: 'b8', name: 'Gratidão', emoji: '🙏', description: 'Deixou uma avaliação para o profissional', unlocked: false, date: null },
+  { id: 'first_session', name: 'Primeira Sessão', emoji: '🎉', description: 'Complete sua primeira sessão', points: 10 },
+  { id: 'thirty_checkins', name: '30 Check-ins', emoji: '📊', description: 'Registre seu humor 30 vezes', points: 50 },
+  { id: 'five_sessions', name: '5 Sessões', emoji: '🚀', description: 'Complete 5 sessões', points: 30 },
+  { id: 'ten_sessions', name: '10 Sessões', emoji: '💪', description: 'Complete 10 sessões', points: 100 },
+  { id: 'week_streak', name: 'Semana de Ouro', emoji: '⭐', description: 'Mantenha 7 dias de check-in consecutivos', points: 40 },
+  { id: 'five_stars', name: 'Crítica Perfeita', emoji: '⭐⭐⭐⭐⭐', description: 'Deixe uma avaliação de 5 estrelas', points: 25 },
+  { id: 'month_commitment', name: 'Compromisso Mensal', emoji: '📅', description: 'Sessões em 20+ dias do mês', points: 80 },
 ]
 
-const LEVELS = [
-  { name: 'Iniciante', emoji: '🌱', min: 0, max: 100 },
-  { name: 'Crescendo', emoji: '🌿', min: 100, max: 300 },
-  { name: 'Florescendo', emoji: '🌸', min: 300, max: 600 },
-  { name: 'Iluminado', emoji: '☀️', min: 600, max: 1000 },
-  { name: 'Mestre', emoji: '🌟', min: 1000, max: Infinity },
-]
+export default function ConquistasPage() {
+  const router = useRouter()
+  const session = getSession()
 
-export default async function PatientAchievementsPage() {
-  const cookieStore = cookies()
-  const sessionCookie = cookieStore.get('petapoio_session')?.value
-  let user: any = null
-  if (sessionCookie) { try { user = JSON.parse(sessionCookie) } catch {} }
-  if (!user) redirect('/auth/login')
+  useEffect(() => {
+    if (!session) {
+      router.push('/auth/login')
+    }
+  }, [session, router])
 
-  const points = 150
+  if (!session) return null
+
+  // Mock data
+  const points = 145
   const levelInfo = getLevelInfo(points)
-  const nextLevel = getNextLevelPoints(points)
-  const progress = Math.min((points / nextLevel) * 100, 100)
-  const unlocked = BADGES.filter(b => b.unlocked)
+  const earnedBadgeIds = ['first_session', 'thirty_checkins']
+  const completedCheckIns = 28
+  const completedSessions = 3
+
+  const earnedBadges = BADGES.filter(b => earnedBadgeIds.includes(b.id))
+  const lockedBadges = BADGES.filter(b => !earnedBadgeIds.includes(b.id))
 
   return (
-    <DashboardLayout userRole="patient" userName={user.name || 'Tutor'} userAvatar={user.avatar}>
+    <DashboardLayout userRole="patient" userName={session.name}>
       <div className="space-y-8">
+        {/* Header */}
         <div>
-          <h1 className="font-serif text-2xl font-bold text-gray-800">Minhas Conquistas</h1>
-          <p className="text-gray-500 text-sm mt-1">{unlocked.length} de {BADGES.length} conquistas desbloqueadas</p>
+          <h1 className="font-serif text-3xl font-bold text-gray-800 flex items-center gap-2">
+            <Trophy className="w-8 h-8 text-petblue-400" />
+            Conquistas
+          </h1>
+          <p className="text-gray-500 text-sm mt-1">Acompanhe seus badges e progresso na plataforma</p>
         </div>
 
-        {/* Level card */}
-        <div className="bg-gradient-to-br from-petblue-400 to-petblue-600 rounded-2xl p-6 text-white">
-          <div className="flex items-center gap-4 mb-5">
-            <span className="text-5xl">{levelInfo.emoji}</span>
+        {/* Level Section */}
+        <div className="bg-gradient-to-br from-petblue-50 to-petgreen-50 rounded-2xl p-8 border border-petblue-100 shadow-sm">
+          <div className="grid md:grid-cols-2 gap-8">
             <div>
-              <div className="text-lg font-bold">Nível: {levelInfo.name}</div>
-              <div className="text-white/70 text-sm">{points} pontos totais</div>
+              <div className="flex items-center gap-4 mb-6">
+                <div className="text-6xl">{levelInfo.emoji}</div>
+                <div>
+                  <h2 className="font-serif text-3xl font-bold text-gray-800">{levelInfo.name}</h2>
+                  <p className="text-gray-600">Seu nível atual</p>
+                </div>
+              </div>
+              <p className="text-gray-700 mb-6">Você está em excelente progressão! Continue participando e ganhando pontos para evoluir seus níveis.</p>
+            </div>
+
+            <div>
+              <div className="bg-white rounded-xl p-6 border border-petblue-100">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-semibold text-gray-800">Progresso</h3>
+                  <Zap className="w-5 h-5 text-yellow-500" />
+                </div>
+                <div className="text-sm text-gray-600 mb-3">{points} / 250 pontos para próximo nível</div>
+                <div className="w-full bg-gray-200 rounded-full h-3">
+                  <div className="bg-gradient-to-r from-petblue-400 to-petgreen-400 h-3 rounded-full" style={{ width: `${(points / 250) * 100}%` }} />
+                </div>
+                <p className="text-xs text-gray-500 mt-3">Ganhe pontos completando sessões e check-ins diários</p>
+              </div>
             </div>
           </div>
-          <div className="mb-2 flex justify-between text-sm">
-            <span>{points} pts</span>
-            <span>Próximo nível: {nextLevel} pts</span>
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="bg-white rounded-2xl p-6 border border-petblue-100 shadow-sm">
+            <div className="flex items-center gap-3 mb-3">
+              <TrendingUp className="w-5 h-5 text-petblue-400" />
+              <span className="text-xs text-gray-500">Total de Pontos</span>
+            </div>
+            <div className="text-3xl font-bold text-gray-800">{points}</div>
+            <p className="text-xs text-gray-400 mt-2">+15 esta semana</p>
           </div>
-          <div className="h-3 rounded-full bg-white/20 overflow-hidden">
-            <div
-              className="h-full rounded-full bg-white transition-all"
-              style={{ width: `${progress}%` }}
-            />
+
+          <div className="bg-white rounded-2xl p-6 border border-petblue-100 shadow-sm">
+            <div className="flex items-center gap-3 mb-3">
+              <Trophy className="w-5 h-5 text-yellow-500" />
+              <span className="text-xs text-gray-500">Badges Conquistadas</span>
+            </div>
+            <div className="text-3xl font-bold text-gray-800">{earnedBadges.length}</div>
+            <p className="text-xs text-gray-400 mt-2">de {BADGES.length} total</p>
+          </div>
+
+          <div className="bg-white rounded-2xl p-6 border border-petblue-100 shadow-sm">
+            <div className="flex items-center gap-3 mb-3">
+              <Zap className="w-5 h-5 text-orange-500" />
+              <span className="text-xs text-gray-500">Check-ins</span>
+            </div>
+            <div className="text-3xl font-bold text-gray-800">{completedCheckIns}</div>
+            <p className="text-xs text-gray-400 mt-2">dias registrados</p>
           </div>
         </div>
 
-        {/* Level roadmap */}
-        <div className="bg-white rounded-2xl p-6 border border-petblue-100 shadow-sm">
-          <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <Star className="w-4 h-4 text-yellow-500" />
-            Jornada de Níveis
-          </h3>
-          <div className="flex items-center gap-2 overflow-x-auto pb-2">
-            {LEVELS.map((lvl, i) => {
-              const active = points >= lvl.min && (lvl.max === Infinity || points < lvl.max)
-              const done = points >= lvl.max
-              return (
-                <div key={lvl.name} className="flex items-center gap-2 flex-shrink-0">
-                  <div className={`flex flex-col items-center p-3 rounded-2xl min-w-[80px] text-center transition-all ${active ? 'bg-petblue-400 text-white scale-105 shadow-md' : done ? 'bg-petgreen-50 text-petgreen-600' : 'bg-gray-50 text-gray-400'}`}>
-                    <span className="text-2xl">{lvl.emoji}</span>
-                    <span className="text-xs font-bold mt-1">{lvl.name}</span>
-                    <span className="text-[10px] opacity-70">{lvl.min}+ pts</span>
+        {/* Earned Badges */}
+        {earnedBadges.length > 0 && (
+          <div className="space-y-4">
+            <h2 className="font-serif text-2xl font-bold text-gray-800">Badges Conquistadas</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {earnedBadges.map(badge => (
+                <div key={badge.id} className="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-2xl p-6 border border-yellow-200 shadow-sm">
+                  <div className="text-5xl mb-3">{badge.emoji}</div>
+                  <h3 className="font-semibold text-gray-800 mb-1">{badge.name}</h3>
+                  <p className="text-sm text-gray-600 mb-3">{badge.description}</p>
+                  <div className="flex items-center gap-2">
+                    <Zap className="w-4 h-4 text-yellow-600" />
+                    <span className="text-sm font-bold text-yellow-700">+{badge.points} pts</span>
                   </div>
-                  {i < LEVELS.length - 1 && <div className="w-6 h-0.5 bg-gray-200 flex-shrink-0" />}
                 </div>
-              )
-            })}
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* Badges */}
-        <div>
-          <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <Trophy className="w-4 h-4 text-yellow-500" />
-            Distintivos
-          </h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-            {BADGES.map(badge => (
-              <div
-                key={badge.id}
-                className={`bg-white rounded-2xl p-5 border text-center transition-all ${
-                  badge.unlocked
-                    ? 'border-petblue-100 shadow-sm hover:shadow-md'
-                    : 'border-gray-100 opacity-50 grayscale'
-                }`}
-              >
-                <div className="text-4xl mb-2">{badge.emoji}</div>
-                <div className="font-bold text-sm text-gray-800">{badge.name}</div>
-                <div className="text-xs text-gray-500 mt-1 leading-tight">{badge.description}</div>
-                {badge.unlocked ? (
-                  <div className="mt-2 text-xs text-petgreen-500 font-semibold">
-                    ✅ {new Date(badge.date!).toLocaleDateString('pt-BR')}
-                  </div>
-                ) : (
-                  <div className="mt-2 flex items-center justify-center gap-1 text-xs text-gray-400">
-                    <Lock className="w-3 h-3" />
-                    Bloqueado
-                  </div>
-                )}
+        {/* Locked Badges */}
+        <div className="space-y-4">
+          <h2 className="font-serif text-2xl font-bold text-gray-800">Próximos Desafios</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {lockedBadges.map(badge => (
+              <div key={badge.id} className="bg-gray-50 rounded-2xl p-6 border border-gray-200 shadow-sm opacity-60">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="text-5xl opacity-40">{badge.emoji}</div>
+                  <Lock className="w-4 h-4 text-gray-400" />
+                </div>
+                <h3 className="font-semibold text-gray-600 mb-1">{badge.name}</h3>
+                <p className="text-sm text-gray-500 mb-3">{badge.description}</p>
+                <div className="flex items-center gap-2">
+                  <Zap className="w-4 h-4 text-gray-400" />
+                  <span className="text-sm font-bold text-gray-500">+{badge.points} pts</span>
+                </div>
               </div>
             ))}
           </div>
+        </div>
+
+        {/* CTA */}
+        <div className="bg-gradient-to-r from-petblue-50 to-petgreen-50 rounded-2xl p-8 border border-petblue-200 text-center">
+          <h3 className="font-serif text-2xl font-bold text-gray-800 mb-2">Continue sua jornada!</h3>
+          <p className="text-gray-600 mb-6">Mantenha seu commitment com check-ins diários e sessões regulares para desbloquear mais badges.</p>
+          <Link
+            href="/dashboard/paciente/diario"
+            className="inline-block px-6 py-3 rounded-lg bg-petblue-400 text-white font-bold hover:bg-petblue-500 transition-colors"
+          >
+            Fazer Check-in Agora
+          </Link>
         </div>
       </div>
     </DashboardLayout>
