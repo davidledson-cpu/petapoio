@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { nav } from '@/lib/site'
 
-export function MobileNav() {
+export function MobileNav({ account }: { account: { href: string; label: string } }) {
   const pathname = usePathname()
   // Guarda a página em que o menu foi aberto: ao navegar, ele fecha sozinho.
   const [openOn, setOpenOn] = useState<string | null>(null)
@@ -50,9 +50,14 @@ export function MobileNav() {
                 </li>
               ))}
             </ul>
-            <Link href="/encontre-apoio" className="btn btn-primario mt-4 w-full">
-              Preciso de apoio
-            </Link>
+            <div className="mt-4 grid gap-2 sm:grid-cols-2">
+              <Link href="/encontre-apoio" className="btn btn-primario w-full">
+                Preciso de apoio
+              </Link>
+              <Link href={account.href} className="btn btn-secundario w-full">
+                {account.label}
+              </Link>
+            </div>
           </nav>
         </div>
       )}

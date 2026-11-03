@@ -12,8 +12,8 @@ export const site = {
 export const nav = [
   { href: '/encontre-apoio', label: 'Encontre apoio' },
   { href: '/psicologos', label: 'Psicólogos' },
-  { href: '/blog', label: 'Blog' },
   { href: '/loja', label: 'Loja' },
+  { href: '/blog', label: 'Blog' },
   { href: '/sobre', label: 'Sobre' },
 ] as const
 

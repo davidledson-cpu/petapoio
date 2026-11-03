@@ -41,8 +41,8 @@ export function SiteFooter() {
         </p>
       </div>
       <div className="container-page grid gap-10 py-12 md:grid-cols-[1.4fr_repeat(3,1fr)]">
-        <div className="[&_a]:text-linho [&_svg]:text-salvia-clara">
-          <Logo />
+        <div>
+          <Logo tone="escuro" />
           <p className="mt-4 max-w-xs text-[0.95rem] text-linho/75">{site.tagline}</p>
         </div>
         {grupos.map((g) => (
