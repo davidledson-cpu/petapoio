@@ -111,7 +111,7 @@ insert into products (slug, name, category, summary, price_cents, needs_name) va
   ('caderno-teste', 'Caderno teste', 'acolhimento', 'Resumo', 6000, false);
 set role anon;
 set request.jwt.claim.sub = '';
-do $$ begin assert (select count(*) from products) = 2; raise notice 'ok: catálogo público'; end $$;
+do $$ begin assert (select count(*) from products where slug like '%-teste') = 2; raise notice 'ok: catálogo público'; end $$;
 select pg_temp.expect_error($$update products set price_cents = 1$$, 'permission denied');
 select pg_temp.expect_error($$select create_order(jsonb_build_array(jsonb_build_object('product_id', (select id from products where slug='quadro-teste'), 'quantity', 1)), 'a@b.com', 'Ana Teste', '', '{"cep":"30110-000"}')$$, 'Informe o nome');
 create temp table ord as select * from create_order(
@@ -130,3 +130,14 @@ insert into interest_signups (email, list) values ('x@y.com', 'newsletter');
 select pg_temp.expect_error($$select * from psychologist_payment_accounts$$, 'permission denied');
 
 \echo TODOS OS TESTES PASSARAM
+
+-- Link da sala só para sessão confirmada do próprio paciente
+reset role;
+update psychologists set meeting_url = 'https://meet.google.com/abc-defg-hij';
+update appointments set status = 'confirmado' where patient_id = '00000000-0000-0000-0000-00000000000d';
+set role authenticated;
+set request.jwt.claim.sub = '00000000-0000-0000-0000-00000000000d';
+do $$ begin assert (select count(*) from my_session_rooms()) = 1; raise notice 'ok: paciente vê a sala da sessão confirmada'; end $$;
+set request.jwt.claim.sub = '00000000-0000-0000-0000-00000000000a';
+do $$ begin assert (select count(*) from my_session_rooms()) = 0; raise notice 'ok: outro paciente não vê a sala'; end $$;
+\echo TESTES DA SALA PASSARAM
