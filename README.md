@@ -1,164 +1,77 @@
-# ð¾ PetApoio â Plataforma de Apoio Emocional para Tutores de Pets
+# PetApoio
 
-**petapoio.com.br** | @petapoio_
+Acolhimento, informação e apoio psicológico para quem perdeu um animal de estimação.
+**petapoio.com.br** · [@petapoio_](https://instagram.com/petapoio_)
 
-Plataforma que conecta tutores de animais de estimaÃ§Ã£o enlutados a psicÃ³logos especializados,
-com agendamento online, videochamada integrada, loja memorial e gamificaÃ§Ã£o terapÃªutica.
+Esta é a reconstrução do site (Onda 1 do plano de 90 dias). Ela substitui a versão anterior,
+que usava login de demonstração inseguro, perfis e depoimentos fictícios e escondia erros de build.
 
----
+## Stack
 
-## ð Deploy em 15 Minutos
+| Camada | Escolha | Por quê |
+|---|---|---|
+| Framework | Next.js 16 (App Router) + React 19 + TypeScript estrito | Páginas estáticas rápidas e boas para SEO; build falha se houver erro de tipo |
+| Estilo | Tailwind CSS 4 + @tailwindcss/typography | Tokens de cor e tipografia em `app/globals.css` |
+| Fontes | Newsreader + Hanken Grotesk (via @fontsource, sem chamada ao Google) | Leitura confortável e nenhum dado enviado a terceiros |
+| Blog | MDX em `content/blog/` | Versionado no Git, sem custo de CMS; revisão clínica obrigatória |
+| Formulários | Server Actions + Zod + Supabase (só inserção, com RLS) | Funcionam de verdade; sem credenciais, avisam em vez de fingir sucesso |
+| Estatísticas | Vercel Analytics | Sem cookies, simplifica a LGPD |
+| Hospedagem | Vercel | |
 
-### Passo 1 â Supabase (Banco de Dados + Auth)
+## O que existe nesta versão
 
-1. Acesse [supabase.com](https://supabase.com) â **New Project**
-2. Nome: `petapoio` | RegiÃ£o: South America (SÃ£o Paulo)
-3. ApÃ³s criar, vÃ¡ em **Settings â API** e copie:
-   - `Project URL` â `NEXT_PUBLIC_SUPABASE_URL`
-   - `anon public` â `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - `service_role` â `SUPABASE_SERVICE_ROLE_KEY`
-4. VÃ¡ em **SQL Editor** â cole o conteÃºdo de `supabase/migrations/001_initial_schema.sql` â **Run**
-5. Ative **Google Provider**: Authentication â Providers â Google â habilite
+- **Home** com o seletor "Como você está agora?", que leva cada pessoa ao conteúdo certo
+- **Encontre apoio**: primeiros dias, saudade com o tempo, como apoiar alguém
+- **Ajuda imediata**: CVV (188), SAMU (192), UPA, UBS e CAPS
+- **Psicólogos**: como vai funcionar e lista de espera (sem perfis falsos)
+- **Seja parceiro**: pré-cadastro real de psicólogos, gravado no Supabase
+- **Blog** com categorias, FAQ, referências, dados estruturados (Article + FAQPage)
+- **Loja**: página de "em preparação" com lista de aviso
+- **Sobre, Privacidade (LGPD), Termos**
+- SEO técnico: sitemap, robots (pré-visualizações não indexam), metadados, Open Graph, URLs canônicas
+- Redirecionamentos das URLs antigas (`/profissionais`, `/para-psicologos`, `/auth/*`, `/dashboard/*`)
 
-### Passo 2 â Stripe (Pagamentos)
-
-1. Acesse [stripe.com](https://stripe.com) â crie conta BR
-2. **Developers â API keys**: copie `Publishable key` e `Secret key`
-3. **Connect â Settings**: habilite Stripe Connect para splits
-4. **Webhooks â Add endpoint**: `https://petapoio.com.br/api/payments/webhook`
-   - Eventos: `payment_intent.succeeded`, `payment_intent.payment_failed`
-   - Copie o **Signing secret** â `STRIPE_WEBHOOK_SECRET`
-
-### Passo 3 â Daily.co (Videochamada)
-
-1. Acesse [daily.co](https://daily.co) â crie conta
-2. **Developers â API Keys** â copie a key â `DAILY_API_KEY`
-
-### Passo 4 â Resend (E-mail)
-
-1. Acesse [resend.com](https://resend.com) â crie conta
-2. **API Keys â Create** â copie â `RESEND_API_KEY`
-3. Adicione e verifique o domÃ­nio: `petapoio.com.br`
-
-### Passo 5 â Deploy no Vercel
-
-1. FaÃ§a **fork** ou **upload** deste repositÃ³rio no GitHub
-2. Acesse [vercel.com](https://vercel.com) â **New Project** â selecione o repositÃ³rio
-3. Em **Environment Variables**, adicione todas as variÃ¡veis do `.env.example`:
-
-```env
-NEXT_PUBLIC_SUPABASE_URL=...
-NEXT_PUBLIC_SUPABASE_ANON_KEY=...
-SUPABASE_SERVICE_ROLE_KEY=...
-NEXT_PUBLIC_SITE_URL=https://petapoio.com.br
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=...
-STRIPE_SECRET_KEY=...
-STRIPE_WEBHOOK_SECRET=...
-STRIPE_PLATFORM_FEE_PERCENT=20
-DAILY_API_KEY=...
-RESEND_API_KEY=...
-RESEND_FROM_EMAIL=no-reply@petapoio.com.br
-```
-
-4. Clique **Deploy** â pronto! ð
-
----
-
-## ðï¸ Estrutura do Projeto
-
-```
-petapoio/
-âââ app/
-â   âââ page.tsx                    # Landing page
-â   âââ layout.tsx                  # Root layout (fonts, metadata)
-â   âââ auth/
-â   â   âââ login/page.tsx          # Login
-â   â   âââ cadastro/page.tsx       # Cadastro (wizard 2 etapas)
-â   â   âââ cadastro-profissional/  # Cadastro profissional
-â   âââ dashboard/
-â   â   âââ paciente/               # Dashboard do paciente
-â   â   âââ profissional/           # Dashboard do profissional
-â   âââ profissionais/              # Busca e perfil de profissionais
-â   âââ loja/                       # Loja Shopify integrada
-â   âââ api/                        # API Routes
-â       âââ appointments/           # CRUD de agendamentos
-â       âââ payments/webhook/       # Stripe webhook
-âââ components/
-â   âââ layout/                     # Navbar, Footer
-â   âââ home/                       # SeÃ§Ãµes da landing page
-â   âââ auth/                       # Forms de auth
-â   âââ booking/                    # Busca e cards de profissionais
-â   âââ dashboard/                  # Componentes dos dashboards
-âââ lib/
-â   âââ supabase/                   # Client + Server Supabase
-â   âââ utils.ts                    # Helpers (formataÃ§Ã£o, gamificaÃ§Ã£o)
-âââ supabase/
-â   âââ migrations/
-â       âââ 001_initial_schema.sql  # Schema completo do banco
-âââ types/
-â   âââ database.ts                 # TypeScript types do Supabase
-âââ middleware.ts                   # Auth middleware (proteÃ§Ã£o de rotas)
-âââ .env.example                    # Template de variÃ¡veis de ambiente
-âââ README.md
-```
-
----
-
-## ð» Desenvolvimento Local
+## Como rodar
 
 ```bash
-# 1. Clone o repositÃ³rio
-git clone https://github.com/davidledson-cpu/petapoio.git
-cd petapoio
-
-# 2. Instale as dependÃªncias
 npm install
-
-# 3. Configure as variÃ¡veis de ambiente
-cp .env.example .env.local
-# Edite .env.local com suas credenciais
-
-# 4. Inicie o servidor de desenvolvimento
-npm run dev
-# Acesse: http://localhost:3000
+cp .env.example .env.local   # preencha as variáveis
+npm run dev                  # http://localhost:3000
 ```
 
----
+Para ver os artigos ainda sem revisão clínica localmente: `PUBLISH_UNREVIEWED=true npm run dev`.
 
-## ð§ Stack TecnolÃ³gica
+## Configurar o Supabase
 
-| Camada | Tecnologia |
-|--------|-----------|
-| Frontend | Next.js 14 (App Router) + TypeScript |
-| EstilizaÃ§Ã£o | TailwindCSS + Radix UI |
-| Banco de Dados | Supabase (PostgreSQL) |
-| AutenticaÃ§Ã£o | Supabase Auth (email + Google OAuth) |
-| Pagamentos | Stripe Connect (split automÃ¡tico) |
-| Videochamada | Daily.co (sem instalaÃ§Ã£o de app) |
-| E-mail | Resend (templates HTML) |
-| Loja | Shopify Storefront API (Headless) |
-| Agendamento | Cal.com API |
-| Deploy | Vercel (Edge Functions) |
+1. Crie um projeto (região São Paulo).
+2. No **SQL Editor**, rode `supabase/migrations/20261103000000_onda_1.sql`.
+3. Em **Settings → API**, copie a URL e a chave `anon` para `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_ANON_KEY` (localmente e na Vercel).
+4. As inscrições aparecem em **Table Editor → interest_signups** e as candidaturas em **professional_applications**.
 
----
+A chave `service_role` não é usada. O público só consegue inserir dados nas tabelas, nunca ler.
 
-## ð° Modelo de NegÃ³cio
+## Publicar um artigo
 
-- **ComissÃ£o por consulta**: 20% de cada sessÃ£o agendada
-- **Assinatura profissional**: R$49â149/mÃªs (planos Basic/Pro/Premium)
-- **Plano premium (paciente)**: R$89/mÃªs (sessÃµes com desconto)
-- **Loja**: margem de 30â60% sobre produtos memoriais
-- **Publicidade**: banners para clÃ­nicas vet e parceiros
+1. Crie `content/blog/<slug>.mdx` seguindo um dos artigos existentes. As pautas estão em `content/PAUTAS.md`.
+2. Depois da revisão clínica, preencha no topo do arquivo:
+   ```yaml
+   reviewer:
+     name: 'Nome da psicóloga'
+     crp: '06/123456'
+   ```
+3. Faça o commit. Artigo sem `reviewer` não aparece em produção.
 
----
+## Antes de lançar (checklist)
 
-## ð Suporte
+- [ ] Trocar a senha antiga `petapoio@admin2024` onde quer que ela ainda seja usada (estava pública no repositório)
+- [ ] Configurar o Supabase e as variáveis na Vercel
+- [ ] Revisão clínica dos 3 artigos iniciais e preenchimento do `reviewer`
+- [ ] Completar a razão social e o CNPJ na política de privacidade e revisar privacidade e termos com assessoria jurídica
+- [ ] Apontar o domínio petapoio.com.br para a Vercel
 
-- Email: contato@petapoio.com.br
-- Instagram: [@petapoio_](https://instagram.com/petapoio_)
+## Próximas ondas
 
----
+- **Onda 2 (psicólogos):** login com Supabase Auth, painel admin para aprovar candidaturas, perfis públicos, busca e filtros, contato direto
+- **Onda 3 (loja):** catálogo sob demanda em Shopify ou Nuvemshop (checkout hospedado com Pix), gestão de pedidos
 
-*Feito com ð para quem perdeu um amor de quatro patas.*
-
-<!-- deploy: 2026-03-26T00:26:13.625Z -->
+O código da versão anterior continua no histórico do Git (branch `main`).
