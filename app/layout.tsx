@@ -1,66 +1,62 @@
-import type { Metadata } from 'next'
-import { Lato } from 'next/font/google'
-import localFont from 'next/font/local'
-import '@/styles/globals.css'
-import { Toaster } from '@/components/ui/toaster'
-
-const lato = Lato({
-  subsets: ['latin'],
-  weight: ['300', '400', '700', '900'],
-  variable: '--font-lato',
-  display: 'swap',
-})
-
-// Using Google Fonts CDN approach for Playfair Display
-const playfairDisplay = {
-  variable: '--font-playfair',
-}
+import type { Metadata, Viewport } from 'next'
+import { Analytics } from '@vercel/analytics/next'
+import '@fontsource-variable/newsreader/opsz.css'
+import '@fontsource-variable/newsreader/opsz-italic.css'
+import '@fontsource-variable/hanken-grotesk/index.css'
+import './globals.css'
+import { SiteHeader } from '@/components/site-header'
+import { SiteFooter } from '@/components/site-footer'
+import { JsonLd } from '@/components/json-ld'
+import { site } from '@/lib/site'
 
 export const metadata: Metadata = {
+  metadataBase: new URL(site.url),
   title: {
-    default: 'PetApoio | Apoio Emocional para Tutores de Pets Enlutados',
+    default: 'PetApoio — acolhimento para quem perdeu um pet',
     template: '%s | PetApoio',
   },
-  description: 'Conectamos tutores enlutados a psicólogos especializados em luto animal. Aconselhamento online, comunidade de apoio e produtos memoriais. Você não está sozinho.',
-  keywords: ['luto animal', 'perda de pet', 'psicólogo online', 'apoio emocional', 'luto pet', 'petapoio'],
-  authors: [{ name: 'PetApoio' }],
-  creator: 'PetApoio',
+  description: site.description,
+  applicationName: site.name,
+  alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
     locale: 'pt_BR',
-    url: 'https://petapoio.com.br',
-    title: 'PetApoio | Apoio Emocional para Tutores de Pets Enlutados',
-    description: 'Conectamos tutores enlutados a psicólogos especializados em luto animal.',
-    siteName: 'PetApoio',
+    siteName: site.name,
+    url: '/',
   },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'PetApoio',
-    description: 'Apoio emocional para tutores de pets enlutados.',
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-  icons: {
-    icon: '/favicon.ico',
-  },
+  twitter: { card: 'summary_large_image' },
+}
+
+export const viewport: Viewport = {
+  themeColor: '#f6f5f0',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={`${lato.variable}`}>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
-          rel="stylesheet"
+    <html lang="pt-BR">
+      <body className="flex min-h-dvh flex-col">
+        <a
+          href="#conteudo"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-salvia-funda focus:px-4 focus:py-2 focus:text-linho"
+        >
+          Pular para o conteúdo
+        </a>
+        <SiteHeader />
+        <main id="conteudo" className="flex-1">
+          {children}
+        </main>
+        <SiteFooter />
+        <JsonLd
+          data={{
+            '@context': 'https://schema.org',
+            '@type': 'Organization',
+            name: site.name,
+            url: site.url,
+            email: site.email,
+            sameAs: [site.instagram],
+          }}
         />
-      </head>
-      <body className="min-h-screen antialiased">
-        {children}
-        <Toaster />
+        <Analytics />
       </body>
     </html>
   )
