@@ -68,19 +68,8 @@ export default async function PsicologosPage({ searchParams }: { searchParams: P
         </div>
       </PageHeader>
 
-      <section className="container-page" aria-labelledby="por-que">
-        <h2 id="por-que" className="sr-only">Por que conversar com um profissional da PetApoio</h2>
-        <dl className="grid gap-x-10 gap-y-8 border-y border-areia py-10 sm:grid-cols-2 lg:grid-cols-4">
-          {garantias.map(([t, d]) => (
-            <div key={t}>
-              <dt className="font-serif text-xl">{t}</dt>
-              <dd className="mt-2 text-grafite-suave">{d}</dd>
-            </div>
-          ))}
-        </dl>
-      </section>
 
-      <section id="profissionais" className="container-page scroll-mt-24 pt-16" aria-labelledby="titulo-profissionais">
+      <section id="profissionais" className="container-page scroll-mt-24 pt-4" aria-labelledby="titulo-profissionais">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <h2 id="titulo-profissionais" className="text-3xl md:text-4xl">Profissionais disponíveis</h2>
           {entries && entries.length > 0 && (
@@ -90,7 +79,26 @@ export default async function PsicologosPage({ searchParams }: { searchParams: P
           )}
         </div>
 
-        <form method="get" className="mt-6 grid gap-4 rounded-2xl bg-linho-escuro p-5 sm:grid-cols-2 lg:grid-cols-[repeat(4,1fr)_auto] lg:items-end">
+        <nav aria-label="Abordagens" className="mt-6">
+          <ul className="flex flex-wrap gap-2">
+            {['', 'TCC', 'Psicanálise', 'Humanista', 'Análise do comportamento'].map((a) => {
+              const active = (filters.abordagem ?? '') === a
+              return (
+                <li key={a || 'todas'}>
+                  <Link
+                    href={a ? `/psicologos?abordagem=${encodeURIComponent(a)}#profissionais` : '/psicologos#profissionais'}
+                    aria-current={active ? 'page' : undefined}
+                    className={`inline-block rounded-full px-4 py-2 text-[0.95rem] font-semibold ${active ? 'bg-salvia-funda text-linho' : 'border border-areia-escura bg-white hover:border-salvia-funda'}`}
+                  >
+                    {a || 'Todas as abordagens'}
+                  </Link>
+                </li>
+              )
+            })}
+          </ul>
+        </nav>
+
+        <form method="get" className="mt-4 grid gap-4 rounded-2xl bg-linho-escuro p-5 sm:grid-cols-2 lg:grid-cols-[repeat(4,1fr)_auto] lg:items-end">
           <div>
             <label htmlFor="modalidade" className="rotulo">Atendimento</label>
             <select id="modalidade" name="modalidade" defaultValue={filters.modalidade ?? ''} className="campo">
@@ -153,15 +161,34 @@ export default async function PsicologosPage({ searchParams }: { searchParams: P
               <WaitingList text="Estamos conferindo o registro dos primeiros profissionais. Deixe seu e-mail e avisaremos assim que a agenda abrir." />
             )
           ) : (
-            <ul className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            <>
+            {entries.some((e) => e.slug?.startsWith('demo-')) && (
+              <p role="note" className="mb-5 rounded-xl bg-[#f3e8cf] px-4 py-3 text-[#6b4f12]">
+                <strong>Demonstração:</strong> estes perfis são exemplos para mostrar como a vitrine e o agendamento funcionam. Os profissionais reais aparecem aqui depois da verificação do CRP.
+              </p>
+            )}
+            <ul className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
               {entries.map((e) => (
                 <li key={e.id}>
                   <PsychologistCard entry={e} />
                 </li>
               ))}
             </ul>
+            </>
           )}
         </div>
+      </section>
+
+      <section className="container-page pt-20" aria-labelledby="por-que">
+        <h2 id="por-que" className="sr-only">Por que conversar com um profissional da PetApoio</h2>
+        <dl className="grid gap-x-10 gap-y-8 border-y border-areia py-10 sm:grid-cols-2 lg:grid-cols-4">
+          {garantias.map(([t, d]) => (
+            <div key={t}>
+              <dt className="font-serif text-xl">{t}</dt>
+              <dd className="mt-2 text-grafite-suave">{d}</dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
       <section id="como-funciona" className="container-page scroll-mt-24 pt-20" aria-labelledby="titulo-como">
@@ -206,7 +233,7 @@ export default async function PsicologosPage({ searchParams }: { searchParams: P
 
 function WaitingList({ text }: { text: string }) {
   return (
-    <div className="grid gap-6 rounded-[1.75rem] bg-areia/70 p-7 md:grid-cols-[1fr_1fr] md:p-10">
+    <div id="avise-me" className="scroll-mt-24 grid gap-6 rounded-[1.75rem] bg-areia/70 p-7 md:grid-cols-[1fr_1fr] md:p-10">
       <div>
         <h3 className="text-2xl md:text-3xl">A agenda abre em breve</h3>
         <p className="mt-3 text-grafite-suave">{text}</p>

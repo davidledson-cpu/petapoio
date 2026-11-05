@@ -21,7 +21,7 @@ export function MobileNav({ account }: { account: { href: string; label: string 
   }, [open])
 
   return (
-    <div className="lg:hidden">
+    <div className="xl:hidden">
       <button
         type="button"
         aria-expanded={open}
@@ -51,8 +51,8 @@ export function MobileNav({ account }: { account: { href: string; label: string 
               ))}
             </ul>
             <div className="mt-4 grid gap-2 sm:grid-cols-2">
-              <Link href="/encontre-apoio" className="btn btn-primario w-full">
-                Preciso de apoio
+              <Link href="/psicologos" className="btn btn-primario w-full">
+                Encontrar psicólogo
               </Link>
               <Link href={account.href} className="btn btn-secundario w-full">
                 {account.label}

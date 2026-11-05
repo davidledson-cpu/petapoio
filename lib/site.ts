@@ -25,11 +25,11 @@ export const site = {
 } as const
 
 export const nav = [
-  { href: '/encontre-apoio', label: 'Encontre apoio' },
+  { href: '/#como-funciona', label: 'Como funciona' },
   { href: '/psicologos', label: 'Psicólogos' },
+  { href: '/encontre-apoio', label: 'Encontre apoio' },
   { href: '/loja', label: 'Loja' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/sobre', label: 'Sobre' },
+  { href: '/seja-parceiro', label: 'Para psicólogos' },
 ] as const
 
 export function absoluteUrl(path = '/') {

@@ -14,6 +14,7 @@ export function BookingPicker({
   priceLabel,
   preselected,
   loggedIn,
+  demo = false,
 }: {
   days: DaySlots[]
   psychologistId: string
@@ -21,8 +22,10 @@ export function BookingPicker({
   priceLabel: string
   preselected?: string
   loggedIn: boolean
+  demo?: boolean
 }) {
   const [state, action, pending] = useActionState(bookSession, initialFormState)
+  const [demoDone, setDemoDone] = useState(false)
   const initialDay = days.findIndex((d) => d.slots.some((s) => s.startsAt === preselected))
   const [dayIndex, setDayIndex] = useState(initialDay >= 0 ? initialDay : 0)
   const [selected, setSelected] = useState(preselected && initialDay >= 0 ? preselected : '')
@@ -39,7 +42,18 @@ export function BookingPicker({
   const chosen = days.flatMap((d) => d.slots.map((s) => ({ ...s, day: d }))).find((s) => s.startsAt === selected)
 
   return (
-    <form action={action} onSubmit={submitWithoutReset(action)} className="space-y-5">
+    <form
+      action={action}
+      onSubmit={
+        demo
+          ? (e) => {
+              e.preventDefault()
+              setDemoDone(true)
+            }
+          : submitWithoutReset(action)
+      }
+      className="space-y-5"
+    >
       <input type="hidden" name="psychologist_id" value={psychologistId} />
       <input type="hidden" name="slug" value={slug} />
       <input type="hidden" name="starts_at" value={selected} />
@@ -91,6 +105,11 @@ export function BookingPicker({
       )}
 
       <FormStatus state={state} />
+      {demo && demoDone && (
+        <p role="status" className="rounded-lg bg-salvia-clara px-4 py-3 text-salvia-noite">
+          Demonstração: com um profissional real, o horário ficaria reservado por 30 minutos e você seguiria para o pagamento por Pix ou cartão.
+        </p>
+      )}
 
       <div className="rounded-xl bg-linho-escuro p-4 text-[0.97rem]">
         {chosen ? (
@@ -103,7 +122,7 @@ export function BookingPicker({
       </div>
 
       <button type="submit" disabled={!selected || pending} className="btn btn-primario w-full disabled:opacity-60">
-        {pending ? 'Reservando…' : loggedIn ? 'Reservar e ir para o pagamento' : 'Entrar para reservar'}
+        {pending ? 'Reservando…' : demo ? 'Reservar (demonstração)' : loggedIn ? 'Reservar e ir para o pagamento' : 'Entrar para reservar'}
       </button>
       <p className="dica">
         O horário fica reservado por 30 minutos enquanto você paga. Pix ou cartão pelo Mercado Pago. Cancelamento com reembolso

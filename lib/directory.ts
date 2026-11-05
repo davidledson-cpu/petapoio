@@ -2,6 +2,7 @@ import 'server-only'
 import { createClient } from '@/lib/supabase/server'
 import { isSupabaseConfigured } from '@/lib/env'
 import type { DirectoryEntry } from '@/types/db'
+import { demoBySlug, filterDemo, isDemoMode, isDemoSlug } from '@/lib/demo'
 
 export type DirectoryFilters = {
   modalidade?: string
@@ -15,6 +16,13 @@ export type DirectoryFilters = {
 
 /** Psicólogos aprovados e com pagamento ativo, com filtros vindos da URL. */
 export async function listDirectory(f: DirectoryFilters): Promise<DirectoryEntry[] | null> {
+  const real = await listReal(f)
+  // Sem profissionais reais ainda: na pré-visualização, mostra os perfis de exemplo.
+  if ((real === null || real.length === 0) && isDemoMode()) return filterDemo(f)
+  return real
+}
+
+async function listReal(f: DirectoryFilters): Promise<DirectoryEntry[] | null> {
   if (!isSupabaseConfigured()) return null
   const supabase = await createClient()
   let q = supabase.from('psychologist_directory').select('*').eq('mp_connected', true)
@@ -36,6 +44,7 @@ export async function listDirectory(f: DirectoryFilters): Promise<DirectoryEntry
 }
 
 export async function getDirectoryEntry(slug: string): Promise<DirectoryEntry | null> {
+  if (isDemoSlug(slug)) return isDemoMode() ? demoBySlug(slug) : null
   if (!isSupabaseConfigured()) return null
   const supabase = await createClient()
   const { data } = await supabase.from('psychologist_directory').select('*').eq('slug', slug).maybeSingle<DirectoryEntry>()

@@ -19,9 +19,19 @@ const grupos = [
     ],
   },
   {
+    titulo: 'Acesso',
+    links: [
+      { href: '/entrar?perfil=paciente', label: 'Área do paciente' },
+      { href: '/entrar?perfil=psicologo', label: 'Área do psicólogo' },
+      { href: '/entrar?perfil=admin', label: 'Administração' },
+      { href: '/loja/carrinho', label: 'Carrinho' },
+    ],
+  },
+  {
     titulo: 'PetApoio',
     links: [
       { href: '/sobre', label: 'Sobre' },
+      { href: '/blog', label: 'Blog' },
       { href: '/loja', label: 'Loja' },
       { href: '/privacidade', label: 'Privacidade' },
       { href: '/termos', label: 'Termos de uso' },
@@ -40,7 +50,7 @@ export function SiteFooter() {
           <Link href="/ajuda-imediata" className="text-linho underline underline-offset-4">Outras formas de ajuda</Link>
         </p>
       </div>
-      <div className="container-page grid gap-10 py-12 md:grid-cols-[1.4fr_repeat(3,1fr)]">
+      <div className="container-page grid gap-10 py-12 md:grid-cols-[1.4fr_repeat(4,1fr)]">
         <div>
           <Logo tone="escuro" />
           <p className="mt-4 max-w-xs text-[0.95rem] text-linho/75">{site.tagline}</p>

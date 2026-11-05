@@ -78,7 +78,7 @@ export default async function LojaPage({ searchParams }: { searchParams: Promise
             Ainda não há produtos nesta categoria. <Link href="/loja" className="link">Ver todos os produtos</Link>.
           </p>
         ) : (
-          <ul className="grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {products.map((p, i) => (
               <li key={p.id}>
                 <ProductCard product={p} priority={i < 3} />
