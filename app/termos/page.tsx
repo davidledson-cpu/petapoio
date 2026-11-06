@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function TermosPage() {
   return (
     <>
-      <PageHeader title="Termos de uso" intro="Última atualização: 3 de novembro de 2026." />
+      <PageHeader title="Termos de uso" intro="Última atualização: 6 de novembro de 2026." />
       <div className="container-page">
         <div className="texto prose max-w-[44rem]">
           <h2>O que o PetApoio oferece</h2>
@@ -31,6 +31,27 @@ export default function TermosPage() {
             Cada psicóloga ou psicólogo é responsável pelo próprio atendimento, de acordo com o Código de Ética
             Profissional do Psicólogo. O PetApoio confere o registro no CRP antes de publicar um perfil, mas não
             participa das sessões.
+          </p>
+          <h2 id="cuida">PetApoio Cuida: regras da reserva</h2>
+          <p>
+            Cuidadores são pessoas independentes, verificadas pela PetApoio conforme o nível exibido no perfil. Eles não
+            são veterinários: não fazem diagnóstico, não prescrevem e não realizam procedimentos clínicos. Medicação só é
+            administrada quando prescrita, com receita e instruções do tutor.
+          </p>
+          <ul>
+            <li>Na fase-piloto, a solicitação não gera cobrança. A equipe confirma a disponibilidade antes de qualquer pagamento.</li>
+            <li>O tutor informa vacinação, rotina, contato de emergência e autoriza, com limites claros, atendimento veterinário de urgência.</li>
+            <li>Entrega e retirada são registradas (check-in e check-out), com atualizações durante a estadia.</li>
+            <li>Cancelamento, reembolso e danos seguem a política informada na confirmação da reserva.</li>
+            <li>O endereço do cuidador só é compartilhado depois da reserva confirmada.</li>
+          </ul>
+          <h2 id="saude">PetApoio Saúde</h2>
+          <p>
+            Hoje o PetApoio Saúde oferece a carteira digital de saúde do pet, gratuita, e uma lista de interesse. A
+            carteira é um registro feito por você e não substitui o prontuário nem a orientação do veterinário.
+            Planos, assistência veterinária ou seguros, quando disponíveis, serão oferecidos por empresas parceiras
+            habilitadas, com coberturas, carências e exclusões definidas no contrato de cada uma. A PetApoio não é
+            operadora nem seguradora.
           </p>
           <h2>Conteúdo</h2>
           <p>

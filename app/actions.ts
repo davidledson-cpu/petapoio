@@ -7,7 +7,7 @@ import { invalid, NOT_CONFIGURED, fail, type FormState } from '@/lib/form-state'
 
 const signupSchema = z.object({
   email: z.email({ error: 'Confira o e-mail: ele parece incompleto.' }).max(254).trim().toLowerCase(),
-  list: z.enum(['newsletter', 'psicologos', 'loja']),
+  list: z.enum(['newsletter', 'psicologos', 'loja', 'cuida', 'saude']),
   consent: z.literal('on', { error: 'Para continuar, aceite a política de privacidade.' }),
 })
 
@@ -15,6 +15,8 @@ const SIGNUP_SUCCESS: Record<string, string> = {
   newsletter: 'Inscrição feita. Os próximos textos chegam no seu e-mail, sem pressa e sem excesso.',
   psicologos: 'Combinado. Avisaremos por e-mail quando houver novos profissionais disponíveis.',
   loja: 'Combinado. Avisaremos por e-mail sobre novidades da loja.',
+  cuida: 'Combinado. Avisaremos quando houver cuidadores verificados no seu bairro.',
+  saude: 'Combinado. Avisaremos quando o PetApoio Saúde abrir.',
 }
 
 export async function subscribe(_prev: FormState, form: FormData): Promise<FormState> {

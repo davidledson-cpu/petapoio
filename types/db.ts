@@ -1,4 +1,5 @@
 // Tipos das tabelas usadas pela aplicação (espelham supabase/migrations).
+import type { CareLevel, CareService, PetSize, Species } from '@/lib/cuida-shared'
 
 export type Role = 'paciente' | 'psicologo' | 'admin'
 
@@ -144,9 +145,105 @@ export type Notification = {
 
 export type PlatformSettings = {
   platform_fee_percent: number
+  care_fee_percent?: number
   booking_hold_minutes: number
   min_notice_hours: number
   cancel_refund_hours: number
   shipping_flat_cents: number
   free_shipping_from_cents: number
+}
+
+// ── PetApoio Cuida ───────────────────────────────────────────────────────────
+
+export type Caregiver = {
+  id: string
+  slug: string | null
+  status: 'pendente' | 'aprovado' | 'recusado' | 'suspenso'
+  level: CareLevel
+  review_note: string | null
+  full_name: string
+  email: string
+  phone: string
+  city: string
+  neighborhood: string
+  radius_km: number
+  services: CareService[]
+  species: Species[]
+  pet_sizes: PetSize[]
+  headline: string | null
+  bio: string | null
+  experience: string | null
+  qualifications: string | null
+  price_hosting_cents: number | null
+  price_visit_cents: number | null
+  price_walk_cents: number | null
+  price_daycare_cents: number | null
+  gives_medication: boolean
+  accepts_seniors: boolean
+  accepts_puppies: boolean
+  has_yard: boolean
+  accepted_terms_at: string
+  approved_at: string | null
+  created_at: string
+}
+
+/** Linha da view pública caregiver_directory (sem contato nem observações internas). */
+export type CaregiverEntry = Omit<Caregiver, 'status' | 'review_note' | 'email' | 'phone' | 'accepted_terms_at' | 'created_at'>
+
+export type CareRequest = {
+  id: string
+  code: string
+  tutor_id: string
+  caregiver_id: string
+  service: CareService
+  start_date: string
+  end_date: string
+  pet_name: string
+  species: Species
+  pet_size: PetSize
+  pet_notes: string | null
+  message: string | null
+  units: number
+  unit_cents: number
+  estimated_cents: number
+  fee_percent: number
+  status: 'nova' | 'em_contato' | 'confirmada' | 'concluida' | 'cancelada'
+  admin_note: string | null
+  created_at: string
+  updated_at: string
+}
+
+// ── PetApoio Saúde ───────────────────────────────────────────────────────────
+export type Pet = {
+  id: string
+  owner_id: string
+  name: string
+  species: Species
+  breed: string | null
+  birth_date: string | null
+  weight_kg: number | null
+  notes: string | null
+  created_at: string
+}
+
+export type PetHealthEvent = {
+  id: number
+  pet_id: string
+  kind: 'vacina' | 'vermifugo' | 'consulta' | 'exame' | 'medicamento' | 'outro'
+  title: string
+  occurred_on: string
+  next_due_on: string | null
+  notes: string | null
+  created_at: string
+}
+
+export type HealthLead = {
+  id: number
+  email: string
+  city: string | null
+  species: Species
+  pet_age: 'filhote' | 'adulto' | 'idoso'
+  interests: string[]
+  budget: string | null
+  consented_at: string
 }

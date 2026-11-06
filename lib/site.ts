@@ -25,11 +25,19 @@ export const site = {
 } as const
 
 export const nav = [
-  { href: '/#como-funciona', label: 'Como funciona' },
   { href: '/psicologos', label: 'Psicólogos' },
-  { href: '/encontre-apoio', label: 'Encontre apoio' },
+  { href: '/encontre-apoio', label: 'Apoio no luto' },
+  { href: '/cuida', label: 'Cuidadores' },
+  { href: '/saude', label: 'Saúde' },
   { href: '/loja', label: 'Loja' },
-  { href: '/seja-parceiro', label: 'Para psicólogos' },
+  { href: '/seja-parceiro', label: 'Para profissionais' },
+] as const
+
+/** As três frentes do ecossistema, na ordem em que aparecem para o público. */
+export const verticals = [
+  { key: 'acolhe', name: 'PetApoio Acolhe', href: '/psicologos', short: 'Acolhimento no luto' },
+  { key: 'cuida', name: 'PetApoio Cuida', href: '/cuida', short: 'Cuidadores perto de casa' },
+  { key: 'saude', name: 'PetApoio Saúde', href: '/saude', short: 'Saúde organizada' },
 ] as const
 
 export function absoluteUrl(path = '/') {

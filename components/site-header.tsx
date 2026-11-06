@@ -16,7 +16,7 @@ export async function SiteHeader() {
       <div className="container-page flex h-[4.5rem] items-center justify-between gap-6">
         <Logo />
         <nav aria-label="Principal" className="hidden xl:block">
-          <ul className="flex items-center gap-7 text-[0.97rem] font-medium">
+          <ul className="flex items-center gap-5 whitespace-nowrap text-[0.97rem] font-medium 2xl:gap-7">
             {nav.map((item) => (
               <li key={item.href}>
                 <Link href={item.href} className="text-grafite-suave hover:text-grafite">
@@ -30,7 +30,7 @@ export async function SiteHeader() {
           <CartLink />
           <Link
             href={account.href}
-            className="hidden items-center gap-2 rounded-full px-3 py-2 text-[0.95rem] font-semibold hover:bg-areia sm:inline-flex"
+            className="hidden items-center gap-2 whitespace-nowrap rounded-full px-3 py-2 text-[0.95rem] font-semibold hover:bg-areia sm:inline-flex"
           >
             <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
               <circle cx="10" cy="7" r="3.2" fill="none" stroke="currentColor" strokeWidth="1.5" />
@@ -38,7 +38,7 @@ export async function SiteHeader() {
             </svg>
             {account.label}
           </Link>
-          <Link href="/psicologos" className="btn btn-primario hidden !min-h-10 !py-2 md:inline-flex">
+          <Link href="/psicologos" className="btn btn-primario hidden !min-h-10 whitespace-nowrap !py-2 md:inline-flex xl:hidden 2xl:inline-flex">
             Encontrar psicólogo
           </Link>
           <MobileNav account={account} />

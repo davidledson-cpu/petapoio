@@ -4,24 +4,27 @@ import { site } from '@/lib/site'
 
 const grupos = [
   {
-    titulo: 'Acolhimento',
+    titulo: 'Acolhe',
     links: [
+      { href: '/psicologos', label: 'Psicólogos' },
       { href: '/encontre-apoio', label: 'Encontre apoio' },
       { href: '/ajuda-imediata', label: 'Ajuda imediata' },
       { href: '/blog', label: 'Blog' },
     ],
   },
   {
-    titulo: 'Profissionais',
+    titulo: 'Cuida e Saúde',
     links: [
-      { href: '/psicologos', label: 'Psicólogos' },
-      { href: '/seja-parceiro', label: 'Seja um psicólogo parceiro' },
+      { href: '/cuida', label: 'Encontrar cuidador' },
+      { href: '/saude', label: 'Carteira de saúde do pet' },
+      { href: '/cuida/seja-cuidador', label: 'Seja cuidador' },
+      { href: '/seja-parceiro', label: 'Seja psicólogo parceiro' },
     ],
   },
   {
     titulo: 'Acesso',
     links: [
-      { href: '/entrar?perfil=paciente', label: 'Área do paciente' },
+      { href: '/entrar?perfil=paciente', label: 'Área do tutor' },
       { href: '/entrar?perfil=psicologo', label: 'Área do psicólogo' },
       { href: '/entrar?perfil=admin', label: 'Administração' },
       { href: '/loja/carrinho', label: 'Carrinho' },

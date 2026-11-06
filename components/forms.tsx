@@ -7,7 +7,7 @@ import { initialFormState } from '@/lib/form-state'
 import { FieldError, FormStatus, Honeypot, submitWithoutReset } from './form-ui'
 
 type SignupProps = {
-  list: 'newsletter' | 'psicologos' | 'loja'
+  list: 'newsletter' | 'psicologos' | 'loja' | 'cuida' | 'saude'
   submitLabel: string
   tone?: 'claro' | 'escuro'
 }

@@ -20,6 +20,10 @@ export function SettingsForm({ s }: { s: PlatformSettings }) {
         <Field name="cancel_refund_hours" label="Reembolso se cancelar com (h)" type="number" min={0} max={168} defaultValue={s.cancel_refund_hours} error={err.cancel_refund_hours} />
       </fieldset>
       <fieldset className="grid gap-5 sm:grid-cols-2">
+        <legend className="mb-3 font-serif text-2xl">Cuida</legend>
+        <Field name="care_fee_percent" label="Comissão das reservas (%)" type="number" step="0.5" min={0} max={40} defaultValue={s.care_fee_percent ?? 18} error={err.care_fee_percent} hint="Aparece para o tutor e para o cuidador antes de cada reserva." />
+      </fieldset>
+      <fieldset className="grid gap-5 sm:grid-cols-2">
         <legend className="mb-3 font-serif text-2xl">Loja</legend>
         <Field name="shipping_flat_cents" label="Frete fixo (R$)" type="number" step="0.01" min={0} defaultValue={(s.shipping_flat_cents / 100).toFixed(2)} error={err.shipping_flat_cents} />
         <Field name="free_shipping_from_cents" label="Frete grátis a partir de (R$)" type="number" step="0.01" min={0} defaultValue={(s.free_shipping_from_cents / 100).toFixed(2)} error={err.free_shipping_from_cents} />

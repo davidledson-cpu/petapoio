@@ -3,7 +3,7 @@ import { requireSession } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import { dateOnly } from '@/lib/format'
 
-const LISTS: Record<string, string> = { newsletter: 'Textos de acolhimento', psicologos: 'Aviso de psicólogos', loja: 'Aviso da loja' }
+const LISTS: Record<string, string> = { newsletter: 'Textos de acolhimento', psicologos: 'Aviso de psicólogos', loja: 'Aviso da loja', cuida: 'Aviso do Cuida', saude: 'Aviso do Saúde' }
 
 export default async function InscricoesPage({ searchParams }: { searchParams: Promise<{ lista?: string }> }) {
   const { lista } = await searchParams

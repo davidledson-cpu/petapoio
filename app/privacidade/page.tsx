@@ -32,6 +32,23 @@ export default function PrivacidadePage() {
               cidade, modalidade de atendimento, abordagem, experiência profissional informada e site profissional.
             </li>
             <li>
+              <strong>Candidatura de cuidadores (PetApoio Cuida):</strong> nome, e-mail, telefone, bairro de atendimento,
+              serviços, preços, experiência e formação declaradas. Na vitrine aparecem só o primeiro nome, o bairro, os
+              serviços, os preços e o nível de verificação; contato e endereço nunca são públicos.
+            </li>
+            <li>
+              <strong>Solicitações de reserva:</strong> datas, serviço, nome, espécie e porte do pet, rotina e mensagem que
+              você escrever. São vistas pela equipe PetApoio e pelo cuidador escolhido.
+            </li>
+            <li>
+              <strong>Carteira de saúde do pet (PetApoio Saúde):</strong> os pets e registros que você cadastrar (vacinas,
+              consultas, exames, medicamentos). Só você vê esses registros; a equipe acessa apenas totais agregados.
+            </li>
+            <li>
+              <strong>Lista do clube de benefícios:</strong> e-mail, cidade, espécie e fase de vida do pet, interesses e
+              faixa de preço escolhida.
+            </li>
+            <li>
               <strong>Estatísticas de uso:</strong> usamos o Vercel Analytics, que mede visitas de forma agregada, sem
               cookies e sem identificar você.
             </li>
@@ -41,6 +58,8 @@ export default function PrivacidadePage() {
           <ul>
             <li>Enviar os e-mails que você pediu, e só eles.</li>
             <li>Analisar e responder candidaturas de profissionais e conferir o registro no CRP.</li>
+            <li>Verificar cuidadores e combinar as reservas solicitadas por você.</li>
+            <li>Mostrar seus lembretes de saúde e, de forma agregada, escolher parceiros de saúde adequados à demanda.</li>
             <li>Entender, de forma agregada, quais páginas ajudam mais as pessoas.</li>
           </ul>
           <p>
@@ -50,7 +69,8 @@ export default function PrivacidadePage() {
 
           <h2>Com quem compartilhamos</h2>
           <p>
-            Não vendemos dados. Usamos fornecedores para operar o site: Supabase (banco de dados) e Vercel (hospedagem e
+            Não vendemos dados. Dados de saúde e de localização do seu pet não são compartilhados com parceiros nem entre as
+            áreas da PetApoio sem a sua autorização. Usamos fornecedores para operar o site: Supabase (banco de dados) e Vercel (hospedagem e
             estatísticas). Eles tratam os dados apenas para prestar esse serviço.
           </p>
 

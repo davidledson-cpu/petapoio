@@ -285,6 +285,38 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Ecossistema: a mesma confiança, em outras fases da vida do pet */}
+      <section className="bg-linho-escuro py-20" aria-labelledby="titulo-ecossistema">
+        <div className="container-page">
+          <div className="max-w-2xl">
+            <p className="font-semibold text-salvia-funda">Também na PetApoio</p>
+            <h2 id="titulo-ecossistema" className="mt-1 text-4xl md:text-5xl">Cuidado em todas as fases da vida do seu pet</h2>
+            <p className="mt-4 text-lg text-grafite-suave">
+              O mesmo cuidado com confiança e regras claras, para quando você precisa viajar ou quer manter a saúde dele em dia.
+            </p>
+          </div>
+          <ul className="mt-10 grid gap-5 md:grid-cols-2">
+            {(
+              [
+                ['paw', 'PetApoio Cuida', 'Cuidadores verificados perto de casa: hospedagem, visitas, passeios e creche, com nível de verificação e preço total à vista.', '/cuida', 'Encontrar cuidador', 'Piloto em BH'],
+                ['plus', 'PetApoio Saúde', 'Carteira digital gratuita com vacinas, consultas e lembretes. Em breve, comparador de planos e clube de benefícios com parceiros.', '/saude', 'Criar carteira de saúde', 'Grátis'],
+              ] as const
+            ).map(([icon, t, d, href, cta, selo]) => (
+              <li key={t} className="relative flex flex-col rounded-2xl bg-white p-8">
+                <span className="absolute right-6 top-6 rounded-full bg-nevoa-clara px-3 py-1 text-xs font-bold text-nevoa">{selo}</span>
+                <span className="flex size-14 items-center justify-center rounded-2xl bg-salvia-clara text-salvia-noite"><Icon name={icon} className="size-7" /></span>
+                <h3 className="mt-6 font-sans text-xl font-bold">{t}</h3>
+                <p className="mt-2 flex-1 text-grafite-suave">{d}</p>
+                <Link href={href} className="mt-6 inline-flex items-center gap-1.5 font-semibold text-salvia-funda hover:underline">
+                  {cta}
+                  <svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11m-4-4 4 4-4 4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
       <section className="container-page py-16" aria-labelledby="titulo-faq">
         <div className="grid gap-10 lg:grid-cols-[1fr_1.6fr]">
           <div>

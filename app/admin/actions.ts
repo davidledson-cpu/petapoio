@@ -11,6 +11,7 @@ const reais = (min: number, max: number) =>
 
 const settingsSchema = z.object({
   platform_fee_percent: z.coerce.number().min(0, { error: 'Mínimo 0%.' }).max(50, { error: 'Máximo 50%.' }),
+  care_fee_percent: z.coerce.number().min(0, { error: 'Mínimo 0%.' }).max(40, { error: 'Máximo 40%.' }),
   booking_hold_minutes: z.coerce.number().int().min(5).max(120),
   min_notice_hours: z.coerce.number().int().min(0).max(168),
   cancel_refund_hours: z.coerce.number().int().min(0).max(168),

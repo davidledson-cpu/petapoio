@@ -39,6 +39,29 @@ que usava login de demonstração inseguro, perfis e depoimentos fictícios e es
 
 **Banco**: `supabase/migrations` (RLS em todas as tabelas, reserva sem conflito de horário, preços sempre calculados no banco) e 31 testes em `supabase/tests`
 
+## Expansão: PetApoio Cuida e PetApoio Saúde (nov/2026)
+
+O ecossistema passa a ter três frentes sob a mesma marca: **Acolhe** (luto, psicólogos, loja de memória), **Cuida** e **Saúde**.
+A home continua abrindo pelo acolhimento; Cuida e Saúde aparecem no menu e numa seção própria mais abaixo.
+
+- **Cuida** (`/cuida`): busca de cuidadores por bairro, distância, serviço, porte, espécie, preço e nível; mapa aproximado
+  (só o centro do bairro, nunca o endereço); perfil com valor total calculado antes de pedir; candidatura em `/cuida/seja-cuidador`.
+  Piloto em Belo Horizonte com **reservas acompanhadas**: o tutor envia a solicitação, a equipe confirma em `/admin/reservas`.
+  Pagamento com split entra no MVP comercial. Comissão configurável em Configurações (padrão 18%).
+- **Saúde** (`/saude`): carteira digital gratuita em `/painel/pets` (vacinas, consultas, exames, medicamentos e lembretes) e
+  lista do clube de benefícios com perguntas de demanda. A PetApoio não é operadora nem seguradora.
+- **Administração**: visão geral por vertical (receita da plataforma separada do volume transacionado, % de tutores em mais de
+  uma vertical, metas da Fase 1), verificação de cuidadores com 4 níveis, fila de reservas e painel de demanda do Saúde.
+- **Banco**: `supabase/migrations/20261106000000_cuida_saude.sql` (também incluída em `supabase/setup.sql`).
+  Dados de saúde do pet só são lidos pelo tutor; a administração vê totais via `admin_pet_stats()`.
+
+Testar as regras do banco num Postgres local:
+
+```bash
+createdb pt && cat supabase/tests/supabase_stub.sql supabase/migrations/*.sql \
+  supabase/tests/rules_test.sql supabase/tests/cuida_saude_test.sql | psql -v ON_ERROR_STOP=1 -d pt
+```
+
 ## Ativar o que falta
 
 1. **Sua conta de admin:** crie uma conta em `/cadastro` e rode no SQL Editor do Supabase:
