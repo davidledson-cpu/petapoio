@@ -1,43 +1,28 @@
-import { createServerClient } from '@supabase/ssr'
+import 'server-only'
 import { cookies } from 'next/headers'
-import type { Database } from '@/types/database'
+import { createServerClient } from '@supabase/ssr'
+import { env, isSupabaseConfigured } from '@/lib/env'
 
-export function createClient() {
-  const cookieStore = cookies()
-  return createServerClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() { return cookieStore.getAll() },
-        setAll(cookiesToSet) {
-          try {
-            cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options)
-            )
-          } catch {}
-        },
+/** Cliente do Supabase com a sessão da pessoa (respeita RLS). */
+export async function createClient() {
+  if (!isSupabaseConfigured()) throw new SupabaseNotConfigured()
+  const cookieStore = await cookies()
+  return createServerClient(env.supabaseUrl, env.supabaseAnonKey, {
+    cookies: {
+      getAll: () => cookieStore.getAll(),
+      setAll: (list) => {
+        try {
+          for (const { name, value, options } of list) cookieStore.set(name, value, options)
+        } catch {
+          // Chamado de um Server Component: o proxy já renova a sessão.
+        }
       },
-    }
-  )
+    },
+  })
 }
 
-export function createAdminClient() {
-  const cookieStore = cookies()
-  return createServerClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    {
-      cookies: {
-        getAll() { return cookieStore.getAll() },
-        setAll(cookiesToSet) {
-          try {
-            cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options)
-            )
-          } catch {}
-        },
-      },
-    }
-  )
+export class SupabaseNotConfigured extends Error {
+  constructor() {
+    super('Supabase não configurado neste ambiente.')
+  }
 }

@@ -1,15 +1,15 @@
+import { NextResponse, type NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { NextResponse } from 'next/server'
+import { safeNext } from '@/lib/auth'
 
-export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url)
-  const code = searchParams.get('code')
-  const redirectTo = searchParams.get('redirectTo') || '/dashboard/paciente'
-
+/** Recebe o link do e-mail (confirmação de conta ou nova senha) e cria a sessão. */
+export async function GET(req: NextRequest) {
+  const code = req.nextUrl.searchParams.get('code')
+  const next = safeNext(req.nextUrl.searchParams.get('next'), '/painel')
   if (code) {
-    const supabase = createClient()
-    await supabase.auth.exchangeCodeForSession(code)
+    const supabase = await createClient()
+    const { error } = await supabase.auth.exchangeCodeForSession(code)
+    if (!error) return NextResponse.redirect(new URL(next, req.url))
   }
-
-  return NextResponse.redirect(`${origin}${redirectTo}`)
+  return NextResponse.redirect(new URL('/entrar?erro=link', req.url))
 }
