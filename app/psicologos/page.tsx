@@ -223,7 +223,7 @@ export default async function PsicologosPage({ searchParams }: { searchParams: P
           <div className="rounded-[1.75rem] border-[1.5px] border-areia-escura p-7 md:p-9">
             <h2 className="text-2xl md:text-3xl">É psicóloga ou psicólogo?</h2>
             <p className="mt-3 text-grafite-suave">Atenda pessoas que procuram exatamente o seu cuidado, com agenda e pagamentos organizados.</p>
-            <Link href="/seja-parceiro" className="btn btn-secundario mt-5">Quero fazer parte</Link>
+            <Link href="/seja-parceiro/psicologos" className="btn btn-secundario mt-5">Quero fazer parte</Link>
           </div>
         </div>
       </section>

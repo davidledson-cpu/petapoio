@@ -28,6 +28,7 @@ export const PANEL_NAV: Record<Role, NavItem[]> = {
     { href: '/admin/pedidos', label: 'Loja · Pedidos' },
     { href: '/admin/produtos', label: 'Loja · Produtos' },
     { href: '/admin/cuidadores', label: 'Cuida · Cuidadores' },
+    { href: '/admin/adestradores', label: 'Cuida · Adestradores' },
     { href: '/admin/reservas', label: 'Cuida · Reservas' },
     { href: '/admin/saude', label: 'Saúde · Demanda' },
     { href: '/admin/usuarios', label: 'Usuários' },

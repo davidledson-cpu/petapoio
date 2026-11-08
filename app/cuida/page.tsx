@@ -296,7 +296,7 @@ export default async function CuidaPage({ searchParams }: { searchParams: Promis
               e aparece antes de você aceitar cada reserva: num serviço de R$ 100, você recebe R$ {(100 - fee).toLocaleString('pt-BR')}.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/cuida/seja-cuidador" className="btn bg-linho text-salvia-noite hover:bg-white">Quero ser cuidador</Link>
+              <Link href="/seja-parceiro/cuidadores" className="btn bg-linho text-salvia-noite hover:bg-white">Quero ser cuidador</Link>
             </div>
           </div>
           <ul className="grid gap-3 self-center sm:grid-cols-2">

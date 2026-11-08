@@ -17,8 +17,9 @@ const grupos = [
     links: [
       { href: '/cuida', label: 'Encontrar cuidador' },
       { href: '/saude', label: 'Carteira de saúde do pet' },
-      { href: '/cuida/seja-cuidador', label: 'Seja cuidador' },
-      { href: '/seja-parceiro', label: 'Seja psicólogo parceiro' },
+      { href: '/seja-parceiro/psicologos', label: 'Para psicólogos' },
+      { href: '/seja-parceiro/cuidadores', label: 'Para cuidadores' },
+      { href: '/seja-parceiro/adestradores', label: 'Para adestradores' },
     ],
   },
   {

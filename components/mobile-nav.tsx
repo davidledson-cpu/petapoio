@@ -47,6 +47,17 @@ export function MobileNav({ account }: { account: { href: string; label: string 
                   <Link href={item.href} className="block py-3.5 font-serif text-xl">
                     {item.label}
                   </Link>
+                  {'children' in item && (
+                    <ul className="-mt-1 mb-3 space-y-1 border-l-2 border-areia pl-4">
+                      {item.children.map((sub) => (
+                        <li key={sub.href}>
+                          <Link href={sub.href} className="block py-1.5 text-[1.02rem] text-grafite-suave hover:text-grafite">
+                            {sub.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </li>
               ))}
             </ul>

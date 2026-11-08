@@ -1,5 +1,6 @@
 // Tipos das tabelas usadas pela aplicação (espelham supabase/migrations).
 import type { CareLevel, CareService, PetSize, Species } from '@/lib/cuida-shared'
+import type { TrainingFocus, TrainingFormat, TrainingModality } from '@/lib/adestra-shared'
 
 export type Role = 'paciente' | 'psicologo' | 'admin'
 
@@ -182,6 +183,37 @@ export type Caregiver = {
   accepts_seniors: boolean
   accepts_puppies: boolean
   has_yard: boolean
+  accepted_terms_at: string
+  approved_at: string | null
+  created_at: string
+}
+
+export type Trainer = {
+  id: string
+  slug: string | null
+  status: 'pendente' | 'aprovado' | 'recusado' | 'suspenso'
+  review_note: string | null
+  full_name: string
+  email: string
+  phone: string
+  city: string
+  neighborhood: string
+  radius_km: number
+  modalities: TrainingModality[]
+  species: Species[]
+  focus: TrainingFocus[]
+  formats: TrainingFormat[]
+  price_assessment_cents: number | null
+  price_class_cents: number | null
+  price_package_cents: number | null
+  price_consult_cents: number | null
+  package_classes: number | null
+  years_experience: number
+  headline: string | null
+  experience: string | null
+  qualifications: string | null
+  portfolio_url: string | null
+  positive_methods: boolean
   accepted_terms_at: string
   approved_at: string | null
   created_at: string

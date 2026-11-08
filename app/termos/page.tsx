@@ -45,6 +45,17 @@ export default function TermosPage() {
             <li>Cancelamento, reembolso e danos seguem a política informada na confirmação da reserva.</li>
             <li>O endereço do cuidador só é compartilhado depois da reserva confirmada.</li>
           </ul>
+          <h2 id="adestramento">PetApoio Cuida: adestramento</h2>
+          <p>
+            Adestradores são profissionais independentes, verificados pela PetApoio a partir de identidade, referências e
+            formação informada. A rede trabalha somente com reforço positivo: coleira de choque, enforcador, punição física
+            ou intimidação levam ao desligamento.
+          </p>
+          <ul>
+            <li>Adestradores não fazem diagnóstico nem tratamento. Em casos com suspeita de dor ou doença, orientam a avaliação veterinária.</li>
+            <li>Formato, número de aulas, preço e política de remarcação são informados ao tutor antes da contratação.</li>
+            <li>Na fase-piloto, a equipe confirma cada solicitação antes de qualquer pagamento.</li>
+          </ul>
           <h2 id="saude">PetApoio Saúde</h2>
           <p>
             Hoje o PetApoio Saúde oferece a carteira digital de saúde do pet, gratuita, e uma lista de interesse. A

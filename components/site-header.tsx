@@ -17,13 +17,40 @@ export async function SiteHeader() {
         <Logo />
         <nav aria-label="Principal" className="hidden xl:block">
           <ul className="flex items-center gap-5 whitespace-nowrap text-[0.97rem] font-medium 2xl:gap-7">
-            {nav.map((item) => (
-              <li key={item.href}>
-                <Link href={item.href} className="text-grafite-suave hover:text-grafite">
-                  {item.label}
-                </Link>
-              </li>
-            ))}
+            {nav.map((item) =>
+              'children' in item ? (
+                <li key={item.href} className="group relative">
+                  <Link
+                    href={item.href}
+                    aria-haspopup="true"
+                    className="inline-flex items-center gap-1 text-grafite-suave hover:text-grafite group-focus-within:text-grafite"
+                  >
+                    {item.label}
+                    <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" className="transition-transform group-hover:rotate-180 group-focus-within:rotate-180">
+                      <path d="M2 3.5l3 3 3-3" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </Link>
+                  {/* Abre no hover e no foco do teclado; pt-3 mantém a área contínua entre o link e o painel. */}
+                  <div className="invisible absolute right-0 top-full z-50 pt-3 opacity-0 transition-opacity group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+                    <ul className="min-w-56 rounded-2xl border border-areia bg-white p-2 shadow-[0_20px_40px_-24px_rgba(46,42,39,.45)]">
+                      {item.children.map((sub) => (
+                        <li key={sub.href}>
+                          <Link href={sub.href} className="block rounded-xl px-4 py-2.5 text-grafite hover:bg-linho-escuro focus-visible:bg-linho-escuro">
+                            {sub.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </li>
+              ) : (
+                <li key={item.href}>
+                  <Link href={item.href} className="text-grafite-suave hover:text-grafite">
+                    {item.label}
+                  </Link>
+                </li>
+              ),
+            )}
           </ul>
         </nav>
         <div className="flex items-center gap-1 sm:gap-2">

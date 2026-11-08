@@ -18,7 +18,7 @@ const PERFIS = {
     rotulo: 'Sou psicólogo',
     titulo: 'Área do psicólogo',
     texto: 'Gerencie perfil, horários, agenda e recebimentos.',
-    cadastro: { href: '/seja-parceiro#cadastro', label: 'Cadastrar como profissional' },
+    cadastro: { href: '/seja-parceiro/psicologos#cadastro', label: 'Cadastrar como profissional' },
   },
   admin: {
     rotulo: 'Administração',

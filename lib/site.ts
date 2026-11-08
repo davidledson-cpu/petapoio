@@ -24,14 +24,24 @@ export const site = {
   instagramHandle: '@petapoio_',
 } as const
 
+export type NavLink = { href: string; label: string; children?: readonly { href: string; label: string }[] }
+
 export const nav = [
   { href: '/psicologos', label: 'Psicólogos' },
   { href: '/encontre-apoio', label: 'Apoio no luto' },
   { href: '/cuida', label: 'Cuidadores' },
   { href: '/saude', label: 'Saúde' },
   { href: '/loja', label: 'Loja' },
-  { href: '/seja-parceiro', label: 'Para profissionais' },
-] as const
+  {
+    href: '/seja-parceiro',
+    label: 'Para profissionais',
+    children: [
+      { href: '/seja-parceiro/psicologos', label: 'Para psicólogos' },
+      { href: '/seja-parceiro/cuidadores', label: 'Para cuidadores' },
+      { href: '/seja-parceiro/adestradores', label: 'Para adestradores' },
+    ],
+  },
+] as const satisfies readonly NavLink[]
 
 /** As três frentes do ecossistema, na ordem em que aparecem para o público. */
 export const verticals = [

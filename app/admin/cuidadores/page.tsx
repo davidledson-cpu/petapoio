@@ -36,7 +36,7 @@ export default async function AdminCuidadoresPage({ searchParams }: { searchPara
       <PanelHeader
         title="Cuidadores"
         intro="Confira identidade, referências e cursos antes de aprovar e definir o nível. Só aprovados aparecem na busca do Cuida."
-        action={<Link href="/cuida/seja-cuidador" className="btn btn-secundario">Formulário de candidatura</Link>}
+        action={<Link href="/seja-parceiro/cuidadores" className="btn btn-secundario">Formulário de candidatura</Link>}
       />
       {erro && <p role="alert" className="mb-6 rounded-lg bg-[#f6e7e3] px-4 py-3 text-alerta">{erro}</p>}
 
