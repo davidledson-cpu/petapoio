@@ -175,6 +175,7 @@ export type Caregiver = {
   bio: string | null
   experience: string | null
   qualifications: string | null
+  reference_contacts: string | null
   price_hosting_cents: number | null
   price_visit_cents: number | null
   price_walk_cents: number | null
@@ -212,6 +213,7 @@ export type Trainer = {
   headline: string | null
   experience: string | null
   qualifications: string | null
+  reference_contacts: string | null
   portfolio_url: string | null
   positive_methods: boolean
   accepted_terms_at: string
@@ -220,7 +222,7 @@ export type Trainer = {
 }
 
 /** Linha da view pública caregiver_directory (sem contato nem observações internas). */
-export type CaregiverEntry = Omit<Caregiver, 'status' | 'review_note' | 'email' | 'phone' | 'accepted_terms_at' | 'created_at'>
+export type CaregiverEntry = Omit<Caregiver, 'status' | 'review_note' | 'email' | 'phone' | 'reference_contacts' | 'accepted_terms_at' | 'created_at'>
 
 export type CareRequest = {
   id: string

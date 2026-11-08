@@ -23,7 +23,7 @@ function Checks({ name, options, error, defaults = [], onChange }: {
 }) {
   return (
     <>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2" data-min={1}>
         {options.map(([v, l]) => (
           <label key={v} className="flex cursor-pointer items-center gap-2 rounded-full border-[1.5px] border-areia-escura bg-white px-4 py-2 has-[:checked]:border-salvia-funda has-[:checked]:bg-salvia-clara">
             <input
@@ -52,7 +52,7 @@ export function CaregiverForm() {
       <Honeypot />
       {state.status === 'error' && <FormStatus state={state} />}
 
-      <fieldset className="space-y-5">
+      <fieldset className="space-y-5 scroll-mt-24" data-etapa="Seus dados">
         <legend className="font-serif text-2xl">1. Seus dados</legend>
         <Field name="full_name" label="Nome completo" autoComplete="name" required error={err.full_name} />
         <div className="grid gap-5 sm:grid-cols-2">
@@ -62,7 +62,7 @@ export function CaregiverForm() {
         <div className="grid gap-5 sm:grid-cols-2">
           <Field name="neighborhood" label="Bairro onde você atende" error={err.neighborhood} hint="Só o bairro aparece no perfil. O endereço nunca é público.">
             {(a) => (
-              <select {...a} className="campo" defaultValue="">
+              <select {...a} className="campo" defaultValue="" required>
                 <option value="" disabled>Escolha</option>
                 {NEIGHBORHOOD_NAMES.map((n) => <option key={n}>{n}</option>)}
               </select>
@@ -78,7 +78,7 @@ export function CaregiverForm() {
         </div>
       </fieldset>
 
-      <fieldset className="space-y-5">
+      <fieldset className="space-y-5 scroll-mt-24" data-etapa="Serviços e preços">
         <legend className="font-serif text-2xl">2. O que você oferece</legend>
         <div>
           <p className="rotulo">Serviços</p>
@@ -98,7 +98,7 @@ export function CaregiverForm() {
           <div className="grid gap-5 sm:grid-cols-2">
             {(Object.keys(PRICE_FIELD) as CareService[]).filter((s) => services.includes(s)).map((s) => (
               <Field key={s} name={PRICE_FIELD[s]!} label={`Preço por ${SERVICES[s].unit} (${SERVICES[s].short.toLowerCase()})`}
-                inputMode="decimal" placeholder="Ex.: 90" error={err[PRICE_FIELD[s]!]} hint="Valor que o tutor paga, com a comissão incluída." />
+                inputMode="decimal" data-preco="" placeholder="Ex.: 90" error={err[PRICE_FIELD[s]!]} hint="Valor que o tutor paga, com a comissão incluída." />
             ))}
           </div>
         )}
@@ -114,14 +114,18 @@ export function CaregiverForm() {
         </div>
       </fieldset>
 
-      <fieldset className="space-y-5">
+      <fieldset className="space-y-5 scroll-mt-24" data-etapa="Sua experiência">
         <legend className="font-serif text-2xl">3. Sua experiência</legend>
         <Field name="headline" label="Uma frase de apresentação" optional maxLength={160} error={err.headline} placeholder="Ex.: Casa tranquila, rotina com passeios e fotos todos os dias." />
         <Field name="experience" label="Conte sua experiência com animais" error={err.experience} hint="Com quais pets você já conviveu, por quanto tempo, situações que sabe conduzir.">
-          {(a) => <textarea {...a} rows={5} maxLength={2000} className="campo" required />}
+          {(a) => <textarea {...a} rows={5} minLength={40} maxLength={2000} className="campo" required />}
         </Field>
         <Field name="qualifications" label="Cursos e formação" optional error={err.qualifications} hint="Primeiros socorros pet, adestramento, técnico em veterinária... Pediremos os comprovantes na entrevista.">
           {(a) => <textarea {...a} rows={3} maxLength={1000} className="campo" />}
+        </Field>
+        <Field name="reference_contacts" label="Quem pode falar sobre o seu trabalho?" optional error={err.reference_contacts}
+          hint="Nome e telefone de 1 ou 2 pessoas (tutores, clínicas, ex-clientes). Só falamos com elas na verificação, com seu aviso.">
+          {(a) => <textarea {...a} rows={2} maxLength={500} className="campo" placeholder="Ex.: Ana Souza, (31) 99999-0000, tutora da Mel" />}
         </Field>
       </fieldset>
 

@@ -24,7 +24,7 @@ function Checks({ name, options, error, defaults = [], onChange }: {
 }) {
   return (
     <>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2" data-min={1}>
         {options.map(([v, l]) => (
           <label key={v} className="flex cursor-pointer items-center gap-2 rounded-full border-[1.5px] border-areia-escura bg-white px-4 py-2 has-[:checked]:border-salvia-funda has-[:checked]:bg-salvia-clara">
             <input
@@ -53,7 +53,7 @@ export function TrainerForm() {
       <Honeypot />
       {state.status === 'error' && <FormStatus state={state} />}
 
-      <fieldset className="space-y-5">
+      <fieldset className="space-y-5 scroll-mt-24" data-etapa="Seus dados">
         <legend className="font-serif text-2xl">1. Seus dados</legend>
         <Field name="full_name" label="Nome completo" autoComplete="name" required error={err.full_name} />
         <div className="grid gap-5 sm:grid-cols-2">
@@ -63,7 +63,7 @@ export function TrainerForm() {
         <div className="grid gap-5 sm:grid-cols-2">
           <Field name="neighborhood" label="Bairro de onde você parte" error={err.neighborhood} hint="Só o bairro aparece no perfil.">
             {(a) => (
-              <select {...a} className="campo" defaultValue="">
+              <select {...a} className="campo" defaultValue="" required>
                 <option value="" disabled>Escolha</option>
                 {NEIGHBORHOOD_NAMES.map((n) => <option key={n}>{n}</option>)}
               </select>
@@ -79,7 +79,7 @@ export function TrainerForm() {
         </div>
       </fieldset>
 
-      <fieldset className="space-y-5">
+      <fieldset className="space-y-5 scroll-mt-24" data-etapa="Como você trabalha">
         <legend className="font-serif text-2xl">2. Como você trabalha</legend>
         <div>
           <p className="rotulo">Onde você atende</p>
@@ -95,7 +95,7 @@ export function TrainerForm() {
         </div>
       </fieldset>
 
-      <fieldset className="space-y-5">
+      <fieldset className="space-y-5 scroll-mt-24" data-etapa="Formatos e preços">
         <legend className="font-serif text-2xl">3. Formatos e preços</legend>
         <div>
           <p className="rotulo">O que o tutor pode contratar</p>
@@ -105,7 +105,7 @@ export function TrainerForm() {
           <div className="grid gap-5 sm:grid-cols-2">
             {(Object.keys(TRAINING_FORMATS) as TrainingFormat[]).filter((f) => formats.includes(f)).map((f) => (
               <Field key={f} name={PRICE_KEYS[f]} label={`${TRAINING_FORMATS[f].priceLabel} (R$)`}
-                inputMode="decimal" placeholder={f === 'pacote' ? 'Ex.: 900' : 'Ex.: 150'} error={err[PRICE_KEYS[f]]}
+                inputMode="decimal" data-preco="" placeholder={f === 'pacote' ? 'Ex.: 900' : 'Ex.: 150'} error={err[PRICE_KEYS[f]]}
                 hint="Valor que o tutor paga, com a comissão incluída." />
             ))}
             {formats.includes('pacote') && (
@@ -115,7 +115,7 @@ export function TrainerForm() {
         )}
       </fieldset>
 
-      <fieldset className="space-y-5">
+      <fieldset className="space-y-5 scroll-mt-24" data-etapa="Sua experiência">
         <legend className="font-serif text-2xl">4. Sua experiência</legend>
         <Field name="years_experience" label="Há quanto tempo você trabalha com adestramento?" error={err.years_experience}>
           {(a) => (
@@ -126,10 +126,14 @@ export function TrainerForm() {
         </Field>
         <Field name="headline" label="Uma frase de apresentação" optional maxLength={160} error={err.headline} placeholder="Ex.: Ajudo famílias a passear sem puxões, com reforço positivo e paciência." />
         <Field name="experience" label="Conte como você trabalha" error={err.experience} hint="Casos que já conduziu, como é sua primeira aula, como envolve a família no treino.">
-          {(a) => <textarea {...a} rows={5} maxLength={2000} className="campo" required />}
+          {(a) => <textarea {...a} rows={5} minLength={40} maxLength={2000} className="campo" required />}
         </Field>
         <Field name="qualifications" label="Cursos e formação" optional error={err.qualifications} hint="Cursos de adestramento, comportamento animal, etologia, medicina veterinária... Pediremos os comprovantes na conversa de verificação.">
           {(a) => <textarea {...a} rows={3} maxLength={1000} className="campo" />}
+        </Field>
+        <Field name="reference_contacts" label="Quem pode falar sobre o seu trabalho?" optional error={err.reference_contacts}
+          hint="Nome e telefone de 1 ou 2 pessoas (tutores, clínicas, ex-clientes). Só falamos com elas na verificação, com seu aviso.">
+          {(a) => <textarea {...a} rows={2} maxLength={500} className="campo" placeholder="Ex.: Ana Souza, (31) 99999-0000, tutora da Mel" />}
         </Field>
         <Field name="portfolio_url" label="Instagram ou site com seu trabalho" optional placeholder="@seuperfil ou https://..." error={err.portfolio_url} />
       </fieldset>

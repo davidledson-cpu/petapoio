@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { PsychologistSignupForm } from '@/components/psych/signup-form'
 import { CaregiverForm } from '@/components/cuida/caregiver-form'
 import { TrainerForm } from '@/components/cuida/trainer-form'
+import { FormProgress } from '@/components/form-progress'
 import { getSession } from '@/lib/auth'
 import { getPlatformFeePercent } from '@/lib/psychologist'
 import { careFeePercent } from '@/lib/cuida'
@@ -258,45 +259,35 @@ export async function Cuidadores() {
     <>
       <Abertura
         atual="cuidador"
-        titulo="Cuide de pets no seu bairro"
-        texto={`Hospedagem, visitas, passeios e creche. Você define serviços, preço e agenda; a gente traz tutores da sua região e acompanha cada reserva. Estamos formando a rede-piloto em ${PILOT_CITY}.`}
-      />
+        titulo="Cuide de pets perto de casa, no seu ritmo"
+        texto="Hospedagem, visitas, passeios ou creche. Você escolhe o que oferece, quanto cobra e quando atende. A gente traz tutores do seu bairro."
+      >
+        <a href="#cadastro" className="btn btn-primario">Quero ser cuidador</a>
+      </Abertura>
 
       <Beneficios
         itens={[
-          {
-            titulo: 'Tutores perto de você',
-            texto: 'A busca é por bairro e raio. Você só recebe pedidos dentro da distância que escolher.',
-          },
-          {
-            titulo: 'Você no controle',
-            texto: 'Escolhe serviços, espécies, porte e preço. Aceita só o que cabe na sua rotina.',
-          },
-          {
-            titulo: 'Reservas acompanhadas',
-            texto: 'No piloto, a equipe confirma cada reserva com você e com o tutor antes de qualquer pagamento.',
-          },
-          {
-            titulo: 'Selo de confiança',
-            texto: 'Quatro níveis de verificação aparecem no perfil, e os tutores podem filtrar por eles.',
-          },
+          { titulo: 'Seu preço, sua agenda', texto: 'Você define serviços, valores e dias. Aceita só o que cabe na sua rotina.' },
+          { titulo: 'Tutores do seu bairro', texto: 'A busca é por bairro e raio: nada de atravessar a cidade.' },
+          { titulo: 'Você não fica sozinho', texto: 'No piloto, a equipe confirma cada reserva com você e com o tutor.' },
+          { titulo: 'Selo de confiança', texto: 'Quatro níveis de verificação no seu perfil. Quanto mais comprovação, mais confiança.' },
         ]}
         lado={
           <QuantoRecebe
             fee={fee}
             linhas={[['Passeio', 40], ['Visita em casa', 70], ['Diária de hospedagem', 100]]}
-            nota="Valores ilustrativos: o preço é você quem define. Você vê quanto recebe antes de aceitar cada pedido."
+            nota="Exemplos. O preço é você quem define, e você vê quanto recebe antes de aceitar cada pedido."
           />
         }
       />
 
       <Passos
         itens={[
-          ['Envie o cadastro', 'Leva uns 10 minutos. Não precisa criar conta agora.'],
-          ['Identidade', 'Conferimos documento, contato e endereço.'],
-          ['Conversa com a equipe', 'Entrevista rápida e referências de quem já confiou um pet a você.'],
-          ['Perfil no ar', 'Só o bairro aparece. O endereço nunca é público.'],
-          ['Primeiras reservas', 'Você recebe o pedido, confirma e combina os detalhes.'],
+          ['Escolha os serviços', 'Hospedagem, visita, passeio, creche ou cuidados especiais.'],
+          ['Defina preço e área', 'Valor de cada serviço e até onde você vai.'],
+          ['Conte sua história', 'Experiência com pets e cursos, se tiver.'],
+          ['Indique referências', 'Alguém que já confiou um pet a você. Opcional, mas ajuda.'],
+          ['Verificação', 'Identidade e uma conversa rápida. Resposta em até 5 dias úteis.'],
         ]}
       />
 
@@ -316,16 +307,18 @@ export async function Cuidadores() {
 
       <Cadastro
         titulo="Cadastro de cuidador"
-        texto="Gratuito. Seu perfil só aparece na busca depois da verificação da equipe PetApoio."
+        texto="Gratuito, sem criar conta agora. Preencha no seu tempo: guardamos o rascunho neste aparelho."
         faq={[
-          ['Preciso ter casa com quintal?', 'Não. Visitas e passeios não exigem. Para hospedagem, pedimos um ambiente seguro e combinado com o tutor.'],
-          ['Quanto custa participar?', `Não há mensalidade. A PetApoio fica com ${fee.toLocaleString('pt-BR')}% de cada reserva concluída.`],
-          ['Preciso ter formação?', 'Não é obrigatório. Experiência e referências contam no nível “Verificado”; cursos e primeiros socorros pet contam no “Qualificado”.'],
-          ['Posso dar remédio ao pet?', 'Só medicação prescrita, com receita e instruções do tutor. Cuidadores não fazem diagnóstico nem procedimentos veterinários.'],
-          ['Atendo fora de Belo Horizonte?', 'Por enquanto o piloto cobre BH e Nova Lima. Novas cidades entram depois.'],
+          ['Preciso ter casa com quintal?', 'Não. Visitas e passeios não exigem. Para hospedagem, basta um ambiente seguro, combinado com o tutor.'],
+          ['Quanto custa?', `Nada para entrar. A PetApoio fica com ${fee.toLocaleString('pt-BR')}% de cada reserva concluída.`],
+          ['Preciso de formação?', 'Não. Experiência e referências já contam. Cursos e primeiros socorros pet sobem seu nível.'],
+          ['Posso dar remédio ao pet?', 'Só o que o veterinário prescreveu, com receita e instruções do tutor.'],
+          ['Atendo fora de Belo Horizonte?', `Por enquanto o piloto é em ${PILOT_CITY} e Nova Lima. Novas cidades entram depois.`],
         ]}
       >
-        <CaregiverForm />
+        <FormProgress draftKey="cuidador">
+          <CaregiverForm />
+        </FormProgress>
       </Cadastro>
     </>
   )
@@ -339,61 +332,53 @@ export async function Adestradores() {
     <>
       <Abertura
         atual="adestrador"
-        titulo="Ajude famílias a conviver melhor com seus pets"
-        texto={`Avaliação, aulas avulsas, pacotes e consultoria de comportamento, na casa do tutor, online ou em grupo. Você monta sua oferta; a gente leva até você tutores que precisam exatamente do que você faz. Piloto em ${PILOT_CITY}.`}
-      />
+        titulo="Mais famílias treinando com você, do seu jeito"
+        texto="Avaliação, aulas, pacotes ou consultoria de comportamento, em casa, online ou em grupo. Você monta a oferta; a gente leva até você tutores da região."
+      >
+        <a href="#cadastro" className="btn btn-primario">Quero ser adestrador</a>
+      </Abertura>
 
       <Beneficios
         itens={[
-          {
-            titulo: 'Tutores com a demanda certa',
-            texto: 'Seu perfil mostra suas especialidades, como filhotes, passeio ou ansiedade de separação. O tutor escolhe quem combina.',
-          },
-          {
-            titulo: 'Sua oferta, do seu jeito',
-            texto: 'Avaliação, aula, pacote ou consultoria. Em casa, online ou em grupo. Você define formato, preço e raio.',
-          },
-          {
-            titulo: 'Só reforço positivo',
-            texto: 'Nossa rede trabalha sem choque, enforcador ou punição. Bem-estar do animal em primeiro lugar.',
-          },
-          {
-            titulo: 'Parte do PetApoio Cuida',
-            texto: 'A mesma vitrine e a mesma verificação dos cuidadores do seu bairro, com a equipe acompanhando o começo.',
-          },
+          { titulo: 'Sua metodologia em destaque', texto: 'Especialidades no perfil: filhotes, passeio, ansiedade de separação, gatos. O tutor escolhe quem combina.' },
+          { titulo: 'Seu formato, seu preço', texto: 'Aula avulsa, pacote ou consultoria. Você define valor, horários e até onde vai.' },
+          { titulo: 'Só reforço positivo', texto: 'Uma rede sem choque, enforcador ou punição. Isso gera confiança nos tutores.' },
+          { titulo: 'Vitrine que já recebe tutores', texto: 'Você entra no PetApoio Cuida, ao lado dos cuidadores do seu bairro.' },
         ]}
         lado={
           <QuantoRecebe
             fee={fee}
             linhas={[['Avaliação inicial', 150], ['Aula avulsa', 180], ['Pacote de 8 aulas', 1200]]}
-            nota="Valores ilustrativos: o preço é você quem define. No pacote, a comissão vale sobre o valor total."
+            nota="Exemplos. O preço é você quem define. No pacote, a comissão vale sobre o total."
           />
         }
       />
 
       <Passos
         itens={[
-          ['Envie o cadastro', 'Especialidades, formatos e preços. Uns 10 minutos.'],
-          ['Conversa de verificação', 'Identidade, referências e os cursos que você informou.'],
-          ['Ajuste da oferta', 'Revisamos juntos formatos, preços e área de atendimento.'],
-          ['Perfil no ar', 'Na vitrine do Cuida, com suas especialidades em destaque.'],
-          ['Primeiras aulas', 'O tutor pede a avaliação; você confirma e combina o plano.'],
+          ['Diga como trabalha', 'Onde atende, com quais pets e suas especialidades.'],
+          ['Monte sua oferta', 'Formatos e preços: avaliação, aula, pacote ou consultoria.'],
+          ['Conte sua experiência', 'Tempo de trabalho, cursos e seu Instagram.'],
+          ['Indique referências', 'Um tutor ou clínica que conhece seu trabalho. Opcional, mas ajuda.'],
+          ['Verificação', 'Identidade e uma conversa rápida. Resposta em até 5 dias úteis.'],
         ]}
       />
 
       <Cadastro
         titulo="Cadastro de adestrador"
-        texto="Gratuito. Seu perfil só aparece para tutores depois da verificação da equipe PetApoio."
+        texto="Gratuito, sem criar conta agora. Preencha no seu tempo: guardamos o rascunho neste aparelho."
         faq={[
-          ['Preciso de diploma ou registro?', 'Não existe registro profissional obrigatório para adestradores. Por isso olhamos experiência, referências e formação na verificação.'],
-          ['Quanto custa participar?', `Não há mensalidade. A PetApoio fica com ${fee.toLocaleString('pt-BR')}% de cada aula ou pacote concluído.`],
-          ['Por que exigir reforço positivo?', 'Porque é o que protege o animal e a confiança da família. Usar choque, enforcador ou punição física leva ao desligamento da rede.'],
-          ['E casos de agressividade?', 'Você pode atender. Quando houver suspeita de dor ou doença, oriente o tutor a passar por avaliação veterinária antes.'],
-          ['Trabalho com gatos. Serve?', 'Sim. Marque “Gatos” nas especialidades. Há pouca oferta e muita dúvida dos tutores.'],
-          ['Quando meu perfil aparece?', 'Estamos formando a primeira rede em BH. Depois da aprovação, avisamos a data de abertura da vitrine de adestramento.'],
+          ['Preciso de diploma ou registro?', 'Não existe registro obrigatório para adestradores. Olhamos experiência, referências e cursos.'],
+          ['Quanto custa?', `Nada para entrar. A PetApoio fica com ${fee.toLocaleString('pt-BR')}% de cada aula ou pacote concluído.`],
+          ['Por que só reforço positivo?', 'Protege o animal e a confiança da família. Choque, enforcador ou punição física levam ao desligamento.'],
+          ['E casos de agressividade?', 'Pode atender. Se houver suspeita de dor ou doença, oriente uma avaliação veterinária antes.'],
+          ['Trabalho com gatos. Serve?', 'Serve, e faz falta. Marque “Gatos” nas especialidades.'],
+          ['Quando meu perfil aparece?', 'Estamos formando a primeira rede em BH. Depois da aprovação, avisamos a data de abertura.'],
         ]}
       >
-        <TrainerForm />
+        <FormProgress draftKey="adestrador">
+          <TrainerForm />
+        </FormProgress>
       </Cadastro>
     </>
   )

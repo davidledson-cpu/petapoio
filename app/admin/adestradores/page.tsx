@@ -76,6 +76,7 @@ export default async function AdminAdestradoresPage({ searchParams }: { searchPa
                     {t.headline && <div className="sm:col-span-2"><dt className="text-grafite-suave">Apresentação</dt><dd>{t.headline}</dd></div>}
                     <div className="sm:col-span-2"><dt className="text-grafite-suave">Como trabalha</dt><dd className="whitespace-pre-line">{t.experience}</dd></div>
                     {t.qualifications && <div className="sm:col-span-2"><dt className="text-grafite-suave">Cursos e formação</dt><dd className="whitespace-pre-line">{t.qualifications}</dd></div>}
+                    {t.reference_contacts && <div className="sm:col-span-2"><dt className="text-grafite-suave">Referências</dt><dd className="whitespace-pre-line">{t.reference_contacts}</dd></div>}
                     {t.portfolio_url && <div className="sm:col-span-2"><dt className="text-grafite-suave">Portfólio</dt><dd>{t.portfolio_url}</dd></div>}
                     <div className="sm:col-span-2"><dt className="text-grafite-suave">Reforço positivo</dt><dd>{t.positive_methods ? 'Declarou que não usa métodos aversivos' : 'Não declarou'}</dd></div>
                   </dl>

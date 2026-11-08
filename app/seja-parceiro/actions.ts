@@ -149,6 +149,7 @@ const trainerSchema = z
     headline: optional(160),
     experience: z.string().trim().min(40, { error: 'Conte um pouco mais sobre sua experiência (mínimo de 40 caracteres).' }).max(2000),
     qualifications: optional(1000),
+    reference_contacts: optional(500),
     portfolio_url: z
       .string()
       .trim()

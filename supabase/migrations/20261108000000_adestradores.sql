@@ -32,12 +32,16 @@ create table if not exists public.trainers (
   headline               text check (length(headline) <= 160),
   experience             text check (length(experience) <= 2000),
   qualifications         text check (length(qualifications) <= 1000),
+  reference_contacts     text check (length(reference_contacts) <= 500),
   portfolio_url          text check (length(portfolio_url) <= 200),
   positive_methods       boolean not null default false,
   accepted_terms_at      timestamptz not null default now(),
   approved_at            timestamptz,
   created_at             timestamptz not null default now()
 );
+-- Referências informadas no cadastro (só a equipe vê; fora da vitrine pública).
+alter table public.caregivers add column if not exists reference_contacts text check (length(reference_contacts) <= 500);
+
 create index if not exists trainers_status_idx on public.trainers (status, neighborhood);
 
 alter table public.trainers enable row level security;

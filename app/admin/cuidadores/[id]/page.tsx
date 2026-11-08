@@ -66,6 +66,7 @@ export default async function AdminCuidadorPage({ params, searchParams }: {
             {c.headline && <p className="mt-3 font-serif text-xl">{c.headline}</p>}
             <p className="mt-3 whitespace-pre-line text-grafite-suave">{c.experience}</p>
             {c.qualifications && <p className="mt-3"><strong>Formação declarada:</strong> {c.qualifications}</p>}
+            {c.reference_contacts && <p className="mt-3 whitespace-pre-line"><strong>Referências:</strong> {c.reference_contacts}</p>}
           </section>
         </div>
 

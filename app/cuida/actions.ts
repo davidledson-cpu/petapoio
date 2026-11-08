@@ -47,6 +47,7 @@ const applySchema = z
     pet_sizes: z.array(z.enum(['pequeno', 'medio', 'grande'])).min(1, { error: 'Escolha pelo menos um porte.' }),
     headline: optionalText(160),
     experience: z.string().trim().min(40, { error: 'Conte um pouco mais sobre sua experiência (mínimo de 40 caracteres).' }).max(2000),
+    reference_contacts: optionalText(500),
     qualifications: optionalText(1000),
     price_hosting_cents: optionalPrice,
     price_visit_cents: optionalPrice,
