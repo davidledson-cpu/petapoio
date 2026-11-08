@@ -1,4 +1,5 @@
 import { PanelHeader, Stat, EmptyState } from '@/components/panel-shell'
+import { PRODUCT_INTERESTS } from '@/lib/saude-planos'
 import { requireSession } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import { dateOnly } from '@/lib/format'
@@ -41,6 +42,7 @@ export default async function AdminSaudePage() {
       return acc
     }, {})
   const interests = tally((l) => l.interests)
+  const products = tally((l) => l.products ?? [])
   const budgets = tally((l) => (l.budget ? [l.budget] : []))
   const species = tally((l) => [l.species])
   const ages = tally((l) => [l.pet_age])
@@ -50,10 +52,10 @@ export default async function AdminSaudePage() {
     <>
       <PanelHeader
         title="PetApoio Saúde"
-        intro="Demanda para o clube de benefícios e uso da carteira digital. Use estes números para negociar com operadoras, clínicas e laboratórios."
+        intro="Lista de espera dos planos Saúde, Protege e Despedida e uso da carteira digital. Use estes números na negociação com os parceiros white label."
       />
       <div className="mb-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <Stat label="Pessoas na lista do clube" value={rows.length} />
+        <Stat label="Pessoas na lista de espera" value={rows.length} />
         <Stat label="Pets na carteira digital" value={stats?.pets ?? 0} hint={`${stats?.owners ?? 0} tutores · ${stats?.events ?? 0} registros`} />
         <Stat label="Lembretes nos próximos 30 dias" value={stats?.due_30d ?? 0} hint="oportunidade de prevenção" />
         <Stat label="Lembretes vencidos" value={stats?.overdue ?? 0} />
@@ -64,6 +66,7 @@ export default async function AdminSaudePage() {
       ) : (
         <>
           <div className="grid gap-5 lg:grid-cols-2">
+            <Bars title="Produto de interesse" total={rows.length} data={PRODUCT_INTERESTS.map(([v, l]) => [l, products[v] ?? 0] as [string, number]).sort((a, b) => b[1] - a[1])} />
             <Bars title="O que mais importa" total={rows.length} data={INTERESTS.map(([v, l]) => [l, interests[v] ?? 0] as [string, number]).sort((a, b) => b[1] - a[1])} />
             <Bars title="Disposição a pagar por mês" total={rows.length} data={BUDGETS.map(([v, l]) => [l, budgets[v] ?? 0])} />
             <Bars title="Espécie" total={rows.length} data={Object.entries(SPECIES).map(([v, l]) => [l, species[v] ?? 0])} />

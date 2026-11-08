@@ -1038,3 +1038,8 @@ create policy trainers_apply on public.trainers for insert to anon, authenticate
 );
 drop policy if exists trainers_admin on public.trainers;
 create policy trainers_admin on public.trainers for all using (public.is_admin()) with check (public.is_admin());
+
+-- PetApoio Saúde: interesse por produto na lista de espera (Saúde, Protege, Despedida ou combo).
+alter table public.health_leads
+  add column if not exists products text[] not null default '{}'
+  check (products <@ array['saude', 'protege', 'despedida', 'combo']);

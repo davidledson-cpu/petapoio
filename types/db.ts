@@ -280,4 +280,5 @@ export type HealthLead = {
   interests: string[]
   budget: string | null
   consented_at: string
+  products: string[]
 }

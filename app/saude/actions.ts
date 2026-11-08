@@ -13,16 +13,17 @@ const schema = z.object({
   interests: z
     .array(z.enum(['prevencao', 'consultas', 'ampla', 'emergencia', 'descontos']))
     .min(1, { error: 'Escolha pelo menos uma opção.' }),
+  products: z.array(z.enum(['saude', 'protege', 'despedida', 'combo'])).min(1, { error: 'Escolha o que mais interessa.' }),
   budget: z.enum(['ate30', '30a90', '90a180', 'acima180', 'nao_sei']).optional(),
   consent: z.literal('on', { error: 'Para continuar, aceite a política de privacidade.' }),
 })
 
 export async function joinHealthList(_prev: FormState, form: FormData): Promise<FormState> {
-  const parsed = schema.safeParse({ ...Object.fromEntries(form), interests: form.getAll('interests') })
+  const parsed = schema.safeParse({ ...Object.fromEntries(form), interests: form.getAll('interests'), products: form.getAll('products') })
   if (!parsed.success) return invalid(parsed.error)
   const ok: FormState = {
     status: 'success',
-    message: 'Obrigado. Suas respostas ajudam a escolher os parceiros certos. Avisaremos por e-mail quando houver opções para o seu pet.',
+    message: 'Pronto, você está na lista. Avisaremos por e-mail assim que as condições de lançamento estiverem disponíveis para o seu pet.',
   }
   if (form.get('website_confirm')) return ok
   if (!isSupabaseConfigured()) return NOT_CONFIGURED

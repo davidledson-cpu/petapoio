@@ -5,6 +5,7 @@ import { useActionState } from 'react'
 import { joinHealthList } from '@/app/saude/actions'
 import { initialFormState } from '@/lib/form-state'
 import { BUDGETS, INTERESTS } from '@/lib/saude'
+import { PRODUCT_INTERESTS } from '@/lib/saude-planos'
 import { Field, FieldError, FormStatus, Honeypot, SubmitButton, submitWithoutReset } from '@/components/form-ui'
 
 /** Lista do PetApoio Saúde: três perguntas para entender o que o tutor procura. */
@@ -32,6 +33,17 @@ export function HealthLeadForm() {
             </select>
           )}
         </Field>
+      </div>
+      <div>
+        <p className="rotulo">O que interessa a você?</p>
+        <div className="flex flex-wrap gap-2">
+          {PRODUCT_INTERESTS.map(([v, l]) => (
+            <label key={v} className="flex cursor-pointer items-center gap-2 rounded-full border-[1.5px] border-areia-escura bg-white px-3.5 py-1.5 text-[0.95rem] has-[:checked]:border-salvia-funda has-[:checked]:bg-salvia-clara">
+              <input type="checkbox" name="products" value={v} className="size-4 accent-salvia-funda" />{l}
+            </label>
+          ))}
+        </div>
+        <FieldError id="f-products-erro" message={err.products} />
       </div>
       <div>
         <p className="rotulo">O que é mais importante para você?</p>
@@ -62,7 +74,7 @@ export function HealthLeadForm() {
         </label>
         <FieldError id="f-consent-erro" message={err.consent} />
       </div>
-      <SubmitButton pending={pending} className="w-full sm:w-auto">Quero ser avisado</SubmitButton>
+      <SubmitButton pending={pending} className="w-full sm:w-auto">Entrar na lista de espera</SubmitButton>
     </form>
   )
 }
