@@ -4,38 +4,38 @@ import { site } from '@/lib/site'
 
 const grupos = [
   {
-    titulo: 'Acolhe',
+    titulo: 'Cuidado e Saúde',
     links: [
-      { href: '/encontre-apoio', label: 'Apoio no luto' },
+      { href: '/saude', label: 'Planos de saúde pet' },
+      { href: '/cuida', label: 'Cuidadores e adestradores' },
+      { href: '/produtos', label: 'Produtos pet' },
+      { href: '/painel/pets', label: 'Carteira de saúde' },
+    ],
+  },
+  {
+    titulo: 'Apoio Emocional',
+    links: [
       { href: '/psicologos', label: 'Psicólogos' },
-      { href: '/loja', label: 'Lembranças' },
-      { href: '/blog', label: 'Blog' },
+      { href: '/encontre-apoio', label: 'Luto pet' },
+      { href: '/loja', label: 'Memórias pet' },
       { href: '/ajuda-imediata', label: 'Ajuda imediata' },
     ],
   },
   {
-    titulo: 'Cuida e Saúde',
+    titulo: 'Seja Parceiro',
     links: [
-      { href: '/cuida', label: 'Cuidadores' },
-      { href: '/saude', label: 'Planos de saúde' },
-      { href: '/painel/pets', label: 'Carteira de saúde do pet' },
-    ],
-  },
-  {
-    titulo: 'Para profissionais',
-    links: [
-      { href: '/seja-parceiro/psicologos', label: 'Para psicólogos' },
-      { href: '/seja-parceiro/cuidadores', label: 'Para cuidadores' },
-      { href: '/seja-parceiro/adestradores', label: 'Para adestradores' },
-      { href: '/entrar?perfil=psicologo', label: 'Área do psicólogo' },
+      { href: '/seja-parceiro/psicologos', label: 'Sou psicólogo' },
+      { href: '/seja-parceiro/cuidadores', label: 'Sou cuidador' },
+      { href: '/seja-parceiro/adestradores', label: 'Sou adestrador' },
+      { href: '/seja-parceiro#empresas', label: 'Fornecedores e empresas' },
     ],
   },
   {
     titulo: 'PetApoio',
     links: [
       { href: '/sobre', label: 'Sobre' },
-      { href: '/entrar?perfil=paciente', label: 'Área do tutor' },
-      { href: '/loja/carrinho', label: 'Carrinho' },
+      { href: '/blog', label: 'Conteúdos' },
+      { href: '/entrar?perfil=paciente', label: 'Minha conta' },
       { href: '/privacidade', label: 'Privacidade' },
       { href: '/termos', label: 'Termos de uso' },
     ],

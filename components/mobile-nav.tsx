@@ -50,7 +50,7 @@ export function MobileNav({ account }: { account: { href: string; label: string 
                   {'children' in item && (
                     <ul className="-mt-1 mb-3 space-y-1 border-l-2 border-areia pl-4">
                       {item.children.map((sub) => (
-                        <li key={sub.href}>
+                        <li key={sub.label}>
                           <Link href={sub.href} className="block py-1.5 text-[1.02rem] text-grafite-suave hover:text-grafite">
                             {sub.label}
                           </Link>
@@ -62,8 +62,8 @@ export function MobileNav({ account }: { account: { href: string; label: string 
               ))}
             </ul>
             <div className="mt-4 grid gap-2 sm:grid-cols-2">
-              <Link href="/psicologos" className="btn btn-primario w-full">
-                Encontrar psicólogo
+              <Link href="/#ajuda" className="btn btn-primario w-full">
+                Como podemos ajudar?
               </Link>
               <Link href={account.href} className="btn btn-secundario w-full">
                 {account.label}

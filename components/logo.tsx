@@ -44,10 +44,10 @@ export function Logo({ tone = 'claro' }: { tone?: 'claro' | 'escuro' }) {
       aria-label="PetApoio — início"
     >
       <LogoMark
-        ink={escuro ? 'var(--color-salvia-clara)' : 'var(--color-salvia-funda)'}
-        paper={escuro ? 'var(--color-salvia-noite)' : 'var(--color-linho)'}
+        ink={escuro ? 'var(--color-laranja)' : 'var(--color-laranja)'}
+        paper={escuro ? 'var(--color-salvia-noite)' : '#fff'}
       />
-      <span className="font-serif text-[1.5rem] leading-none tracking-tight">PetApoio</span>
+      <span className="font-serif text-[1.55rem] font-extrabold leading-none tracking-tight">PetApoio</span>
     </Link>
   )
 }

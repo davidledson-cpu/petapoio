@@ -2,23 +2,27 @@
 @plugin '@tailwindcss/typography';
 
 @theme {
-  /* Paleta: linho, areia, sálvia, azul-névoa, grafite quente */
-  --color-linho: #f6f5f0;
-  --color-linho-escuro: #eeece4;
-  --color-areia: #e7dfd1;
-  --color-areia-escura: #d6cab5;
-  --color-salvia: #7c9a86;
-  --color-salvia-clara: #dfe7e0;
-  --color-salvia-funda: #3e5a4b;
-  --color-salvia-noite: #2f4639;
-  --color-nevoa: #5d7381;
-  --color-nevoa-clara: #e3e9ec;
-  --color-grafite: #2e2a27;
-  --color-grafite-suave: #5a534d;
-  --color-alerta: #8a3b2e;
+  /* Versão 2: creme quente, laranja de ação, verde-petróleo de confiança */
+  --color-linho: #fff8f1;
+  --color-linho-escuro: #fbefe3;
+  --color-areia: #f4e6d8;
+  --color-areia-escura: #e6d1bc;
+  --color-salvia: #3f9a80;
+  --color-salvia-clara: #e3f2ec;
+  --color-salvia-funda: #1f5245;
+  --color-salvia-noite: #173f36;
+  --color-nevoa: #7a62a8;
+  --color-nevoa-clara: #efe9f7;
+  --color-laranja: #ee7a2f;
+  --color-laranja-escuro: #d5631a;
+  --color-laranja-clara: #fde9d8;
+  --color-grafite: #24302c;
+  --color-grafite-suave: #5b6560;
+  --color-alerta: #a13d2a;
 
-  --font-serif: 'Newsreader Variable', 'Iowan Old Style', Georgia, serif;
+  --font-serif: 'Nunito Variable', ui-rounded, ui-sans-serif, system-ui, sans-serif;
   --font-sans: 'Hanken Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-script: 'Caveat', 'Segoe Script', cursive;
 }
 
 @layer base {
@@ -37,15 +41,15 @@
   h2,
   h3 {
     font-family: var(--font-serif);
-    font-weight: 420;
-    letter-spacing: -0.012em;
+    font-weight: 800;
+    letter-spacing: -0.02em;
     text-wrap: balance;
   }
   p {
     text-wrap: pretty;
   }
   ::selection {
-    background: var(--color-salvia-clara);
+    background: var(--color-laranja-clara);
   }
   :focus-visible {
     outline: 2px solid var(--color-salvia-funda);
@@ -80,11 +84,24 @@
     transition: background-color 150ms ease, color 150ms ease;
   }
   .btn-primario {
-    background: var(--color-salvia-funda);
-    color: var(--color-linho);
+    background: var(--color-laranja);
+    color: #fff;
+    box-shadow: 0 8px 20px -10px rgb(238 122 47 / 0.7);
   }
   .btn-primario:hover {
+    background: var(--color-laranja-escuro);
+  }
+  .btn-verde {
+    background: var(--color-salvia-funda);
+    color: #fff;
+  }
+  .btn-verde:hover {
     background: var(--color-salvia-noite);
+  }
+  .script {
+    font-family: var(--font-script);
+    font-weight: 700;
+    letter-spacing: 0;
   }
   .btn-secundario {
     background: transparent;

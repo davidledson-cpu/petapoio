@@ -16,7 +16,7 @@ export async function SiteHeader() {
       <div className="container-page flex h-[4.5rem] items-center justify-between gap-6">
         <Logo />
         <nav aria-label="Principal" className="hidden xl:block">
-          <ul className="flex items-center gap-5 whitespace-nowrap text-[0.97rem] font-medium 2xl:gap-7">
+          <ul className="flex items-center gap-5 whitespace-nowrap text-[0.95rem] font-semibold 2xl:gap-7">
             {nav.map((item) =>
               'children' in item ? (
                 <li key={item.href} className="group relative">
@@ -31,10 +31,10 @@ export async function SiteHeader() {
                     </svg>
                   </Link>
                   {/* Abre no hover e no foco do teclado; pt-3 mantém a área contínua entre o link e o painel. */}
-                  <div className="invisible absolute right-0 top-full z-50 pt-3 opacity-0 transition-opacity group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+                  <div className="invisible absolute left-0 top-full z-50 pt-3 opacity-0 transition-opacity group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
                     <ul className="min-w-56 rounded-2xl border border-areia bg-white p-2 shadow-[0_20px_40px_-24px_rgba(46,42,39,.45)]">
                       {item.children.map((sub) => (
-                        <li key={sub.href}>
+                        <li key={sub.label}>
                           <Link href={sub.href} className="block rounded-xl px-4 py-2.5 text-grafite hover:bg-linho-escuro focus-visible:bg-linho-escuro">
                             {sub.label}
                           </Link>
@@ -65,8 +65,8 @@ export async function SiteHeader() {
             </svg>
             {account.label}
           </Link>
-          <Link href="/psicologos" className="btn btn-primario hidden !min-h-10 whitespace-nowrap !py-2 md:inline-flex xl:hidden 2xl:inline-flex">
-            Encontrar psicólogo
+          <Link href="/#ajuda" className="btn btn-primario hidden !min-h-10 whitespace-nowrap !py-2 md:inline-flex xl:hidden 2xl:inline-flex">
+            Como podemos ajudar?
           </Link>
           <MobileNav account={account} />
         </div>

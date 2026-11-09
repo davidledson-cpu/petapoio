@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { Icon, type IconName } from '@/components/icon'
 import { Faq } from '@/components/faq'
@@ -6,7 +7,7 @@ import { HealthLeadForm } from '@/components/saude/health-lead-form'
 import { brlMes, COMBOS, MOSTRAR_PRECOS, PRODUTOS } from '@/lib/saude-planos'
 
 export const metadata: Metadata = {
-  title: 'PetApoio Saúde · Saúde, proteção e despedida para o seu pet',
+  title: { absolute: 'Saúde e Planos de Proteção para Cães e Gatos | PetApoio' },
   description:
     'Planos PetApoio Saúde, Protege e Despedida, operados por parceiros especializados: cuidado no dia a dia, nos imprevistos e na despedida. Lista de espera aberta e carteira digital grátis.',
   alternates: { canonical: '/saude' },
@@ -76,18 +77,18 @@ const faq = [
 export default function SaudePage() {
   return (
     <>
-      <section className="bg-[radial-gradient(ellipse_at_top_right,#dfe7e0_0%,#f6f5f0_55%)]">
+      <section className="bg-[linear-gradient(110deg,#fff8f1_0%,#eaf4ef_60%,#d9ece3_100%)]">
         <div className="container-page grid gap-12 pb-16 pt-12 md:pt-16 lg:grid-cols-[1.1fr_1fr] lg:items-center">
           <div>
             <p className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-1.5 text-[0.95rem] font-semibold text-salvia-funda shadow-[0_1px_0_var(--color-areia)]">
               <Icon name="plus" className="size-4" /> PetApoio Saúde · pré-lançamento
             </p>
-            <h1 className="mt-5 text-[2.6rem] leading-[1.06] md:text-6xl">
-              Proteção completa para <span className="italic text-salvia-funda">quem é da família</span>
+            <h1 className="mt-5 text-[2.6rem] leading-[1.05] text-salvia-funda md:text-[3.6rem]">
+              Cuidado e saúde para uma vida longa e feliz.
             </h1>
             <p className="mt-5 max-w-[52ch] text-lg text-grafite-suave md:text-xl md:leading-relaxed">
-              Saúde no dia a dia, proteção nos imprevistos e uma despedida digna quando chegar a hora. Planos com a marca
-              PetApoio, operados por empresas especializadas.
+              Saúde no dia a dia, proteção nos imprevistos e uma despedida digna quando chegar a hora, para quem faz parte
+              da família. Planos com a marca PetApoio, operados por empresas especializadas.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a href="#planos" className="btn btn-primario !px-7">Conhecer os planos</a>
@@ -98,30 +99,8 @@ export default function SaudePage() {
             </p>
           </div>
 
-          {/* Prévia da carteira */}
-          <div aria-hidden="true" className="relative mx-auto w-full max-w-md">
-            <div className="rounded-[1.75rem] bg-white p-6 shadow-[0_30px_60px_-36px_rgba(46,42,39,.6)]">
-              <div className="flex items-center gap-4">
-                <span className="flex size-14 items-center justify-center rounded-2xl bg-salvia-clara text-salvia-noite"><Icon name="paw" className="size-7" /></span>
-                <div>
-                  <p className="font-serif text-2xl">Mel</p>
-                  <p className="text-sm text-grafite-suave">Cão · 7 anos · 12 kg</p>
-                </div>
-              </div>
-              <ul className="mt-6 space-y-3">
-                {[
-                  ['Vacina V10', 'Próxima dose em 12 dias', 'bg-[#f3e8cf] text-[#6b4f12]'],
-                  ['Antirrábica', 'Em dia até março', 'bg-salvia-clara text-salvia-noite'],
-                  ['Check-up anual', 'Feito em agosto', 'bg-nevoa-clara text-nevoa'],
-                ].map(([t, d, tone]) => (
-                  <li key={t} className="flex items-center justify-between gap-3 rounded-xl bg-linho px-4 py-3">
-                    <span className="font-semibold">{t}</span>
-                    <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${tone}`}>{d}</span>
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-4 text-xs text-grafite-suave">Exemplo ilustrativo</p>
-            </div>
+          <div className="relative mx-auto aspect-[6/5] w-full max-w-lg overflow-hidden rounded-[2rem] shadow-[0_40px_80px_-40px_rgba(20,70,50,.45)]">
+            <Image src="/fotos/casal-pets.webp" alt="Cachorro e gato lado a lado, felizes" fill priority sizes="(min-width: 1024px) 512px, 100vw" className="object-cover" />
           </div>
         </div>
       </section>

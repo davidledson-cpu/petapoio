@@ -27,18 +27,55 @@ export const site = {
 export type NavLink = { href: string; label: string; children?: readonly { href: string; label: string }[] }
 
 export const nav = [
-  { href: '/psicologos', label: 'Psicólogos' },
-  { href: '/encontre-apoio', label: 'Apoio no luto' },
-  { href: '/cuida', label: 'Cuidadores' },
-  { href: '/saude', label: 'Saúde' },
-  { href: '/loja', label: 'Loja' },
+  {
+    href: '/saude',
+    label: 'Cuidado e Saúde',
+    children: [
+      { href: '/saude#planos', label: 'Planos de saúde pet' },
+      { href: '/saude#planos', label: 'Seguros e proteção' },
+      { href: '/cuida', label: 'Cuidadores e adestradores' },
+      { href: '/painel/pets', label: 'Carteira de saúde do pet' },
+    ],
+  },
+  {
+    href: '/produtos',
+    label: 'Produtos',
+    children: [
+      { href: '/produtos#conforto', label: 'Conforto e bem-estar' },
+      { href: '/produtos#higiene', label: 'Higiene e cuidados' },
+      { href: '/produtos#brincadeiras', label: 'Brincadeiras e estímulos' },
+      { href: '/produtos#passeios', label: 'Passeios e acessórios' },
+      { href: '/produtos#alimentacao', label: 'Alimentação e petiscos' },
+    ],
+  },
+  {
+    href: '/psicologos',
+    label: 'Apoio Emocional',
+    children: [
+      { href: '/psicologos', label: 'Psicólogos' },
+      { href: '/encontre-apoio', label: 'Luto pet' },
+      { href: '/blog', label: 'Conteúdos de acolhimento' },
+      { href: '/ajuda-imediata', label: 'Ajuda imediata' },
+    ],
+  },
+  {
+    href: '/loja',
+    label: 'Memórias',
+    children: [
+      { href: '/loja', label: 'Caixas e quadros' },
+      { href: '/loja', label: 'Pegadas e pingentes' },
+      { href: '/loja', label: 'Homenagens' },
+    ],
+  },
+  { href: '/blog', label: 'Conteúdos' },
   {
     href: '/seja-parceiro',
-    label: 'Para profissionais',
+    label: 'Seja Parceiro',
     children: [
-      { href: '/seja-parceiro/psicologos', label: 'Para psicólogos' },
-      { href: '/seja-parceiro/cuidadores', label: 'Para cuidadores' },
-      { href: '/seja-parceiro/adestradores', label: 'Para adestradores' },
+      { href: '/seja-parceiro/psicologos', label: 'Sou psicólogo' },
+      { href: '/seja-parceiro/cuidadores', label: 'Sou cuidador' },
+      { href: '/seja-parceiro/adestradores', label: 'Sou adestrador' },
+      { href: '/seja-parceiro#empresas', label: 'Sou fornecedor ou empresa' },
     ],
   },
 ] as const satisfies readonly NavLink[]

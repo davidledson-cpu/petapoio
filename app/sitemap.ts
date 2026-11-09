@@ -8,6 +8,7 @@ const pages = [
   '/ajuda-imediata',
   '/psicologos',
   '/seja-parceiro',
+  '/produtos',
   '/cuida',
   '/seja-parceiro/psicologos',
   '/seja-parceiro/cuidadores',

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { CATEGORIES, getProducts, getShippingSettings, isCategory } from '@/lib/loja/catalog'
 import { ProductCard } from '@/components/loja/product-card'
@@ -6,7 +7,7 @@ import { SignupForm } from '@/components/forms'
 import { money } from '@/lib/format'
 
 export const metadata: Metadata = {
-  title: 'Loja de lembranças e homenagens',
+  title: { absolute: 'Homenagens e Lembranças Personalizadas para Pets | PetApoio' },
   description:
     'Retratos ilustrados, caixas de recordação, pingentes e presentes de acolhimento feitos sob encomenda para guardar a memória do seu pet.',
   alternates: { canonical: '/loja' },
@@ -19,28 +20,35 @@ export default async function LojaPage({ searchParams }: { searchParams: Promise
 
   return (
     <>
-      <header className="container-page grid gap-8 pb-10 pt-14 md:pt-20 lg:grid-cols-[1.2fr_1fr] lg:items-end lg:gap-16">
-        <div>
-          <h1 className="text-[2.6rem] leading-[1.06] md:text-6xl">Para guardar a história de vocês</h1>
-          <p className="mt-6 max-w-[56ch] text-lg text-grafite-suave md:text-xl md:leading-relaxed">
-            Lembranças e homenagens feitas sob encomenda, com a foto e o nome do seu companheiro. Sem pressa: cada
-            peça só entra em produção depois que você aprova os detalhes.
-          </p>
+      <header className="relative overflow-hidden bg-[linear-gradient(110deg,#fff8f1_0%,#fbeee2_60%,#f6dcc4_100%)]">
+        <div className="container-page grid items-center gap-10 pb-12 pt-10 md:pt-14 lg:grid-cols-[1.05fr_1fr]">
+          <div>
+            <p className="font-semibold text-nevoa">Memórias pet</p>
+            <h1 className="mt-2 text-[2.6rem] leading-[1.05] text-salvia-funda md:text-[3.6rem]">Memórias que permanecem para sempre.</h1>
+            <p className="mt-5 max-w-[52ch] text-lg text-grafite md:text-xl md:leading-relaxed">
+              Produtos especiais para homenagear quem sempre esteve ao seu lado, feitos sob encomenda com a foto e o nome
+              do seu companheiro. Cada peça só entra em produção depois que você aprova os detalhes.
+            </p>
+            <a href="#produtos" className="btn btn-primario mt-8">Conheça nossa linha</a>
+            <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[0.95rem] text-grafite">
+              <li><strong>Prévia antes de produzir</strong></li>
+              <li><strong>Pix ou cartão em até 6x</strong></li>
+              <li><strong>Frete grátis</strong> a partir de {money(shipping.free_shipping_from_cents)}</li>
+            </ul>
+          </div>
+          <div className="relative aspect-[3/2] overflow-hidden rounded-[2rem] shadow-[0_40px_80px_-40px_rgba(120,60,10,.5)]">
+            <Image src="/fotos/pata-maos.webp" alt="Mão segurando com carinho a pata de um cachorro" fill priority sizes="(min-width: 1024px) 540px, 100vw" className="object-cover" />
+          </div>
         </div>
-        <ul className="grid gap-3 text-[0.97rem] text-grafite-suave sm:grid-cols-3 lg:grid-cols-1">
-          <li><strong className="text-grafite">Prévia antes de produzir</strong> nos itens com foto</li>
-          <li><strong className="text-grafite">Pix ou cartão em até 6x</strong> pelo Mercado Pago</li>
-          <li><strong className="text-grafite">Frete grátis</strong> a partir de {money(shipping.free_shipping_from_cents)}</li>
-        </ul>
       </header>
 
       <nav aria-label="Categorias" className="container-page">
-        <ul className="flex gap-2 overflow-x-auto border-y border-areia py-4">
+        <ul className="mt-8 flex gap-2 overflow-x-auto border-y border-areia py-4">
           <li className="shrink-0">
             <Link
               href="/loja"
               aria-current={!active ? 'page' : undefined}
-              className={`inline-block rounded-full px-4 py-2 text-[0.95rem] ${!active ? 'bg-salvia-funda text-linho' : 'bg-areia hover:bg-areia-escura'}`}
+              className={`inline-block rounded-full px-4 py-2 text-[0.95rem] ${!active ? 'bg-salvia-funda text-white' : 'bg-areia hover:bg-areia-escura'}`}
             >
               Tudo
             </Link>
@@ -50,7 +58,7 @@ export default async function LojaPage({ searchParams }: { searchParams: Promise
               <Link
                 href={`/loja?categoria=${slug}`}
                 aria-current={active === slug ? 'page' : undefined}
-                className={`inline-block rounded-full px-4 py-2 text-[0.95rem] ${active === slug ? 'bg-salvia-funda text-linho' : 'bg-areia hover:bg-areia-escura'}`}
+                className={`inline-block rounded-full px-4 py-2 text-[0.95rem] ${active === slug ? 'bg-salvia-funda text-white' : 'bg-areia hover:bg-areia-escura'}`}
               >
                 {c.label}
               </Link>
