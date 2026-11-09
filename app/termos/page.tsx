@@ -15,11 +15,12 @@ export default function TermosPage() {
       <PageHeader title="Termos de uso" intro="Última atualização: 6 de novembro de 2026." />
       <div className="container-page">
         <div className="texto prose max-w-[44rem]">
-          <h2>O que o PetApoio oferece</h2>
+          <h2>O que a PetApoio oferece</h2>
           <p>
-            O PetApoio publica conteúdo informativo sobre o luto pela perda de animais e reúne profissionais de
-            psicologia que atendem esse tema. O conteúdo não é atendimento psicológico, não substitui avaliação
-            profissional e não serve para diagnóstico.
+            A PetApoio reúne, sob a mesma marca, três frentes: Acolhe (conteúdo sobre o luto pela perda de animais e
+            psicólogos que atendem esse tema), Cuida (cuidadores e adestradores independentes, verificados pela equipe) e
+            Saúde (carteira digital e planos operados por empresas parceiras). O conteúdo não é atendimento psicológico,
+            não substitui avaliação profissional ou veterinária e não serve para diagnóstico.
           </p>
           <h2>Não somos um serviço de emergência</h2>
           <p>
@@ -29,7 +30,7 @@ export default function TermosPage() {
           <h2>Profissionais</h2>
           <p>
             Cada psicóloga ou psicólogo é responsável pelo próprio atendimento, de acordo com o Código de Ética
-            Profissional do Psicólogo. O PetApoio confere o registro no CRP antes de publicar um perfil, mas não
+            Profissional do Psicólogo. A PetApoio confere o registro no CRP antes de publicar um perfil, mas não
             participa das sessões.
           </p>
           <h2 id="cuida">PetApoio Cuida: regras da reserva</h2>
@@ -58,7 +59,8 @@ export default function TermosPage() {
           </ul>
           <h2 id="saude">PetApoio Saúde</h2>
           <p>
-            Hoje o PetApoio Saúde oferece a carteira digital de saúde do pet, gratuita, e uma lista de interesse. A
+            Hoje a PetApoio Saúde oferece a carteira digital de saúde do pet, gratuita, e uma lista de espera para os
+            planos Saúde, Protege e Despedida, apresentados em pré-lançamento, sem venda e com preços de referência. A
             carteira é um registro feito por você e não substitui o prontuário nem a orientação do veterinário.
             Planos, assistência veterinária ou seguros, quando disponíveis, serão oferecidos por empresas parceiras
             habilitadas, com coberturas, carências e exclusões definidas no contrato de cada uma. A PetApoio não é
@@ -66,7 +68,7 @@ export default function TermosPage() {
           </p>
           <h2>Conteúdo</h2>
           <p>
-            Os textos do PetApoio são protegidos por direitos autorais. Você pode compartilhar links livremente. Para
+            Os textos da PetApoio são protegidos por direitos autorais. Você pode compartilhar links livremente. Para
             reproduzir um texto, peça autorização por <a href="mailto:contato@petapoio.com.br">contato@petapoio.com.br</a>.
           </p>
           <h2>Privacidade</h2>

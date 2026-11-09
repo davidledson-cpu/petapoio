@@ -16,7 +16,7 @@ const SIGNUP_SUCCESS: Record<string, string> = {
   psicologos: 'Combinado. Avisaremos por e-mail quando houver novos profissionais disponíveis.',
   loja: 'Combinado. Avisaremos por e-mail sobre novidades da loja.',
   cuida: 'Combinado. Avisaremos quando houver cuidadores verificados no seu bairro.',
-  saude: 'Combinado. Avisaremos quando o PetApoio Saúde abrir.',
+  saude: 'Combinado. Avisaremos quando a PetApoio Saúde abrir.',
 }
 
 export async function subscribe(_prev: FormState, form: FormData): Promise<FormState> {

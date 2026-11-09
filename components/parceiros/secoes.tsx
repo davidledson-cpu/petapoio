@@ -174,7 +174,7 @@ export async function Psicologos() {
         itens={[
           {
             titulo: 'Quem procura, procura você',
-            texto: 'Quem chega ao PetApoio está atravessando a perda de um animal e quer alguém que leve esse luto a sério.',
+            texto: 'Quem chega à PetApoio está atravessando a perda de um animal e quer alguém que leve esse luto a sério.',
           },
           {
             titulo: 'Agenda e pagamento resolvidos',
@@ -343,7 +343,7 @@ export async function Adestradores() {
           { titulo: 'Sua metodologia em destaque', texto: 'Especialidades no perfil: filhotes, passeio, ansiedade de separação, gatos. O tutor escolhe quem combina.' },
           { titulo: 'Seu formato, seu preço', texto: 'Aula avulsa, pacote ou consultoria. Você define valor, horários e até onde vai.' },
           { titulo: 'Só reforço positivo', texto: 'Uma rede sem choque, enforcador ou punição. Isso gera confiança nos tutores.' },
-          { titulo: 'Vitrine que já recebe tutores', texto: 'Você entra no PetApoio Cuida, ao lado dos cuidadores do seu bairro.' },
+          { titulo: 'Vitrine que já recebe tutores', texto: 'Você entra na PetApoio Cuida, ao lado dos cuidadores do seu bairro.' },
         ]}
         lado={
           <QuantoRecebe

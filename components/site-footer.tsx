@@ -6,37 +6,36 @@ const grupos = [
   {
     titulo: 'Acolhe',
     links: [
+      { href: '/encontre-apoio', label: 'Apoio no luto' },
       { href: '/psicologos', label: 'Psicólogos' },
-      { href: '/encontre-apoio', label: 'Encontre apoio' },
-      { href: '/ajuda-imediata', label: 'Ajuda imediata' },
+      { href: '/loja', label: 'Lembranças' },
       { href: '/blog', label: 'Blog' },
+      { href: '/ajuda-imediata', label: 'Ajuda imediata' },
     ],
   },
   {
     titulo: 'Cuida e Saúde',
     links: [
-      { href: '/cuida', label: 'Encontrar cuidador' },
-      { href: '/saude', label: 'Carteira de saúde do pet' },
-      { href: '/seja-parceiro/psicologos', label: 'Para psicólogos' },
-      { href: '/seja-parceiro/cuidadores', label: 'Para cuidadores' },
-      { href: '/seja-parceiro/adestradores', label: 'Para adestradores' },
+      { href: '/cuida', label: 'Cuidadores' },
+      { href: '/saude', label: 'Planos de saúde' },
+      { href: '/painel/pets', label: 'Carteira de saúde do pet' },
     ],
   },
   {
-    titulo: 'Acesso',
+    titulo: 'Para profissionais',
     links: [
-      { href: '/entrar?perfil=paciente', label: 'Área do tutor' },
+      { href: '/seja-parceiro/psicologos', label: 'Para psicólogos' },
+      { href: '/seja-parceiro/cuidadores', label: 'Para cuidadores' },
+      { href: '/seja-parceiro/adestradores', label: 'Para adestradores' },
       { href: '/entrar?perfil=psicologo', label: 'Área do psicólogo' },
-      { href: '/entrar?perfil=admin', label: 'Administração' },
-      { href: '/loja/carrinho', label: 'Carrinho' },
     ],
   },
   {
     titulo: 'PetApoio',
     links: [
       { href: '/sobre', label: 'Sobre' },
-      { href: '/blog', label: 'Blog' },
-      { href: '/loja', label: 'Loja' },
+      { href: '/entrar?perfil=paciente', label: 'Área do tutor' },
+      { href: '/loja/carrinho', label: 'Carrinho' },
       { href: '/privacidade', label: 'Privacidade' },
       { href: '/termos', label: 'Termos de uso' },
     ],
@@ -76,8 +75,8 @@ export function SiteFooter() {
       </div>
       <div className="container-page flex flex-col gap-2 border-t border-white/10 py-6 text-sm text-linho/60 sm:flex-row sm:justify-between">
         <p>
-          O PetApoio oferece conteúdo e conexão com profissionais. Não é serviço de emergência e não substitui
-          atendimento psicológico.
+          A PetApoio conecta tutores a profissionais e parceiros verificados. Não é serviço de emergência, não substitui
+          atendimento psicológico ou veterinário e não é operadora de planos nem seguradora.
         </p>
         <p className="shrink-0">
           <a href={`mailto:${site.email}`} className="hover:text-linho">{site.email}</a>

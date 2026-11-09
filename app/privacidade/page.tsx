@@ -3,7 +3,7 @@ import { PageHeader } from '@/components/page-header'
 
 export const metadata: Metadata = {
   title: 'Política de privacidade',
-  description: 'Quais dados o PetApoio coleta, para quê, por quanto tempo e como exercer seus direitos pela LGPD.',
+  description: 'Quais dados a PetApoio coleta, para quê, por quanto tempo e como exercer seus direitos pela LGPD.',
   alternates: { canonical: '/privacidade' },
 }
 
@@ -17,7 +17,7 @@ export default function PrivacidadePage() {
       <div className="container-page">
         <div className="texto prose max-w-[44rem]">
           <p>
-            Esta política explica como o PetApoio trata dados pessoais, de acordo com a Lei Geral de Proteção de Dados
+            Esta política explica como a PetApoio trata dados pessoais, de acordo com a Lei Geral de Proteção de Dados
             (Lei nº 13.709/2018). Coletamos o mínimo necessário e não pedimos relatos sobre a sua perda.
           </p>
 

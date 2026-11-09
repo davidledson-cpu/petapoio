@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!p) return { title: 'Profissional não encontrado' }
   return {
     title: `${p.full_name} — psicóloga(o) para o luto`,
-    description: p.headline ?? `Converse com ${p.full_name}, CRP ${p.crp}/${p.crp_state}, pelo PetApoio.`,
+    description: p.headline ?? `Converse com ${p.full_name}, CRP ${p.crp}/${p.crp_state}, pela PetApoio.`,
     alternates: { canonical: `/psicologos/${slug}` },
   }
 }

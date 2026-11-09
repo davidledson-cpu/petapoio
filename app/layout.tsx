@@ -12,7 +12,7 @@ import { site } from '@/lib/site'
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: 'PetApoio — acolhimento para quem perdeu um pet',
+    default: 'PetApoio — cuidado, apoio e acolhimento para você e seu pet',
     template: '%s | PetApoio',
   },
   description: site.description,

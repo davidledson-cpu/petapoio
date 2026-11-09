@@ -84,7 +84,7 @@ export default function EncontreApoioPage() {
         <div>
           <h1 className="text-[2.6rem] leading-[1.06] md:text-6xl">A dor de perder um pet é real. E não precisa ser vivida sozinha.</h1>
           <p className="mt-6 max-w-[58ch] text-lg text-grafite-suave md:text-xl md:leading-relaxed">
-            O PetApoio ajuda você a entender o que está sentindo, a atravessar os dias difíceis e, se quiser, a conversar
+            A PetApoio ajuda você a entender o que está sentindo, a atravessar os dias difíceis e, se quiser, a conversar
             com um psicólogo que entende essa perda.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
@@ -105,7 +105,7 @@ export default function EncontreApoioPage() {
 
       <section className="border-y border-areia bg-linho-escuro py-14" aria-labelledby="titulo-ajuda">
         <div className="container-page">
-          <h2 id="titulo-ajuda" className="text-3xl md:text-4xl">Como o PetApoio ajuda</h2>
+          <h2 id="titulo-ajuda" className="text-3xl md:text-4xl">Como a PetApoio ajuda</h2>
           <dl className="mt-8 grid gap-8 md:grid-cols-3">
             {ajuda.map((a) => (
               <div key={a.titulo}>

@@ -9,9 +9,9 @@ import { careFeePercent, listCaregivers, type CaregiverFilters } from '@/lib/cui
 import { LEVELS, NEIGHBORHOOD_NAMES, PILOT_CITY, SERVICES, SIZES, SPECIES, type CareService } from '@/lib/cuida-shared'
 
 export const metadata: Metadata = {
-  title: 'PetApoio Cuida · Cuidadores de pets perto de você',
+  title: 'PetApoio Cuida · Cuidadores e adestradores perto de você',
   description:
-    'Hospedagem domiciliar, visitas, passeios e creche com cuidadores verificados no seu bairro. Piloto em Belo Horizonte.',
+    'Hospedagem, visitas, passeios e creche com cuidadores verificados no seu bairro, e adestradores que trabalham só com reforço positivo. Piloto em Belo Horizonte.',
   alternates: { canonical: '/cuida' },
 }
 
@@ -39,7 +39,7 @@ const passos = [
 
 const faq = [
   {
-    q: 'Onde o PetApoio Cuida funciona?',
+    q: 'Onde a PetApoio Cuida funciona?',
     a: `Estamos em fase-piloto em ${PILOT_CITY}, bairro a bairro. Se o seu ainda não aparece, deixe o e-mail no fim da página e avisamos quando houver cuidadores verificados por perto.`,
   },
   {
@@ -53,6 +53,10 @@ const faq = [
   {
     q: 'Como funciona o pagamento?',
     a: 'Na fase-piloto, a equipe confirma a reserva com você e com o cuidador antes de qualquer cobrança. O pagamento pela plataforma, com o valor do cuidador separado automaticamente, entra na próxima etapa.',
+  },
+  {
+    q: 'E adestramento?',
+    a: 'Estamos formando a primeira rede de adestradores em Belo Horizonte, todos verificados e comprometidos com reforço positivo, sem choque, enforcador ou punição. Deixe o e-mail no fim da página para saber quando abrir.',
   },
   {
     q: 'Por que não vejo o endereço do cuidador?',
@@ -83,7 +87,7 @@ export default async function CuidaPage({ searchParams }: { searchParams: Promis
             </h1>
             <p className="mt-5 max-w-[52ch] text-lg text-grafite-suave md:text-xl md:leading-relaxed">
               Hospedagem, visitas, passeios e creche com cuidadores verificados no seu bairro. Você vê o nível de cada um,
-              o preço total e as regras antes de pedir.
+              o preço total e as regras antes de pedir. Em breve, adestradores que trabalham só com reforço positivo.
             </p>
           </div>
 
@@ -231,6 +235,18 @@ export default async function CuidaPage({ searchParams }: { searchParams: Promis
               </li>
             ))}
           </ul>
+          <div className="mt-6 flex flex-col gap-4 rounded-2xl border border-areia bg-white p-6 md:flex-row md:items-center md:justify-between">
+            <div className="flex gap-4">
+              <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-nevoa-clara text-nevoa"><Icon name="book" className="size-6" /></span>
+              <div>
+                <h3 className="font-sans text-lg font-bold">Adestramento <span className="ml-2 rounded-full bg-nevoa-clara px-2.5 py-0.5 align-middle text-xs font-bold text-nevoa">Em breve</span></h3>
+                <p className="mt-1 text-[0.95rem] text-grafite-suave">
+                  Filhotes, passeio sem puxões, ansiedade de separação e convivência em casa, com adestradores verificados que usam só reforço positivo.
+                </p>
+              </div>
+            </div>
+            <a href="#aviso" className="btn btn-secundario shrink-0">Quero ser avisado</a>
+          </div>
         </div>
       </section>
 
@@ -289,14 +305,15 @@ export default async function CuidaPage({ searchParams }: { searchParams: Promis
       <section className="container-page py-16" aria-labelledby="titulo-cuidadores">
         <div className="grid gap-10 rounded-[2rem] bg-salvia-noite p-8 text-linho md:p-14 lg:grid-cols-[1.2fr_1fr]">
           <div>
-            <p className="font-semibold text-salvia-clara">Para cuidadores</p>
-            <h2 id="titulo-cuidadores" className="mt-1 text-4xl md:text-5xl">Cuide de pets perto de casa, com regras claras</h2>
+            <p className="font-semibold text-salvia-clara">Para cuidadores e adestradores</p>
+            <h2 id="titulo-cuidadores" className="mt-1 text-4xl md:text-5xl">Trabalhe com pets perto de casa, com regras claras</h2>
             <p className="mt-4 max-w-[52ch] text-lg text-linho/80">
-              Você define serviços, preços, agenda e regras da casa. A comissão da PetApoio é de {fee.toLocaleString('pt-BR')}%
+              Você define serviços, preços, agenda e regras. A comissão da PetApoio é de {fee.toLocaleString('pt-BR')}%
               e aparece antes de você aceitar cada reserva: num serviço de R$ 100, você recebe R$ {(100 - fee).toLocaleString('pt-BR')}.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/seja-parceiro/cuidadores" className="btn bg-linho text-salvia-noite hover:bg-white">Quero ser cuidador</Link>
+              <Link href="/seja-parceiro/adestradores" className="btn border border-white/40 text-linho hover:bg-white/10">Quero ser adestrador</Link>
             </div>
           </div>
           <ul className="grid gap-3 self-center sm:grid-cols-2">
@@ -304,7 +321,7 @@ export default async function CuidaPage({ searchParams }: { searchParams: Promis
               ['pin', 'Pedidos do seu bairro'],
               ['shield', 'Perfil verificado e com nível'],
               ['calendar', 'Você aceita ou recusa cada pedido'],
-              ['book', 'Treinamentos com veterinários parceiros'],
+              ['users', 'Equipe ao seu lado nas primeiras reservas'],
             ] as [IconName, string][]).map(([icon, t]) => (
               <li key={t} className="flex items-start gap-3 rounded-2xl bg-white/8 p-4">
                 <Icon name={icon} className="mt-0.5 size-5 shrink-0 text-salvia-clara" />
@@ -325,17 +342,15 @@ export default async function CuidaPage({ searchParams }: { searchParams: Promis
         </div>
       </section>
 
-      {results && results.length > 0 && (
-        <section className="container-page pb-8" aria-labelledby="titulo-aviso">
+        <section id="aviso" className="container-page scroll-mt-24 pb-8" aria-labelledby="titulo-aviso">
           <div className="grid gap-8 rounded-[2rem] bg-linho-escuro p-8 md:grid-cols-[1.2fr_1fr] md:p-12">
             <div>
-              <h2 id="titulo-aviso" className="text-3xl">Seu bairro ainda não aparece?</h2>
-              <p className="mt-3 text-grafite-suave">Deixe o e-mail e avisamos quando houver cuidadores verificados perto de você.</p>
+              <h2 id="titulo-aviso" className="text-3xl">Seu bairro ainda não aparece? Procura adestramento?</h2>
+              <p className="mt-3 text-grafite-suave">Deixe o e-mail e avisamos quando houver cuidadores e adestradores verificados perto de você.</p>
             </div>
             <SignupForm list="cuida" submitLabel="Quero ser avisado" />
           </div>
         </section>
-      )}
     </>
   )
 }

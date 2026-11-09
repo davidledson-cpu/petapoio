@@ -60,9 +60,9 @@ export default function AjudaImediataPage() {
             um passo importante.
           </li>
         </ul>
-        <h2>Sobre o PetApoio</h2>
+        <h2>Sobre a PetApoio</h2>
         <p>
-          O PetApoio é um espaço de conteúdo e de conexão com profissionais. Não somos um serviço de emergência e não
+          A PetApoio é um espaço de conteúdo e de conexão com profissionais. Não somos um serviço de emergência e não
           conseguimos responder a situações de crise. Quando estiver mais seguro, você pode voltar e{' '}
           <Link href="/encontre-apoio">ler sobre o luto</Link> ou{' '}
           <Link href="/psicologos">conhecer o apoio psicológico</Link>.

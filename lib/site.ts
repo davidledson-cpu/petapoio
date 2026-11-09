@@ -15,9 +15,9 @@ function resolveSiteUrl() {
 
 export const site = {
   name: 'PetApoio',
-  tagline: 'Um espaço de acolhimento para quem sente a falta de quem sempre esteve ao seu lado.',
+  tagline: 'Cuidado, apoio e acolhimento para você e seu pet, em cada fase da vida dele.',
   description:
-    'Acolhimento, informação confiável e caminhos de apoio psicológico para quem perdeu um animal de estimação.',
+    'Apoio no luto com psicólogos, cuidadores e adestradores verificados perto de casa e planos de saúde com parceiros. Cuidado para você e seu pet em cada fase da vida.',
   url: resolveSiteUrl(),
   email: 'contato@petapoio.com.br',
   instagram: 'https://instagram.com/petapoio_',
@@ -45,9 +45,9 @@ export const nav = [
 
 /** As três frentes do ecossistema, na ordem em que aparecem para o público. */
 export const verticals = [
-  { key: 'acolhe', name: 'PetApoio Acolhe', href: '/psicologos', short: 'Acolhimento no luto' },
-  { key: 'cuida', name: 'PetApoio Cuida', href: '/cuida', short: 'Cuidadores perto de casa' },
-  { key: 'saude', name: 'PetApoio Saúde', href: '/saude', short: 'Saúde organizada' },
+  { key: 'acolhe', name: 'PetApoio Acolhe', href: '/psicologos', short: 'Apoio no luto' },
+  { key: 'cuida', name: 'PetApoio Cuida', href: '/cuida', short: 'Cuidadores e adestradores' },
+  { key: 'saude', name: 'PetApoio Saúde', href: '/saude', short: 'Saúde e proteção' },
 ] as const
 
 export function absoluteUrl(path = '/') {
