@@ -2,7 +2,7 @@
 // Preços são PREÇOS-ALVO de pré-lançamento, ainda sem contrato com parceiros. Nada é vendido no site.
 // Para tirar os valores da página pública, mude MOSTRAR_PRECOS para false.
 
-export const MOSTRAR_PRECOS = true
+export const MOSTRAR_PRECOS = false
 
 export type ProdutoSaude = 'saude' | 'protege' | 'despedida'
 

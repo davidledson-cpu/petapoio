@@ -25,7 +25,7 @@ const Seta = ({ size = 16 }: { size?: number }) => (
 /** Os quatro momentos de entrada: o tutor escolhe o caminho sem precisar conhecer as categorias. */
 const caminhos: { icon: IconName; tom: string; titulo: string; texto: string; href: string }[] = [
   { icon: 'heart', tom: 'bg-laranja-clara text-laranja', titulo: 'Quero encontrar apoio emocional', texto: 'Psicólogos e acolhimento para lidar com a perda de um pet.', href: '/psicologos' },
-  { icon: 'shield', tom: 'bg-salvia-clara text-salvia', titulo: 'Quero cuidar e proteger meu pet', texto: 'Planos de saúde, proteção e cuidadores de confiança.', href: '/saude' },
+  { icon: 'shield', tom: 'bg-salvia-clara text-salvia', titulo: 'Quero cuidar e proteger meu pet', texto: 'Plano de saúde, plano funerário, cuidadores perto de casa e carteira de saúde.', href: '/saude' },
   { icon: 'paw', tom: 'bg-laranja-clara text-laranja', titulo: 'Quero produtos para meu pet', texto: 'Conforto, higiene, brincadeiras e passeios.', href: '/produtos' },
   { icon: 'star', tom: 'bg-nevoa-clara text-nevoa', titulo: 'Quero homenagear meu pet', texto: 'Lembranças e produtos personalizados.', href: '/loja' },
 ]
@@ -33,7 +33,7 @@ const caminhos: { icon: IconName; tom: string; titulo: string; texto: string; hr
 const cuidar: { icon: IconName; tom: string; titulo: string; href: string }[] = [
   { icon: 'home', tom: 'bg-laranja-clara text-laranja', titulo: 'Cuidadores perto de casa', href: '/cuida' },
   { icon: 'book', tom: 'bg-salvia-clara text-salvia', titulo: 'Adestramento positivo', href: '/cuida#aviso' },
-  { icon: 'bag', tom: 'bg-nevoa-clara text-nevoa', titulo: 'Conforto e bem-estar', href: '/produtos' },
+  { icon: 'stethoscope', tom: 'bg-nevoa-clara text-nevoa', titulo: 'Carteira de saúde grátis', href: '/saude#carteira' },
 ]
 
 const confiancaLuto: { icon: IconName; text: string }[] = [
@@ -118,8 +118,8 @@ export default async function HomePage() {
           <div className="p-8 lg:py-12 lg:pr-12">
             <h2 id="titulo-cuidar" className="text-4xl md:text-5xl">Cuidar é um gesto de amor</h2>
             <p className="mt-4 max-w-[48ch] text-lg text-grafite-suave">
-              Produtos, serviços e orientações para uma vida ainda mais feliz ao lado do seu pet: alguém de confiança para
-              cuidar dele, educação com reforço positivo e o conforto do dia a dia.
+              Alguém de confiança para cuidar dele perto de casa, educação com reforço positivo e a saúde organizada num
+              lugar só, com a carteira de saúde grátis.
             </p>
             <ul className="mt-7 grid grid-cols-3 gap-3">
               {cuidar.map((c) => (
@@ -166,13 +166,13 @@ export default async function HomePage() {
                     a partir de <span className="font-serif text-2xl font-extrabold text-laranja">{brlMes(Math.min(...p.faixas.map((f) => f.preco)))}</span>/mês*
                   </p>
                 )}
-                <Link href="/saude#planos" className="mt-5 inline-flex items-center gap-1.5 font-semibold text-salvia-funda hover:underline">Conhecer o plano <Seta /></Link>
+                <Link href={`/saude#${p.id}`} className="mt-5 inline-flex items-center gap-1.5 font-semibold text-salvia-funda hover:underline">Conhecer o plano <Seta /></Link>
               </li>
             ))}
           </ul>
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <Link href="/saude#lista" className="btn btn-primario">Entrar na lista de espera <Seta /></Link>
-            <Link href="/painel/pets" className="btn btn-secundario">Criar carteira de saúde grátis</Link>
+            <Link href="/saude#carteira" className="btn btn-secundario">Criar carteira de saúde grátis</Link>
           </div>
           {MOSTRAR_PRECOS && (
             <p className="mt-5 text-sm text-grafite-suave">* Valores de referência do pré-lançamento, ainda em negociação com os parceiros. Nada é vendido nesta página.</p>

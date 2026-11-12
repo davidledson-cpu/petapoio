@@ -31,10 +31,10 @@ export const nav = [
     href: '/saude',
     label: 'Cuidado e Saúde',
     children: [
-      { href: '/saude#planos', label: 'Planos de saúde pet' },
-      { href: '/saude#planos', label: 'Seguros e proteção' },
-      { href: '/cuida', label: 'Cuidadores e adestradores' },
-      { href: '/painel/pets', label: 'Carteira de saúde do pet' },
+      { href: '/saude#saude', label: 'Plano de saúde pet' },
+      { href: '/saude#despedida', label: 'Plano funerário pet' },
+      { href: '/cuida', label: 'Cuidadores perto de casa' },
+      { href: '/saude#carteira', label: 'Carteira de saúde pet' },
     ],
   },
   {

@@ -6,10 +6,10 @@ const grupos = [
   {
     titulo: 'Cuidado e Saúde',
     links: [
-      { href: '/saude', label: 'Planos de saúde pet' },
-      { href: '/cuida', label: 'Cuidadores e adestradores' },
-      { href: '/produtos', label: 'Produtos pet' },
-      { href: '/painel/pets', label: 'Carteira de saúde' },
+      { href: '/saude#saude', label: 'Plano de saúde pet' },
+      { href: '/saude#despedida', label: 'Plano funerário pet' },
+      { href: '/cuida', label: 'Cuidadores perto de casa' },
+      { href: '/saude#carteira', label: 'Carteira de saúde pet' },
     ],
   },
   {
@@ -34,6 +34,7 @@ const grupos = [
     titulo: 'PetApoio',
     links: [
       { href: '/sobre', label: 'Sobre' },
+      { href: '/produtos', label: 'Produtos pet' },
       { href: '/blog', label: 'Conteúdos' },
       { href: '/entrar?perfil=paciente', label: 'Minha conta' },
       { href: '/privacidade', label: 'Privacidade' },

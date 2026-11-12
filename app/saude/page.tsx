@@ -115,7 +115,7 @@ export default function SaudePage() {
         </div>
         <ul className="mt-10 grid gap-6 lg:grid-cols-3">
           {PRODUTOS.map((p, i) => (
-            <li key={p.id} className="flex flex-col rounded-[1.75rem] border border-areia bg-white p-7">
+            <li key={p.id} id={p.id} className="flex scroll-mt-24 flex-col rounded-[1.75rem] border border-areia bg-white p-7">
               <p className="text-sm font-semibold uppercase tracking-wide text-salvia-funda">{i + 1}. {p.momento}</p>
               <h3 className="mt-2 text-3xl">{p.nome}</h3>
               <p className="mt-2 text-grafite-suave">{p.resumo}</p>
@@ -200,7 +200,7 @@ export default function SaudePage() {
         </div>
       </section>
 
-      <section className="container-page pb-20" aria-labelledby="titulo-carteira">
+      <section id="carteira" className="container-page scroll-mt-24 pb-20" aria-labelledby="titulo-carteira">
         <div className="max-w-2xl">
           <p className="font-semibold text-salvia-funda">Grátis e disponível agora</p>
           <h2 id="titulo-carteira" className="mt-1 text-4xl md:text-5xl">Carteira digital de saúde</h2>
